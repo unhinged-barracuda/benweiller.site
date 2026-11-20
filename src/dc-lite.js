@@ -187,7 +187,8 @@ if (PERF) {
     const slow = PERF.gaps.filter((g) => g > 50).length;
     box.textContent = 'fps      ' + Math.round(1000 / (avg || 16.7)) + '\nworst    ' + Math.round(PERF.worst) + ' ms\nslow>50  ' + slow +
       '\nrender   ' + (PERF.render / n).toFixed(1) + ' ms/frame (' + PERF.renders + ')\nblob     ' + (PERF.blob / n).toFixed(1) + ' ms/frame' +
-      '\nwebgl    ' + (document.querySelector('canvas.fastblob') ? 'on' : 'OFF') + '\n' + navigator.userAgent.replace(/^.*\) /, '').slice(0, 40);
+      '\nwebgl    ' + (document.querySelector('canvas.fastblob') ? 'on' : 'OFF') + (window.__glLost ? ' (lost ' + window.__glLost + 'x)' : '') + '\n' + navigator.userAgent.replace(/^.*\) /, '').slice(0, 40) +
+      ((window.__dcErrors || []).length ? '\nERRORS:\n' + window.__dcErrors.slice(-4).join('\n') : '');
     PERF.gaps = []; PERF.worst = 0; PERF.render = 0; PERF.renders = 0; PERF.blob = 0;
     if (!box.isConnected) document.body.appendChild(box);
   }, 1000);
@@ -226,6 +227,23 @@ function applyHelmet(frag) {
   prev.forEach((n) => n.remove());
 }
 
+// if a board ever throws while rendering, don't leave a blank page: log it and redraw it fresh (a few times at most)
+class Guard extends React.Component {
+  constructor(p) { super(p); this.state = { n: 0, failed: false }; this.tries = 0; }
+  static getDerivedStateFromError() { return { failed: true }; }
+  componentDidCatch(err) {
+    noteError(err);
+    if (this.tries++ < 3) setTimeout(() => this.setState((s) => ({ n: s.n + 1, failed: false })), 30);
+  }
+  render() { return this.state.failed ? null : React.createElement(React.Fragment, { key: this.state.n }, this.props.children); }
+}
+export function noteError(err) {
+  const msg = (err && (err.message || err.reason && err.reason.message || err.reason)) || String(err);
+  (window.__dcErrors = window.__dcErrors || []).push(String(msg).slice(0, 160));
+}
+window.addEventListener('error', (e) => noteError(e.error || e.message));
+window.addEventListener('unhandledrejection', (e) => noteError(e.reason));
+
 let reactRoot = null;
 export function mount(tplEl, scriptEl, mountEl, sync) {
   const frag = tplEl.content;
@@ -242,7 +260,7 @@ export function mount(tplEl, scriptEl, mountEl, sync) {
   Component.prototype.__tpl = tpl;
   if (reactRoot) reactRoot.unmount();
   reactRoot = createRoot(mountEl);
-  const el = React.createElement(Component, props);
+  const el = React.createElement(Guard, null, React.createElement(Component, props));
   if (sync) flushSync(() => reactRoot.render(el)); else reactRoot.render(el);
   if (sync) startFastBlob(mountEl, true); else requestAnimationFrame(() => startFastBlob(mountEl));
 }

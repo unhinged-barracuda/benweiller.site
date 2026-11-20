@@ -296,6 +296,8 @@ class Stage {
     const gl = cv.getContext('webgl', { premultipliedAlpha: true, alpha: true, antialias: false, depth: false, stencil: false, preserveDrawingBuffer: false });
     if (!gl) throw new Error('no webgl');
     this.cv = cv; this.gl = gl;
+    // if the browser drops the graphics context (memory pressure, background tab), fall back to the SVG drawing
+    cv.addEventListener('webglcontextlost', (e) => { e.preventDefault(); this.lost = true; window.__glLost = (window.__glLost || 0) + 1; }, false);
     this.blurP = compile(gl, VS, FS_BLUR);
     this.blobP = compile(gl, VS, FS_BLOB);
     this.grainP = compile(gl, VS, FS_GRAIN);
@@ -310,7 +312,7 @@ class Stage {
   destroy() {
     for (const L of this.layers) if (L.el.isConnected) L.el.style.visibility = '';
     this.cv.remove();
-    const ext = this.gl.getExtension('WEBGL_lose_context'); if (ext) ext.loseContext();
+    if (!this.lost) { const ext = this.gl.getExtension('WEBGL_lose_context'); if (ext) ext.loseContext(); }
   }
   draw() {
     const { gl, cv, svg } = this;
@@ -435,13 +437,14 @@ class Stage {
 
 // ---------- driver ----------
 const stages = new Map();
+const noGL = new WeakSet();
 let looping = false;
 export function startFastBlob(root, now) {
   if (/[?&]svgblob\b/.test(location.search)) return; // ?svgblob shows the original SVG rendering, for comparison
   const scan = () => {
-    for (const [svg, st] of stages) if (!svg.isConnected) { st.destroy(); stages.delete(svg); }
+    for (const [svg, st] of stages) if (!svg.isConnected || st.lost) { const lost = st.lost; st.destroy(); stages.delete(svg); if (lost) noGL.add(svg); }
     root.querySelectorAll('svg').forEach((svg) => {
-      if (stages.has(svg) || svg.closest('defs, mask, .fastblob')) return;
+      if (stages.has(svg) || noGL.has(svg) || svg.closest('defs, mask, .fastblob')) return;
       const layers = plan(svg);
       if (!layers || !layers.some((l) => l.kind === 'blob')) return;
       try { stages.set(svg, new Stage(svg, layers)); } catch (e) { /* no WebGL: leave the SVG as it is */ }
@@ -460,7 +463,9 @@ export function startFastBlob(root, now) {
   looping = true;
   const loop = () => {
     const t0 = performance.now();
-    for (const st of stages.values()) { try { st.draw(); } catch (e) { /* skip a frame */ } }
+    let lost = false;
+    for (const st of stages.values()) { if (st.lost) { lost = true; continue; } try { st.draw(); } catch (e) { /* skip a frame */ } }
+    if (lost) scan();
     if (window.__PERF__) window.__PERF__.blob += performance.now() - t0;
     requestAnimationFrame(loop);
   };
