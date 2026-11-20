@@ -434,9 +434,10 @@ class Stage {
 }
 
 // ---------- driver ----------
-export function startFastBlob(root) {
+const stages = new Map();
+let looping = false;
+export function startFastBlob(root, now) {
   if (/[?&]svgblob\b/.test(location.search)) return; // ?svgblob shows the original SVG rendering, for comparison
-  const stages = new Map();
   const scan = () => {
     for (const [svg, st] of stages) if (!svg.isConnected) { st.destroy(); stages.delete(svg); }
     root.querySelectorAll('svg').forEach((svg) => {
@@ -446,10 +447,17 @@ export function startFastBlob(root) {
       try { stages.set(svg, new Stage(svg, layers)); } catch (e) { /* no WebGL: leave the SVG as it is */ }
     });
   };
-  let pending = false;
-  new MutationObserver(() => { if (pending) return; pending = true; requestAnimationFrame(() => { pending = false; scan(); }); })
-    .observe(root, { childList: true, subtree: true });
+  if (!root.__fastblob) {
+    root.__fastblob = true;
+    let pending = false;
+    new MutationObserver(() => { if (pending) return; pending = true; requestAnimationFrame(() => { pending = false; scan(); }); })
+      .observe(root, { childList: true, subtree: true });
+  }
   scan();
+  // when swapping pages, paint the new blob straight away so the cross-dissolve shows it
+  if (now) for (const st of stages.values()) { try { st.draw(); } catch (e) { /* next frame */ } }
+  if (looping) return;
+  looping = true;
   const loop = () => {
     const t0 = performance.now();
     for (const st of stages.values()) { try { st.draw(); } catch (e) { /* skip a frame */ } }

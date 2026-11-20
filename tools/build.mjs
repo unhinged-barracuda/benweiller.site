@@ -129,7 +129,9 @@ function page(r) {
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" href="/assets/${assetFile['a15098c6e2313273da5b37f609489781'] || ''}" as="font" type="font/woff" crossorigin>
-<style>html,body{margin:0;background:#F1F1EE;overscroll-behavior:none}#dc-root{min-height:100vh}</style>
+<style>html,body{margin:0;background:#F1F1EE;overscroll-behavior:none}#dc-root{min-height:100vh}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.65s;animation-timing-function:cubic-bezier(.3,.7,.2,1)}
+@media (prefers-reduced-motion: reduce){::view-transition-old(root),::view-transition-new(root){animation:none}}</style>
 <script>window.__DC_PAGE__=${JSON.stringify({ tabletMobile: !!r.tabletMobile, preload: !!r.preload })};window.__IMG__=${JSON.stringify(used)}</script>
 <script src="/dc-lite.js?v=${SITE.build}" defer></script>
 </head>

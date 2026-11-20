@@ -5,6 +5,7 @@
 // to the site by copying the board file across (see README).
 import React from 'react';
 import { createRoot } from 'react-dom/client';
+import { flushSync } from 'react-dom';
 import { startFastBlob } from './fastblob.js';
 
 // ---------- holes ----------
@@ -204,20 +205,29 @@ export class DCLogic extends React.Component {
   }
 }
 
+let helmetNodes = [];
 function applyHelmet(frag) {
   const h = frag.querySelector('helmet');
   if (!h) return;
+  const prev = helmetNodes; helmetNodes = [];
   Array.from(h.children).forEach((el) => {
     const c = el.cloneNode(true);
     // a <style> or <link> cloned from a template is inert; recreate it so the browser applies it
     const fresh = document.createElement(c.localName);
     Array.from(c.attributes).forEach((a) => fresh.setAttribute(a.name, a.value));
     fresh.textContent = c.textContent;
+    // the same font / stylesheet link twice is harmless but wasteful: reuse it
+    const same = fresh.localName === 'link' && prev.find((n) => n.localName === 'link' && n.getAttribute('href') === fresh.getAttribute('href'));
+    if (same) { helmetNodes.push(same); prev.splice(prev.indexOf(same), 1); return; }
     document.head.appendChild(fresh);
+    helmetNodes.push(fresh);
   });
+  // the previous page's styles go once the new ones are in
+  prev.forEach((n) => n.remove());
 }
 
-export function mount(tplEl, scriptEl, mountEl) {
+let reactRoot = null;
+export function mount(tplEl, scriptEl, mountEl, sync) {
   const frag = tplEl.content;
   applyHelmet(frag);
   const xdc = frag.querySelector('x-dc') || frag;
@@ -230,8 +240,11 @@ export function mount(tplEl, scriptEl, mountEl) {
   // eslint-disable-next-line no-new-func
   const Component = new Function('DCLogic', 'React', scriptEl.textContent + '\n;return Component;')(DCLogic, React);
   Component.prototype.__tpl = tpl;
-  createRoot(mountEl).render(React.createElement(Component, props));
-  requestAnimationFrame(() => startFastBlob(mountEl));
+  if (reactRoot) reactRoot.unmount();
+  reactRoot = createRoot(mountEl);
+  const el = React.createElement(Component, props);
+  if (sync) flushSync(() => reactRoot.render(el)); else reactRoot.render(el);
+  if (sync) startFastBlob(mountEl, true); else requestAnimationFrame(() => startFastBlob(mountEl));
 }
 
 // ---------- films: the boards show a cover + glass play button; on the live site a click loads the Vimeo player in place ----------
@@ -281,27 +294,106 @@ function pick() {
   return tpl;
 }
 
-function boot() {
+// ---------- pages ----------
+let currentTpl = null;
+function warmImages(script) {
+  const urls = [...new Set((script.textContent.match(/\/assets\/[0-9a-f]{32}\.(?:webp|jpg|jpeg|png)/g) || []))];
+  let i = 0;
+  const next = () => { if (i >= urls.length) return; const im = new Image(); im.onload = im.onerror = next; im.src = urls[i++]; };
+  next(); next();
+}
+function start(sync) {
   const tpl = pick();
   if (!tpl) return;
   const script = document.getElementById(tpl.id + '-logic');
   const root = document.getElementById('dc-root');
   document.documentElement.dataset.board = tpl.id.replace('dc-', '');
-  mount(tpl, script, root);
+  currentTpl = tpl.id;
+  mount(tpl, script, root, sync);
   // pages whose images appear on hover (the menu's thumbnail card) warm them up once the page has settled
   if ((window.__DC_PAGE__ || {}).preload) {
-    const warm = () => {
-      const urls = new Set((script.textContent.match(/\/assets\/[0-9a-f]{32}\.(?:webp|jpg|jpeg|png)/g) || []));
-      let i = 0; const list = [...urls];
-      const next = () => { if (i >= list.length) return; const im = new Image(); im.onload = im.onerror = next; im.src = list[i++]; };
-      next(); next();
-    };
-    if (document.readyState === 'complete') setTimeout(warm, 600); else window.addEventListener('load', () => setTimeout(warm, 600));
+    if (document.readyState === 'complete') setTimeout(() => warmImages(script), 600); else window.addEventListener('load', () => setTimeout(() => warmImages(script), 600), { once: true });
   }
+}
+
+// ---------- moving between pages without reloading: the next page is fetched, swapped in and cross-dissolved ----------
+const pageCache = new Map();
+function fetchPage(url) {
+  const key = url.pathname;
+  if (!pageCache.has(key)) pageCache.set(key, fetch(key, { credentials: 'same-origin' }).then((r) => r.text()).catch((e) => { pageCache.delete(key); throw e; }));
+  return pageCache.get(key);
+}
+function sameSite(a) {
+  if (!a || !a.href || a.target === '_blank' || a.hasAttribute('download')) return null;
+  const url = new URL(a.href, location.href);
+  if (url.origin !== location.origin || /^\/(assets|_tool)\//.test(url.pathname) || /\.[a-z0-9]+$/i.test(url.pathname)) return null;
+  if (url.pathname === location.pathname && url.hash) return null; // a jump within the page
+  return url;
+}
+function swapIn(html) {
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  document.title = doc.title;
+  const cfg = doc.querySelector('head script:not([src])');
+  if (cfg) { try { (0, eval)(cfg.textContent); } catch (e) { /* keep the old config */ } }
+  document.querySelectorAll('body > template[id^="dc-"], body > script[type="text/x-dc"]').forEach((n) => n.remove());
+  doc.querySelectorAll('body > template[id^="dc-"], body > script[type="text/x-dc"]').forEach((n) => document.body.appendChild(document.importNode(n, true)));
+  const canon = doc.querySelector('link[rel="canonical"]'), mine = document.querySelector('link[rel="canonical"]');
+  if (canon && mine) mine.href = canon.href;
+}
+let navigating = false, queued = null, renderedPath = location.pathname;
+async function go(url, push) {
+  if (navigating) { queued = [url, push]; return; }
+  navigating = true;
+  try {
+    const html = await fetchPage(url);
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const swap = () => {
+      swapIn(html);
+      if (push) history.pushState({ dc: 1 }, '', url.pathname + url.search + url.hash);
+      window.scrollTo(0, 0);
+      renderedPath = url.pathname;
+      start(true);
+    };
+    if (!reduce && document.startViewTransition) {
+      const vt = document.startViewTransition(swap);
+      await vt.updateCallbackDone.catch(() => {});
+    } else if (!reduce) {
+      const root = document.getElementById('dc-root');
+      root.style.transition = 'opacity 260ms ease'; root.style.opacity = '0';
+      await new Promise((r) => setTimeout(r, 260));
+      swap();
+      requestAnimationFrame(() => { root.style.transition = 'opacity 420ms ease'; root.style.opacity = '1'; });
+    } else swap();
+  } catch (e) {
+    location.href = url.href; // anything unexpected: a normal page load
+  } finally {
+    navigating = false;
+    if (queued) { const [u, p] = queued; queued = null; if (u.pathname !== renderedPath) go(u, p); }
+  }
+}
+document.addEventListener('click', (e) => {
+  if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  const a = e.target.closest && e.target.closest('a[href]');
+  const url = sameSite(a);
+  if (!url) return;
+  e.preventDefault();
+  if (url.pathname === location.pathname && !url.hash) return;
+  go(url, true);
+});
+// fetch a page as soon as the pointer heads for its link, so the swap is instant
+const warmLink = (e) => { const url = sameSite(e.target.closest && e.target.closest('a[href]')); if (url && url.pathname !== location.pathname) fetchPage(url); };
+document.addEventListener('pointerover', warmLink, { passive: true });
+document.addEventListener('touchstart', warmLink, { passive: true });
+window.addEventListener('popstate', () => go(new URL(location.href), false));
+
+function boot() {
+  history.replaceState({ dc: 1 }, '');
+  start(false);
+  // the homepage leads to the menu: have it ready
+  if (location.pathname === '/') setTimeout(() => fetchPage(new URL('/work/', location.href)), 1200);
   // crossing the phone breakpoint (rotate, resize) swaps boards: simplest is a reload
-  const was = tpl.id;
   let t;
-  window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => { const n = pick(); if (n && n.id !== was) location.reload(); }, 250); });
+  window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => { const n = pick(); if (n && n.id !== currentTpl) location.reload(); }, 250); });
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
