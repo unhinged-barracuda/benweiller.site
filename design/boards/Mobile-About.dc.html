@@ -97,6 +97,10 @@ header .ico,header #hdrMenuG{visibility:hidden!important}
 .fabBtn .burger line{stroke:#1E1E1C}
 /* the flip: the symbol and its words are drawn in light tones with "difference" blending, so over the light page they read as ink / grey (as before), and over dark images or films they turn light — no box behind them */
 .fab{mix-blend-mode:difference}
+.fabX{position:absolute;top:0;right:42px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;transition:opacity 200ms ease}
+.fabX:hover{opacity:0.6}
+.fabX line{stroke:#FFFFFF!important}
+.fab:has(.fabBtn[aria-expanded="true"]) .fabX{visibility:hidden}
 .fabBtn .burger line{stroke:#FFFFFF!important}
 .fabNav a{color:#A9A9B0!important}
 .fabNav a:hover,.fabNav a:focus-visible{color:#FFFFFF!important}
@@ -182,6 +186,8 @@ header .ico,header #hdrMenuG{visibility:hidden!important}
 </div>
 <!-- sticky "///": appears once the header has scrolled away, plain like the header; its words open as a vertical stack -->
 <div class="fab {{fabCls}}" style="position: absolute; top: calc(max(5.5vh, 36px) - 24px); right: 9px; z-index: 8">
+<!-- back arrow (Nov 20): as on the project pages -->
+<a class="fabX" href="Mobile-Menu-List.dc.html" aria-label="Back to the menu"><svg width="26" height="22" viewBox="0 0 21 18" overflow="visible" aria-hidden="true"><line x1="1" y1="9" x2="20" y2="9" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line><line x1="1" y1="9" x2="8" y2="2" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line><line x1="1" y1="9" x2="8" y2="16" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line></svg></a>
 <button class="fabBtn" type="button" onClick="{{toggleF}}" aria-expanded="{{openStrF}}" aria-controls="fabMenu" aria-label="{{labelF}}" tabindex="{{fabTab}}">
 <svg class="burger" width="33" height="27" viewBox="0 0 22 18" overflow="visible" aria-hidden="true"><line class="l1" x1="1" y1="17" x2="7.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l2" x1="8" y1="17" x2="14.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l3" x1="15" y1="17" x2="21.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line></svg>
 </button>
