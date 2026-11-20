@@ -93,6 +93,8 @@ main .here{position:static!important}
 .fab{opacity:0;visibility:hidden;transition:opacity 220ms ease,visibility 0s linear 220ms}
 .fab.on{opacity:1;visibility:visible;transition:opacity 220ms ease,visibility 0s}
 .fabBtn{width:48px;height:48px;margin-right:-7px;border:0;padding:0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.fabX{position:absolute;top:0;right:42px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;transition:opacity 200ms ease}
+.fabX:hover{opacity:0.6}
 .fabNav{position:absolute;top:52px;right:0;display:flex;flex-direction:column;align-items:flex-end;gap:16px}
 .fabNav a{color:#55554F;font-size:14px;line-height:1;text-decoration:none;white-space:nowrap;opacity:0;transform:translateY(-6px);transition:opacity 300ms ease,transform 400ms cubic-bezier(.3,.7,.2,1),color 200ms ease}
 .fabNav a:hover{color:#1E1E1C}
@@ -107,11 +109,8 @@ header .ico,header #hdrMenuG{visibility:hidden!important}
 .fabBtn .burger line{stroke:#1E1E1C}
 /* the flip: the symbol and its words are drawn in light tones with "difference" blending, so over the light page they read as ink / grey (as before), and over dark images or films they turn light — no box behind them */
 .fab{mix-blend-mode:difference}
-.fabX{position:absolute;top:0;right:42px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;transition:opacity 200ms ease}
-.fabX:hover{opacity:0.6}
-.fabX line{stroke:#FFFFFF!important}
-.fab:has(.fabBtn[aria-expanded="true"]) .fabX{visibility:hidden}
 .fabBtn .burger line{stroke:#FFFFFF!important}
+.fabX line{stroke:#FFFFFF!important}
 .fabNav a{color:#A9A9B0!important}
 .fabNav a:hover,.fabNav a:focus-visible{color:#FFFFFF!important}
 
@@ -178,7 +177,7 @@ header .ico,header #hdrMenuG{visibility:hidden!important}
 </div>
 </header>
 <main style="width: min(1120px, 90vw); margin: 0 auto; padding: 44vh 0 8vh">
-<section aria-label="Contact" style="max-width: 350px; font-size: 13px; line-height: 1.5; margin-left: auto; margin-right: 70px">
+<section aria-label="Contact" style="max-width: 350px; margin-left: auto; margin-right: 70px">
 <h1 style="margin: 0; font-size: 13px; font-weight: 500; line-height: 1.5">ask ahead</h1>
 <p style="margin: 0; padding-top: 8px; font-size: 13px; line-height: 1.5">this is the part where I ask you to ask me for some fresh words or ideas. even if you just want to jam on some gig posters for your garage band that’s finally moving out of the garage-into another one.&nbsp; I’m <span class="here" style="position: relative; display: inline-block"><span style="text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px">here</span><span id="hereIcons" style="position: absolute; left: 0; top: 100%; padding-top: 30px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; white-space: nowrap">
 <a class="ic" href="https://www.linkedin.com/in/benjaminweiller/" target="_blank" rel="noopener" aria-label="Ben Weiller on LinkedIn" style="display: flex; align-items: center; gap: 8px; text-decoration: none; color: #1E1E1C; font-size: 13px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 14 14" style="display: block; flex: none"><rect width="14" height="14" rx="2" fill="#1E1E1C"></rect><circle cx="3.6" cy="3.4" r="1.15" fill="#F1F1EE"></circle><rect x="2.6" y="5.3" width="2" height="6.2" fill="#F1F1EE"></rect><path d="M6.2 5.3h1.9v.9c.4-.7 1.1-1.1 2-1.1 1.5 0 2.2 1 2.2 2.7v3.7h-2V8.3c0-.8-.3-1.3-.95-1.3-.7 0-1.15.5-1.15 1.3v3.2H6.2z" fill="#F1F1EE"></path></svg><span aria-hidden="true">Ben Weiller</span></a>
@@ -190,8 +189,8 @@ header .ico,header #hdrMenuG{visibility:hidden!important}
 </div>
 <!-- sticky "///": appears once the header has scrolled away, plain like the header; its words open as a vertical stack -->
 <div class="fab {{fabCls}}" style="position: absolute; top: calc(max(5.5vh, 36px) - 24px); right: 9px; z-index: 8">
-<!-- back arrow (Nov 20): as on the project pages -->
-<a class="fabX" href="Mobile-Menu-List.dc.html" aria-label="Back to the menu"><svg width="26" height="22" viewBox="0 0 21 18" overflow="visible" aria-hidden="true"><line x1="1" y1="9" x2="20" y2="9" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line><line x1="1" y1="9" x2="8" y2="2" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line><line x1="1" y1="9" x2="8" y2="16" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line></svg></a>
+<!-- back arrow (Nov 20; replaced a close ×; on every project page): sits just left of the "///", same thin ink line, takes you back to the menu; hidden while the menu words are open -->
+<a class="fabX" href="Mobile-Menu-List.dc.html" aria-label="Back to the menu" style="visibility: {{xVis}}"><svg width="26" height="22" viewBox="0 0 21 18" overflow="visible" aria-hidden="true"><line x1="1" y1="9" x2="20" y2="9" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line><line x1="1" y1="9" x2="8" y2="2" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line><line x1="1" y1="9" x2="8" y2="16" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line></svg></a>
 <button class="fabBtn" type="button" onClick="{{toggleF}}" aria-expanded="{{openStrF}}" aria-controls="fabMenu" aria-label="{{labelF}}" tabindex="{{fabTab}}">
 <svg class="burger" width="33" height="27" viewBox="0 0 22 18" overflow="visible" aria-hidden="true"><line class="l1" x1="1" y1="17" x2="7.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l2" x1="8" y1="17" x2="14.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l3" x1="15" y1="17" x2="21.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line></svg>
 </button>
@@ -372,7 +371,7 @@ class Component extends DCLogic {
     const FORK = 'M-35 -19 L-35 -9 M-31 -19 L-31 -9 M-27 -19 L-27 -9 M-35 -9 C-35 -4 -27 -4 -27 -9 M-31 -5 L-31 19', KNIFE = 'M29 -21 C36 -17 36 -6 33 -2 L29 -2 Z', KNIFEH = 'M31 -2 L31 19';
     const QM = 'M-4.6 -7.5 C-4.6 -13 4.6 -13 4.6 -7.5 C4.6 -3.5 0 -2.8 0 2.2';
     // fish motion (SVG rotate: angle, pivot x, pivot y in the fish's own drawing); off for reduced motion
-    const FLOP = [] ||  [{ v: '-5 -4 2;5 -4 2;-5 -4 2', dur: '3.4s' }], WAG = [] ||  [{ v: '-14 27 2;10 27 2;-14 27 2', dur: '1.3s' }];
+    const FLOP = [], WAG = []; // stamps are static (Nov 20, mirrored from the live site)
     const SN = [
       null,
       null, // the sparkles in the centre of the cluster removed (user's call, Nov 20); the five stamps keep their ring around the empty centre
@@ -392,7 +391,7 @@ class Component extends DCLogic {
         // stamps: the five around the stars sit evenly on an ellipse (every 72°, clockwise from the top: fish, place setting, bike, eyes, trees)
         ? [null, [390, 380, -6, 1.1], [195, 332, -8, 0.92], null, [272, 520, 4, 0.85], [390, 210, 5, 0.98], [508, 520, -4, 0.9], [585, 332, 4, 0.92]]
         : [null, [720, 470, -6, 1.12], [500, 380, -8, 0.98], [870, 380, -3, 1.0], [535, 600, 4, 0.9], [680, 285, 5, 1.08], [745, 655, -4, 0.95], [935, 560, 4, 1.02]];
-      const turn = 0; // icons static (Nov 20)
+      const turn = 0; // bike wheels static (Nov 20)
       (stamp ? SN : CL).forEach((parts, i) => {
         const pp = POS[i]; if (!pp) return;
         const tf = 'translate(' + pp[0] + ' ' + pp[1] + ') rotate(' + pp[2] + ') scale(' + pp[3] + ')';
@@ -400,7 +399,7 @@ class Component extends DCLogic {
         parts.forEach((pt) => {
           if (pt.skip) return;
           const t2 = tf + (pt.sub ? ' ' + pt.sub : '');
-          if (pt.k === 'glance') { const on = false; const an = on ? Math.atan2(this.state.my - pp[1], this.state.mx - pp[0]) - pp[2] * Math.PI / 180 : 0.3; const ox = Math.cos(an) * pt.reach, oy = Math.sin(an) * pt.reach; items.push({ k: 'mfill', d: pt.eyes.map((ex) => C(+(ex + ox).toFixed(2), +oy.toFixed(2), pt.r)).join(' '), tf: tf, frame: 0 }); }
+          if (pt.k === 'glance') { const on = false; /* eyes static (Nov 20) */ const an = on ? Math.atan2(this.state.my - pp[1], this.state.mx - pp[0]) - pp[2] * Math.PI / 180 : 0.3; const ox = Math.cos(an) * pt.reach, oy = Math.sin(an) * pt.reach; items.push({ k: 'mfill', d: pt.eyes.map((ex) => C(+(ex + ox).toFixed(2), +oy.toFixed(2), pt.r)).join(' '), tf: tf, frame: 0 }); }
           else if (pt.k === 'pupil') items.push({ k: 'mfill', d: pt.eyes.map((ex) => C(ex + 3, -0.5, 5.2)).join(' '), tf: tf, frame: 0 });
           else if (pt.k === 'spokes') items.push({ k: pt.ink ? 'inkline' : 'cut', w: pt.w || 1.3, frame: 0, tf: t2, d: pt.wheels.map((w) => { let o = ''; for (let q = 0; q < 3; q++) { const an = turn * w[2] + q * Math.PI / 3, dx = Math.cos(an) * 12, dy = Math.sin(an) * 12; o += 'M' + (w[0] - dx).toFixed(1) + ' ' + (w[1] - dy).toFixed(1) + ' L' + (w[0] + dx).toFixed(1) + ' ' + (w[1] + dy).toFixed(1) + ' '; } return o; }).join('') });
           else if (pt.k === 'mainfill') items.push({ k: 'mfill', d: pt.d, tf: t2, frame: 0, anims: pt.anims });
@@ -470,7 +469,7 @@ class Component extends DCLogic {
       },
       onTouchStart: () => { this.askTilt(); },
       onScrollF: (e) => { const on = ((e.target && e.target.scrollTop) || 0) > 90; if (on !== !!this.state.fab) this.setState({ fab: on }); },
-      fabCls: this.state.fab ? 'on' : '', fabTab: '0',
+      fabCls: this.state.fab ? 'on' : '', fabTab: '0', xVis: this.state.openF ? 'hidden' : 'visible',
       openStrF: this.state.openF ? 'true' : 'false', openClsF: this.state.openF ? 'open' : '', // mobile: always a vertical stack (no room for a row beside the wordmark) visF: this.state.openF ? 'visible' : 'hidden', tabF: this.state.openF ? '0' : '-1',
       labelF: this.state.openF ? 'Close menu' : 'Open menu',
       toggleF: () => this.setState({ openF: !this.state.openF }),

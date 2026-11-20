@@ -71,9 +71,8 @@ a{color:#1E1E1C}a:hover{color:#000000}
 .card:focus-visible::after,.xp:focus-visible::after,.band:focus-visible::after,.gbw:has(.gb:focus-visible)::after{content:none!important}
 .card:focus-visible,.xp:focus-visible,.band:focus-visible,[tabindex]:not(a):not(button):focus-visible,.gbw:has(.gb:focus-visible),.gfocus{box-shadow:0 14px 34px -8px rgba(30,30,28,0.38),0 2px 8px rgba(30,30,28,0.12)}
 .gbw:has(.gb:focus-visible),.gfocus.round{border-radius:50%}
-.hdrBack{position:absolute;right:42px;top:50%;width:48px;height:48px;margin-top:-24px;display:flex;align-items:center;justify-content:center;transition:opacity 200ms ease}
+.hdrBack{transition:opacity 200ms ease}
 .hdrBack:hover{opacity:0.6}
-div:has(> .ico[aria-expanded="true"]) > .hdrBack{visibility:hidden}
 </style>
 </helmet>
 <div onMouseMove="{{onMove}}" onMouseLeave="{{onLeave}}" style="position: relative; height: 100vh; min-height: 560px; overflow: hidden; background: #F1F1EE; color: #1E1E1C; font-family: 'Inter', system-ui, sans-serif">
@@ -120,15 +119,15 @@ div:has(> .ico[aria-expanded="true"]) > .hdrBack{visibility:hidden}
 <div style="position: absolute; inset: 0; z-index: 1; overflow-y: auto">
 <header style="height: 11vh; min-height: 72px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; padding: 0 4vw">
 <a class="lnk" href="Bloburblur.dc.html" aria-label="Ben Weiller — home" style="display: inline-block; font-family: 'Dirtbag TM', 'Inter', sans-serif; font-size: 44px; line-height: 1; letter-spacing: 0.03em; position: relative; top: 9px; text-decoration: none; color: #1E1E1C">BEN WEILLER</a>
-<div style="display: flex; align-items: center; gap: 26px; position: relative">
-<!-- back arrow (Nov 20): as on the project pages, just left of the "///", back to the menu; hidden while the menu words are open -->
-<a class="hdrBack" href="Menu-Blob-Bold.dc.html" aria-label="Back to the menu"><svg width="26" height="22" viewBox="0 0 21 18" overflow="visible" aria-hidden="true"><line x1="1" y1="9" x2="20" y2="9" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line><line x1="1" y1="9" x2="8" y2="2" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line><line x1="1" y1="9" x2="8" y2="16" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line></svg></a>
+<div style="display: flex; align-items: center; gap: 26px">
 <nav id="hdrMenuG" aria-label="Main" class="drawer {{openClsG}}" style="display: flex; gap: 28px; align-items: center; font-size: 13px; line-height: 1; visibility: {{drawerVisG}}">
 <a class="nb" href="Menu-Blob-Bold.dc.html" tabindex="{{tabG}}">/work</a>
 <a class="nb" href="https://www.instagram.com/un_finished_lines/" target="_blank" rel="noopener" tabindex="{{tabG}}">/@un_finished_lines</a>
 <a class="nb on" href="About-A.dc.html" aria-current="page" tabindex="{{tabG}}">/who, me?</a>
 <a class="nb" href="Contact-A.dc.html" tabindex="{{tabG}}">/contact</a>
 </nav>
+<!-- back arrow (Nov 20, mirrored from the live site): the same thin ← as the project pages, just left of the "///", back to the menu; hidden while the menu words are open -->
+<a class="hdrBack" href="Menu-Blob-Bold.dc.html" aria-label="Back to the menu" style="display: {{xDispG}}; width: 48px; height: 48px; align-items: center; justify-content: center; margin-right: 2px"><svg width="26" height="22" viewBox="0 0 21 18" overflow="visible" aria-hidden="true"><line x1="1" y1="9" x2="20" y2="9" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line><line x1="1" y1="9" x2="8" y2="2" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line><line x1="1" y1="9" x2="8" y2="16" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line></svg></a>
 <button class="ico" type="button" onClick="{{toggleG}}" aria-expanded="{{openStrG}}" aria-controls="hdrMenuG" aria-label="{{icoLabelG}}" style="width: 48px; height: 48px; margin-right: -7px; padding: 0; border: 0; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center">
 <svg class="burger" width="33" height="27" viewBox="0 0 22 18" overflow="visible" aria-hidden="true"><line class="l1" x1="1" y1="17" x2="7.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l2" x1="8" y1="17" x2="14.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l3" x1="15" y1="17" x2="21.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line></svg>
 </button>
@@ -321,7 +320,7 @@ class Component extends DCLogic {
       hereOn: () => { clearTimeout(this.ht); this.setState({ here: true }); },
       hereOff: () => { clearTimeout(this.ht); this.ht = setTimeout(() => this.setState({ here: false }), 350); },
       hereToggle: () => { clearTimeout(this.ht); this.setState({ here: !this.state.here }); },
-      openClsG: o ? 'open' : '', openStrG: o ? 'true' : 'false', drawerVisG: o ? 'visible' : 'hidden', tabG: o ? '0' : '-1',
+      xDispG: o ? 'none' : 'flex', openClsG: o ? 'open' : '', openStrG: o ? 'true' : 'false', drawerVisG: o ? 'visible' : 'hidden', tabG: o ? '0' : '-1',
       icoLabelG: o ? 'Close menu' : 'Open menu',
       toggleG: () => this.setState({ openG: !this.state.openG })
     };
