@@ -1,0 +1,10 @@
+// Cloudflare: the site is plain static files, built into dist/ by `npm run build`.
+{
+  "name": "benweiller",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  }
+}
