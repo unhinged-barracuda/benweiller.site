@@ -7,6 +7,7 @@
 </head>
 <body>
 <x-dc>
+<!-- SELECTED contact page (Nov 20): this was option A alt 2 (ask ahead + stamp ring + small homepage blob beneath the icons); swapped into Contact-A so every /contact link opens it. the previous option A (seven-stamp half-drop on its own moving blob) now lives on the Contact-A-Blob2 board -->
 <helmet>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&amp;display=swap" rel="stylesheet">
 <style>
@@ -79,9 +80,14 @@ a{color:#1E1E1C}a:hover{color:#000000}
 .card:focus-visible::after,.xp:focus-visible::after,.band:focus-visible::after,.gbw:has(.gb:focus-visible)::after{content:none!important}
 .card:focus-visible,.xp:focus-visible,.band:focus-visible,[tabindex]:not(a):not(button):focus-visible,.gbw:has(.gb:focus-visible),.gfocus{box-shadow:0 14px 34px -8px rgba(30,30,28,0.38),0 2px 8px rgba(30,30,28,0.12)}
 .gbw:has(.gb:focus-visible),.gfocus.round{border-radius:50%}
+.hbreathe{transform-box:fill-box;transform-origin:50% 50%;animation:hbreathe 9s ease-in-out infinite}
+.hdrift{transform-box:fill-box;transform-origin:50% 50%;animation:hdrift 13s ease-in-out infinite}
+@keyframes hbreathe{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.035) rotate(1.5deg)}}
+@keyframes hdrift{0%,100%{transform:translate(0,0)}50%{transform:translate(18px,-12px)}}
+@media (prefers-reduced-motion: reduce){.hbreathe,.hdrift{animation:none}}
 </style>
 </helmet>
-<div onMouseMove="{{onMove}}" onMouseLeave="{{onLeave}}" style="position: relative; height: 100vh; min-height: 560px; overflow: hidden; background: #F1F1EE; color: #1E1E1C; font-family: 'Inter', system-ui, sans-serif">
+<div onMouseMove="{{h_onMove}}" onMouseLeave="{{h_onLeave}}" style="position: relative; height: 100vh; min-height: 560px; overflow: hidden; background: #F1F1EE; color: #1E1E1C; font-family: 'Inter', system-ui, sans-serif">
 <!-- footer: the small copyright line, bottom-left corner -->
 <p class="copyr" style="position: absolute; left: 4vw; bottom: 20px; margin: 0; z-index: 4; font-size: 11px; line-height: 1; letter-spacing: 0.04em; color: #55554F; pointer-events: none">© Ben Weiller 2026</p>
 <svg aria-hidden="true" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" style="position: absolute; inset: 0; pointer-events: none">
@@ -93,19 +99,47 @@ a{color:#1E1E1C}a:hover{color:#000000}
 <filter id="rough" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="4" result="n1"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n1" scale="{{roughness}}" xChannelSelector="R" yChannelSelector="G" result="w"></feDisplacementMap><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="1" seed="9" result="n2"></feTurbulence><feDisplacementMap in="w" in2="n2" scale="2.2" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
 <!-- worn rubber stamp: rough edge plus speckled gaps where the ink didn't take -->
 <filter id="worn" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="4" result="n1"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n1" scale="5" xChannelSelector="R" yChannelSelector="G" result="w"></feDisplacementMap><feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="11" result="sp"></feTurbulence><feColorMatrix in="sp" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -18 0 0 0 12.4" result="spA"></feColorMatrix><feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="1" seed="21" result="pa"></feTurbulence><feColorMatrix in="pa" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -12 0 0 0 11.2" result="paA"></feColorMatrix><feComposite in="spA" in2="paA" operator="in" result="keep"></feComposite><feComposite in="w" in2="keep" operator="in"></feComposite></filter>
+<filter id="grainBlurXL" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="70" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="{{h_seed}}" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="34" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="grainBlurL" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="42" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="{{h_seed}}" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="28" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="grainBlurM" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="26" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="{{h_seed}}" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="22" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
 <filter id="softEdge" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="5"></feGaussianBlur></filter>
 <filter id="pGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"></feTurbulence><feColorMatrix type="matrix" values="0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0.10 0"></feColorMatrix></filter>
-<!-- masks kept so the illustration still renders: with no blob, nothing is inside, everything prints in ink -->
-<mask id="inBlob" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="900"></mask>
-<mask id="outBlob" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="900"><rect width="1440" height="900" fill="#fff"></rect></mask>
+<!-- inversion masks: the homepage blob's body (same shape, same movement, scaled down) decides where the illustration flips -->
+<filter id="softEdgeH" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="10"></feGaussianBlur></filter>
+<mask id="inBlob" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="900"><g transform="{{h_place}}"><g style="transform: {{h_bodyT}}; transform-box: fill-box; transform-origin: 50% 50%; transition: transform 1100ms cubic-bezier(.2,.7,.2,1)"><g class="hbreathe"><path d="{{h_midPath}}" fill="#fff" filter="url(#softEdgeH)"></path></g></g></g></mask>
+<mask id="outBlob" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="900"><rect width="1440" height="900" fill="#fff"></rect><g transform="{{h_place}}"><g style="transform: {{h_bodyT}}; transform-box: fill-box; transform-origin: 50% 50%; transition: transform 1100ms cubic-bezier(.2,.7,.2,1)"><g class="hbreathe"><path d="{{h_midPath}}" fill="#000" filter="url(#softEdgeH)"></path></g></g></g></mask>
 </defs>
 
-<!-- no moving blob on this page (removed Nov 20, user's call): the stamps print in ink only. a small static blob accent sits behind the right ends of the ask ahead copy, subtle -->
-<g aria-hidden="true">
-<path d="{{acc.halo}}" fill="{{acc.cHalo}}" filter="url(#iXL)" opacity="0.6"></path>
-<path d="{{acc.mid}}" fill="{{acc.cMid}}" filter="url(#iL)" opacity="0.5"></path>
-<path d="{{acc.core}}" fill="{{acc.cCore}}" filter="url(#iM)" opacity="0.42"></path>
+<!-- the homepage blob (same shape, movement and endless colour shift), scaled down and set beneath the icons -->
+<g transform="{{h_place}}">
+<g style="transform: {{h_haloT}}; transform-box: fill-box; transform-origin: 50% 50%; transition: transform 1400ms cubic-bezier(.2,.7,.2,1)">
+<g class="hdrift">
+<path d="{{h_haloPath}}" fill="{{h_halo}}" filter="url(#grainBlurXL)" opacity="0.95"></path>
+<path d="{{h_accentPath}}" fill="{{h_accent}}" filter="url(#grainBlurL)" opacity="0.9"></path>
 </g>
+</g>
+<g style="transform: {{h_bodyT}}; transform-box: fill-box; transform-origin: 50% 50%; transition: transform 1100ms cubic-bezier(.2,.7,.2,1)">
+<g class="hbreathe">
+<path d="{{h_midPath}}" fill="{{h_mid}}" filter="url(#grainBlurL)"></path>
+<g style="transform: {{h_coreT}}; transform-box: fill-box; transform-origin: 50% 50%; transition: transform 900ms cubic-bezier(.2,.7,.2,1)">
+<path d="{{h_corePath}}" fill="{{h_core}}" filter="url(#grainBlurM)"></path>
+</g>
+</g>
+</g>
+</g>
+
 <!-- the illustration, drawn twice: in ink outside the blob, in the ground colour inside it (the inverse) -->
 <sc-for list="{{passes}}" as="ps" hint-placeholder-count="2">
 <g mask="url(#{{ps.mask}})" filter="url(#{{ps.filter}})">
@@ -135,7 +169,7 @@ a{color:#1E1E1C}a:hover{color:#000000}
 <main style="width: min(1120px, 90vw); margin: 0 auto; padding: 44vh 0 8vh">
 <section aria-label="Contact" style="max-width: 420px; margin-left: auto; margin-right: 70px">
 <h1 style="margin: 0 0 12px; font-size: 22px; font-weight: 400; letter-spacing: -0.035em; line-height: 1.25">ask ahead</h1>
-<p style="margin: 0; font-size: 14px; line-height: 1.55">this is the part where I ask you to ask me for some fresh words or ideas. even if you just want to jam on some gig posters for your garage band that’s finally moving out of the garage-into another one.&nbsp; I’m <span class="here" style="position: relative; display: inline-block"><span style="text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px">here</span><span id="hereIcons" style="position: absolute; left: 0; top: 100%; padding-top: 30px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; white-space: nowrap">
+<p style="margin: 0; font-size: 14px; line-height: 1.55">this is the part where I ask you to ask me for some fresh words or ideas. even if you just want to jam on some gig posters for your garage band that’s finally moving out of the garage-into another one.&nbsp; I’m <span class="here" style="position: relative; display: inline-block"><span style="text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px">here</span><span id="hereIcons" style="position: absolute; left: 0; top: 100%; padding-top: 10px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; white-space: nowrap"><span class="hereArw" aria-hidden="true" style="display: block; font-size: 16px; line-height: 1; margin: 0 0 6px 6px; color: #1E1E1C">↓</span>
 <a class="ic" href="https://www.linkedin.com/in/benjaminweiller/" target="_blank" rel="noopener" aria-label="Ben Weiller on LinkedIn" style="display: flex; align-items: center; gap: 8px; text-decoration: none; color: #1E1E1C; font-size: 13px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 14 14" style="display: block; flex: none"><rect width="14" height="14" rx="2" fill="#1E1E1C"></rect><circle cx="3.6" cy="3.4" r="1.15" fill="#F1F1EE"></circle><rect x="2.6" y="5.3" width="2" height="6.2" fill="#F1F1EE"></rect><path d="M6.2 5.3h1.9v.9c.4-.7 1.1-1.1 2-1.1 1.5 0 2.2 1 2.2 2.7v3.7h-2V8.3c0-.8-.3-1.3-.95-1.3-.7 0-1.15.5-1.15 1.3v3.2H6.2z" fill="#F1F1EE"></path></svg><span aria-hidden="true">Ben Weiller</span></a>
 <a class="ic" href="mailto:bweiller2@gmail.com" aria-label="Email bweiller2@gmail.com" style="display: flex; align-items: center; gap: 8px; text-decoration: none; color: #1E1E1C; font-size: 13px"><svg aria-hidden="true" width="20" height="18" viewBox="0 0 20 18" style="display: block; flex: none"><rect x="1" y="3" width="18" height="12" rx="1" fill="none" stroke="#1E1E1C" stroke-width="1.1"></rect><path d="M1.5 3.6 L10 10 L18.5 3.6" fill="none" stroke="#1E1E1C" stroke-width="1.1" stroke-linejoin="round"></path></svg><span aria-hidden="true">bweiller2@gmail.com</span></a>
 <a class="ic" href="https://drive.google.com/file/d/1mTToHY3NtLPFwvyO971khSHzdQX7BbZc/view?usp=sharing" target="_blank" rel="noopener" aria-label="Resumé (opens in Google Drive)" style="display: flex; align-items: center; gap: 8px; text-decoration: none; color: #1E1E1C; font-size: 13px"><svg aria-hidden="true" width="20" height="18" viewBox="0 0 20 18" style="display: block; flex: none"><path d="M5 1.5 H12 L16 5.5 V16.5 H5 Z" fill="none" stroke="#1E1E1C" stroke-width="1.1" stroke-linejoin="round"></path><path d="M12 1.5 V5.5 H16" fill="none" stroke="#1E1E1C" stroke-width="1.1" stroke-linejoin="round"></path></svg><span aria-hidden="true">resumé</span></a>
@@ -147,7 +181,7 @@ a{color:#1E1E1C}a:hover{color:#000000}
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
 class Component extends DCLogic {
-  constructor(props) { super(props); this.state = { style: 2, subject: 0, openG: false, seed: Math.floor(Math.random() * 1e6), mx: null, my: null, travel: 0 }; this.pend = null; this.raf = null; }
+  constructor(props) { super(props); this.hph = []; for (let i = 0; i < 400; i++) this.hph.push(Math.random() * Math.PI * 2); this.state = { hmx: 0, hmy: 0, htravel: 0, style: 2, subject: 0, openG: false, seed: Math.floor(Math.random() * 1e6), mx: null, my: null, travel: 0 }; this.pend = null; this.raf = null; }
   componentWillUnmount() { cancelAnimationFrame(this.raf); }
   rng(seed) {
     let a = seed >>> 0;
@@ -173,7 +207,126 @@ class Component extends DCLogic {
     }
     return d + ' Z';
   }  circ(r) { return 'M' + r + ' 0 A' + r + ' ' + r + ' 0 1 0 ' + (-r) + ' 0 A' + r + ' ' + r + ' 0 1 0 ' + r + ' 0 Z'; }
+  // smooth, non-repeating wander in roughly [-1, 1], zero at t = 0
+  hn(key, t) {
+    const f = [0.37, 0.71, 1.13, 1.79];
+    const w = [1, 0.6, 0.35, 0.2];
+    let v = 0, v0 = 0;
+    for (let j = 0; j < 4; j++) {
+      const p = this.hph[(key * 4 + j) % this.hph.length];
+      v += w[j] * Math.sin(t * f[j] * (1 + 0.13 * key % 0.5) + p);
+      v0 += w[j] * Math.sin(p);
+    }
+    return (v - v0) / 2.15;
+  }
+  hrng(seed) {
+    let a = seed >>> 0;
+    return function () {
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  hblob(r, key, cx, cy, rx, ry, rot, wobble, n, t) {
+    const pts = [];
+    const harm = [];
+    for (let k = 2; k <= 6; k++) {
+      const extra = k === 6;
+      const a0 = extra ? 0 : (r() * 2 - 1) * wobble / (k * 0.7), p0 = extra ? 0 : r() * Math.PI * 2;
+      const kk = key * 10 + k;
+      harm.push({
+        k: k,
+        a: (extra ? 0 : a0 * (1 + 0.45 * Math.sin(k * 1.7)) + 0.06 * Math.sin(k) / k) * (1 + 0.7 * this.hn(kk, t)) + (0.16 / k) * this.hn(kk + 50, t * 1.3),
+        p: p0 + 2.6 * this.hn(kk + 100, t * 0.8)
+      });
+    }
+    for (let i = 0; i < n; i++) {
+      const th = (i / n) * Math.PI * 2;
+      let f = 1;
+      harm.forEach((h) => { f += h.a * Math.sin(h.k * th + h.p); });
+      f = Math.max(0.35, f);
+      const x = Math.cos(th) * rx * f, y = Math.sin(th) * ry * f;
+      const c = Math.cos(rot), s = Math.sin(rot);
+      pts.push([cx + x * c - y * s, cy + x * s + y * c]);
+    }
+    let d = 'M' + pts[0][0].toFixed(1) + ' ' + pts[0][1].toFixed(1);
+    for (let i = 0; i < n; i++) {
+      const p0 = pts[(i - 1 + n) % n], p1 = pts[i], p2 = pts[(i + 1) % n], p3 = pts[(i + 2) % n];
+      const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+      const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+      d += ' C' + c1[0].toFixed(1) + ' ' + c1[1].toFixed(1) + ' ' + c2[0].toFixed(1) + ' ' + c2[1].toFixed(1) + ' ' + p2[0].toFixed(1) + ' ' + p2[1].toFixed(1);
+    }
+    return d + ' Z';
+  }
+  hhsl(h, s, l) {
+    h = ((h % 360) + 360) % 360;
+    s = Math.max(0, Math.min(100, s)); l = Math.max(0, Math.min(100, l));
+    return 'hsl(' + h.toFixed(1) + ',' + s.toFixed(1) + '%,' + l.toFixed(1) + '%)';
+  }
+  hmove(e, cx, cy) {
+    const b = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX, y = e.clientY;
+    let d = 0;
+    if (this.hlast) d = Math.hypot(x - this.hlast[0], y - this.hlast[1]);
+    this.hlast = [x, y];
+    const cxp = b.left + b.width * (cx / 1440), cyp = b.top + b.height * (cy / 900);
+    this.hpending = {
+      mx: Math.max(-1, Math.min(1, (x - cxp) / (b.width * 0.5))),
+      my: Math.max(-1, Math.min(1, (y - cyp) / (b.height * 0.5))),
+      add: Math.min(d, 80) + (this.hpending ? this.hpending.add : 0)
+    };
+    if (!this.hraf) {
+      this.hraf = requestAnimationFrame(() => {
+        this.hraf = null;
+        const p = this.hpending; this.hpending = null;
+        if (p) this.setState({ hmx: p.mx, hmy: p.my, htravel: (this.state.htravel || 0) + p.add });
+      });
+    }
+  }
   renderVals() {
+    const o = this.renderVals0();
+    // the homepage blob, exactly: same starting shape and colours, same morph and colour wander driven by cursor travel, same cursor pull
+    const travel = this.state.htravel || 0, tc = travel / 700, ts = travel / 420;
+    const H = 186 + 170 * this.hn(1, tc);
+    const accH = H - 12 + 140 * this.hn(2, tc * 1.1);
+    const haloH = H + 72 + 150 * this.hn(3, tc * 0.9);
+    const core = this.hhsl(H + 3 + 20 * this.hn(4, tc), 63 + 15 * this.hn(5, tc), 12 + 5 * this.hn(6, tc));
+    const mid = this.hhsl(H - 2 + 25 * this.hn(7, tc), 49 + 22 * this.hn(8, tc), 34 + 10 * this.hn(9, tc));
+    const accent = this.hhsl(accH, 38 + 25 * this.hn(10, tc), 64 + 10 * this.hn(11, tc));
+    const halo = this.hhsl(haloH, 66 + 20 * this.hn(12, tc), 85 + 5 * this.hn(13, tc));
+    const ground = this.hhsl(haloH, 10 + 6 * this.hn(14, tc), 94.5);
+    const r = this.hrng(7 * 9973 + 11);
+    const cx = 780 + (r() - 0.5) * 120 + 60 * this.hn(20, ts * 0.5), cy = 440 + (r() - 0.5) * 80 + 40 * this.hn(21, ts * 0.5);
+    const rot = (r() - 0.5) * 1.4 + 0.7 * this.hn(22, ts * 0.6);
+    const rx = (230 + r() * 70) * (1 + 0.2 * this.hn(23, ts * 0.7)), ry = (200 + r() * 70) * 1.07 * (1 + 0.2 * this.hn(24, ts * 0.7));
+    const ax = cx + (r() - 0.5) * 260 + 230 * this.hn(25, ts * 0.6), ay = cy + (r() - 0.5) * 200 + 50 + 170 * this.hn(26, ts * 0.6);
+    r();
+    const mx = this.state.hmx || 0, my = this.state.hmy || 0;
+    const near = Math.max(0, 1 - Math.hypot(mx, my));
+    const haloPath = this.hblob(r, 1, cx, cy, rx * 1.35, ry * 1.35, rot, 0.28, 9, ts);
+    const accentPath = this.hblob(r, 2, ax, ay, rx * (0.55 + 0.2 * this.hn(27, ts)), ry * (0.45 + 0.2 * this.hn(28, ts)), rot + 0.8, 0.35, 7, ts * 1.3);
+    const midPath = this.hblob(r, 3, cx, cy, rx, ry, rot, 0.32, 9, ts);
+    const ox = (r() - 0.5) * 60, oy = (r() - 0.5) * 50;
+    const corePath = this.hblob(r, 4, cx + ox + 70 * this.hn(29, ts * 0.8), cy + oy + 50 * this.hn(30, ts * 0.8), rx * (0.55 + 0.12 * this.hn(31, ts)), ry * (0.5 + 0.12 * this.hn(32, ts)), rot - 0.4, 0.38, 8, ts * 1.15);
+    const r2 = this.hrng(7 * 9973 + 11);
+    const bx = 780 + (r2() - 0.5) * 120, by = 440 + (r2() - 0.5) * 80;
+    // set left of the ask ahead copy (the homepage centres it); everything else is the homepage blob
+    // alt 2: the homepage blob scaled down and set beneath the icon cluster (the cluster's own blob sat at 390, 380)
+    const offX = -400, offY = -10, SC = 0.5, PX = 390, PY = 380;
+    return Object.assign(o, {
+      h_seed: 7, h_offX: offX, h_offY: offY, h_ground: ground,
+      h_place: 'translate(' + PX + ' ' + PY + ') scale(' + SC + ') translate(' + (-bx).toFixed(1) + ' ' + (-by).toFixed(1) + ')',
+      h_halo: halo, h_accent: accent, h_mid: mid, h_core: core,
+      h_haloPath: haloPath, h_accentPath: accentPath, h_midPath: midPath, h_corePath: corePath,
+      h_bodyT: 'translate(' + (mx * 46).toFixed(1) + 'px,' + (my * 34).toFixed(1) + 'px) scale(' + (1 + 0.06 * near).toFixed(3) + ')',
+      h_coreT: 'translate(' + (mx * 30).toFixed(1) + 'px,' + (my * 24).toFixed(1) + 'px) scale(' + (1 + 0.1 * near).toFixed(3) + ')',
+      h_haloT: 'translate(' + (-mx * 28).toFixed(1) + 'px,' + (-my * 20).toFixed(1) + 'px) scale(' + (1 + 0.04 * (1 - near)).toFixed(3) + ')',
+      h_onMove: (e) => { if (o.onMove) o.onMove(e); this.hmove(e, PX, PY); },
+      h_onLeave: () => { if (o.onLeave) o.onLeave(); this.hlast = null; this.setState({ hmx: 0, hmy: 0 }); }
+    });
+  }
+  renderVals0() {
     const ST = [
       // A: solid ink silhouette, hand-cut edge; details cut out of it
       { label: 'A · ink silhouette', mode: 'fill', rough: 6 },
@@ -194,15 +347,6 @@ class Component extends DCLogic {
       mid: this.sblob(sd + 3, cx, cy, rx, ry, rot, 0.34, 10, t * 1.1),
       core: this.sblob(sd + 4, cx - 30, cy + 8, rx * 0.55, ry * 0.5, rot - 0.4, 0.38, 9, t * 1.2),
       cHalo: hsl(H2, 62 + r() * 22, 82 + r() * 7), cMid: hsl(H, 40 + r() * 30, 42 + r() * 14), cCore: hsl(H3, 48 + r() * 24, 26 + r() * 10)
-    };
-    // static accent (Nov 20): a small, subtle blob tucked behind the right ends of the ask ahead lines, so the copy sits on its pale edge. colours and shape set once per visit; it never moves or follows the cursor
-    const ra = this.rng(sd + 77), aH = ra() * 360, aH2 = aH + (ra() < 0.5 ? 1 : -1) * (60 + ra() * 100), arot = (ra() - 0.5) * 1.4, arx = 112 + ra() * 18, ary = 92 + ra() * 16, acx = 1270, acy = 590;
-    const acc = {
-      halo: this.sblob(sd + 71, acx, acy, arx * 1.35, ary * 1.35, arot, 0.28, 10, 0),
-      mid: this.sblob(sd + 73, acx, acy, arx, ary, arot, 0.34, 10, 0),
-      core: this.sblob(sd + 74, acx + 24, acy + 6, arx * 0.55, ary * 0.5, arot - 0.4, 0.38, 9, 0),
-      // fixed moss / chartreuse (user's pick, Nov 20): acid-lime halo, moss body, deep olive core
-      cHalo: '#E2F08C', cMid: '#7E9A4A', cCore: '#3F5226'
     };
     const reduce = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const on = this.state.mx !== null, K = 0.75;
@@ -308,7 +452,8 @@ class Component extends DCLogic {
     const FLOP = reduce ? [] : [{ v: '-5 -4 2;5 -4 2;-5 -4 2', dur: '3.4s' }], WAG = reduce ? [] : [{ v: '-14 27 2;10 27 2;-14 27 2', dur: '1.3s' }];
     const SN = [
       null,
-      null, // the sparkles in the centre of the cluster removed (user's call, Nov 20); the five stamps keep their ring around the empty centre
+      // the same five stars, sizes and angles as in the thought bubble
+      [{ k: 'mainfill', d: star(-6, -4, 1.05) + ' ' + star(18, -15, 0.48) + ' ' + star(17, 13, 0.58) + ' ' + star(-24, 15, 0.38) + ' ' + star(4, 20, 0.3) }],
       [{ k: 'mainfill', d: CL[2][1].d, sub: 'scale(1.35)' }, { k: 'cut', d: CL[2][2].d, w: 1.3, sub: 'scale(1.35)' }, { k: 'ink', d: 'M-34 23 L34 23', w: 2.4, sub: 'scale(1.35)' }],
       null, // ?!? removed from the stamp cluster (felt crowded)
       // four eyeballs: inked rims, pupils glancing toward the cursor
@@ -322,8 +467,8 @@ class Component extends DCLogic {
     // the saved cluster from the contact page, plus the place-setting bubble: seven ink-silhouette bubbles grouped around the blob
     if (key === 'cluster' || stamp) {
       const POS = stamp
-        // stamps (Nov 20, no longer a ring): a loose, uneven scatter that drifts from the upper left down toward the ask ahead copy — fish, trees, place setting, eyes, bike — with irregular gaps, tilts and sizes
-        ? [null, [390, 380, -6, 1.1], [345, 318, 5, 0.9], null, [470, 548, 3, 0.84], [150, 222, -8, 0.98], [640, 660, -5, 0.92], [205, 452, -3, 0.88]]
+        // stamps: the five around the stars sit evenly on an ellipse (every 72°, clockwise from the top: fish, place setting, bike, eyes, trees)
+        ? [null, [390, 380, -6, 1.1], [195, 332, -8, 0.92], null, [272, 520, 4, 0.85], [390, 210, 5, 0.98], [508, 520, -4, 0.9], [585, 332, 4, 0.92]]
         : [null, [720, 470, -6, 1.12], [500, 380, -8, 0.98], [870, 380, -3, 1.0], [535, 600, 4, 0.9], [680, 285, 5, 1.08], [745, 655, -4, 0.95], [935, 560, 4, 1.02]];
       const turn = (this.state.travel || 0) / 38;
       (stamp ? SN : CL).forEach((parts, i) => {
@@ -375,7 +520,7 @@ class Component extends DCLogic {
     };
     const chip = (o) => ({ bg: o ? '#1E1E1C' : 'rgba(255,255,255,0.6)', ink: o ? '#F1F1EE' : '#1E1E1C', pressed: o ? 'true' : 'false' });
     return {
-      b: b, acc: acc, roughness: st.rough,
+      b: b, roughness: st.rough,
       openClsG: this.state.openG ? 'open' : '', openStrG: this.state.openG ? 'true' : 'false', drawerVisG: this.state.openG ? 'visible' : 'hidden', tabG: this.state.openG ? '0' : '-1',
       icoLabelG: this.state.openG ? 'Close menu' : 'Open menu',
       toggleG: () => this.setState({ openG: !this.state.openG }),

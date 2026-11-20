@@ -104,6 +104,8 @@ a{color:#1E1E1C}a:hover{color:#000000}
 .fab{opacity:0;visibility:hidden;transition:opacity 220ms ease,visibility 0s linear 220ms}
 .fab.on{opacity:1;visibility:visible;transition:opacity 220ms ease,visibility 0s}
 .fabBtn{width:48px;height:48px;margin-right:-7px;border:0;padding:0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.fabX{position:absolute;top:0;right:42px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;transition:opacity 200ms ease}
+.fabX:hover{opacity:0.6}
 .fabNav{position:absolute;top:52px;right:0;display:flex;flex-direction:column;align-items:flex-end;gap:16px}
 .fabNav a{color:#55554F;font-size:13px;line-height:1;text-decoration:none;white-space:nowrap;opacity:0;transform:translateY(-6px);transition:opacity 300ms ease,transform 400ms cubic-bezier(.3,.7,.2,1),color 200ms ease}
 .fabNav a:hover{color:#1E1E1C}
@@ -119,6 +121,7 @@ header .ico,header #hdrMenuG{visibility:hidden!important}
 /* the flip: the symbol and its words are drawn in light tones with "difference" blending, so over the light page they read as ink / grey (as before), and over dark images or films they turn light — no box behind them */
 .fab{mix-blend-mode:difference}
 .fabBtn .burger line{stroke:#FFFFFF!important}
+.fabX line{stroke:#FFFFFF!important}
 .fabNav a{color:#A9A9B0!important}
 .fabNav a:hover,.fabNav a:focus-visible{color:#FFFFFF!important}
 
@@ -305,6 +308,8 @@ header .ico,header #hdrMenuG{visibility:hidden!important}
 </div>
 <!-- sticky "///": appears once the header has scrolled away, plain like the header; its words open as a vertical stack -->
 <div class="fab {{fabCls}}" style="position: absolute; top: calc(max(5.5vh, 36px) - 24px); right: calc(4vw - 7px); z-index: 8">
+<!-- back arrow (Nov 20; replaced a close ×; on every project page): sits just left of the "///", same thin ink line, takes you back to the menu; hidden while the menu words are open -->
+<a class="fabX" href="Menu-Blob-Bold.dc.html" aria-label="Back to the menu" style="visibility: {{xVis}}"><svg width="26" height="22" viewBox="0 0 21 18" overflow="visible" aria-hidden="true"><line x1="1" y1="9" x2="20" y2="9" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line><line x1="1" y1="9" x2="8" y2="2" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line><line x1="1" y1="9" x2="8" y2="16" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line></svg></a>
 <button class="fabBtn" type="button" onClick="{{toggleF}}" aria-expanded="{{openStrF}}" aria-controls="fabMenu" aria-label="{{labelF}}" tabindex="{{fabTab}}">
 <svg class="burger" width="33" height="27" viewBox="0 0 22 18" overflow="visible" aria-hidden="true"><line class="l1" x1="1" y1="17" x2="7.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l2" x1="8" y1="17" x2="14.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l3" x1="15" y1="17" x2="21.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line></svg>
 </button>
@@ -539,7 +544,7 @@ class Component extends DCLogic {
       filmColor: pr.color,
       b: this.theBlob(this.state.seed, sp, t),
       lean: 'translate(' + (mx * 10).toFixed(1) + 'px,' + (my * 7).toFixed(1) + 'px)',
-      fabCls: this.state.fab ? 'on' : '', fabTab: '0',
+      fabCls: this.state.fab ? 'on' : '', fabTab: '0', xVis: this.state.openF ? 'hidden' : 'visible',
       openStrF: this.state.openF ? 'true' : 'false', openClsF: (this.state.openF ? 'open' : '') + (this.state.fab ? '' : ' row'), visF: this.state.openF ? 'visible' : 'hidden', tabF: this.state.openF ? '0' : '-1',
       labelF: this.state.openF ? 'Close menu' : 'Open menu',
       toggleF: () => this.setState({ openF: !this.state.openF }),

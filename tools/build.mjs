@@ -36,10 +36,13 @@ if (fs.existsSync(ASSETS)) {
   }
 }
 const missing = new Set();
+// assets not yet pulled from the canvas: show the previous version until the file is added to design/assets
+const STANDIN = { '0227a1dd2baf79edf03b8d02e472b531': 'c3c1d5143a6d216d022cfa1f61762c82' /* vicks menu thumbnail v3 -> v2 */ };
 function rewriteAssets(s) {
   // canvas exports write assets as relative "assets/<id>.<ext>"; the canvas itself uses "/_blob/<id>"
   s = s.replace(/(^|[^\w/.])(?:\.\/)?assets\/([0-9a-f]{32})\.[a-z0-9]+/g, (m, pre, id) => pre + '/_blob/' + id);
   return s.replace(/\/_blob\/([0-9a-f]{32})/g, (m, id) => {
+    if (!assetFile[id] && STANDIN[id] && assetFile[STANDIN[id]]) { missing.add(id + ' (stand-in used)'); id = STANDIN[id]; }
     if (!assetFile[id]) { missing.add(id); return m; }
     return '/assets/' + assetFile[id];
   }).replace(/(url\(['"]?\/assets\/[0-9a-f]{32}\.woff['"]?\)\s*format\(['"])opentype(['"]\))/g, '$1woff$2');
