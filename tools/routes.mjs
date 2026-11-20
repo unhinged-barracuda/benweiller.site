@@ -10,7 +10,7 @@ export const SITE = {
 
 export const ROUTES = [
   { path: '/', desktop: 'Bloburblur', mobile: 'Mobile-Home', tabletMobile: true, title: '' },
-  { path: '/work/', desktop: 'Menu-Blob-Bold', mobile: 'Mobile-Menu-List', tabletMobile: true, preload: true, title: 'selected works' },
+  { path: '/work/', desktop: 'Menu-Blob-Bold', mobile: 'Mobile-Menu-List', tabletMobile: true, preload: true, backUp: '/', title: 'selected works' },
   { path: '/kia-k5-gt/', desktop: 'Project-Kia-v2', mobile: 'Mobile-Kia-v2', title: 'KIA K5 GT' },
   { path: '/kia-x-line/', desktop: 'Project-Kia-XLine', mobile: 'Mobile-Kia-XLine', title: 'KIA X-LINE' },
   { path: '/kia-ev9-ev6/', desktop: 'Project-Kia-EV', mobile: 'Mobile-Kia-EV', title: 'KIA EV9 & EV6' },

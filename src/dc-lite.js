@@ -310,10 +310,32 @@ function start(sync) {
   document.documentElement.dataset.board = tpl.id.replace('dc-', '');
   currentTpl = tpl.id;
   mount(tpl, script, root, sync);
+  setBackUp((window.__DC_PAGE__ || {}).backUp);
   // pages whose images appear on hover (the menu's thumbnail card) warm them up once the page has settled
   if ((window.__DC_PAGE__ || {}).preload) {
     if (document.readyState === 'complete') setTimeout(() => warmImages(script), 600); else window.addEventListener('load', () => setTimeout(() => warmImages(script), 600), { once: true });
   }
+}
+
+// ---------- scrolling up on a page that says so (the menu) goes back to the homepage, like scrolling down on the homepage opens the menu ----------
+let backUp = null;
+function setBackUp(path) {
+  if (backUp) { backUp.off(); backUp = null; }
+  if (!path) return;
+  const t0 = Date.now();
+  let acc = 0, wt = 0, ty = null;
+  const fire = () => { if (Date.now() - t0 < 800) return; go(new URL(path, location.href), true); };
+  const wheel = (e) => {
+    if (e.deltaY < 0) { acc -= e.deltaY; clearTimeout(wt); wt = setTimeout(() => { acc = 0; }, 400); if (acc > 120) { acc = 0; fire(); } } else acc = 0;
+  };
+  const ts = (e) => { const t = e.touches && e.touches[0]; ty = t ? [t.clientX, t.clientY] : null; };
+  const te = (e) => { const t = e.changedTouches && e.changedTouches[0]; if (ty && t) { const dx = t.clientX - ty[0], dy = t.clientY - ty[1]; if (dy > 60 && Math.abs(dy) > Math.abs(dx) * 1.5) fire(); } ty = null; };
+  const key = (e) => { if (e.target && e.target.closest && e.target.closest('input, textarea, [contenteditable]')) return; if (e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); fire(); } };
+  window.addEventListener('wheel', wheel, { passive: true });
+  window.addEventListener('touchstart', ts, { passive: true });
+  window.addEventListener('touchend', te, { passive: true });
+  window.addEventListener('keydown', key);
+  backUp = { off: () => { clearTimeout(wt); window.removeEventListener('wheel', wheel); window.removeEventListener('touchstart', ts); window.removeEventListener('touchend', te); window.removeEventListener('keydown', key); } };
 }
 
 // ---------- moving between pages without reloading: the next page is fetched, swapped in and cross-dissolved ----------
@@ -388,6 +410,8 @@ window.addEventListener('popstate', () => go(new URL(location.href), false));
 
 function boot() {
   history.replaceState({ dc: 1 }, '');
+  // keep this page's own markup, so coming back to it later needs no download
+  pageCache.set(location.pathname, Promise.resolve('<!doctype html>' + document.documentElement.outerHTML));
   start(false);
   // the homepage leads to the menu: have it ready
   if (location.pathname === '/') setTimeout(() => fetchPage(new URL('/work/', location.href)), 1200);
