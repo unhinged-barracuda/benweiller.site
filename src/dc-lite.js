@@ -143,6 +143,8 @@ function compileNode(node, svgParent) {
   if (tag === 'video' && statics.muted) statics.defaultMuted = true;
   const src = tag === 'template' ? node.content : node;
   const kids = compileChildren(src, svg && !inForeign);
+  // images in an expanded view (role=dialog) are shown as large as the window: they take the full-size copy
+  const inDialog = tag === 'img' && !!(node.closest && node.closest('[role="dialog"]'));
   const elTag = tag === 'template' ? React.Fragment : node.localName;
   return (scope) => {
     const props = Object.assign({}, statics);
@@ -152,21 +154,30 @@ function compileNode(node, svgParent) {
       if (k === 'className' && typeof val !== 'string') { props[k] = String(val); continue; }
       props[k] = val;
     }
-    if (tag === 'img') sizeImg(props);
+    if (tag === 'img') sizeImg(props, inDialog);
     const ch = kids.map((k) => k(scope));
     return React.createElement(elTag, props, ...ch);
   };
 }
 
 // ---------- images: load as they come near the screen, and let phones pick a smaller copy ----------
+function fitSizes(root) {
+  if (!root) return;
+  for (const img of root.querySelectorAll('img[srcset]')) {
+    if (img.closest('[role="dialog"]') || img.dataset.fit) continue;
+    const w = img.getBoundingClientRect().width;
+    if (w > 0) { img.sizes = Math.ceil(w) + 'px'; img.dataset.fit = '1'; }
+  }
+}
 const IMGRE = /\/assets\/([0-9a-f]{32})\.webp$/;
-function sizeImg(props) {
+function sizeImg(props, inDialog) {
   if (props.loading === undefined) props.loading = 'lazy';
   if (props.decoding === undefined) props.decoding = 'async';
   const m = typeof props.src === 'string' && props.src.match(IMGRE);
   const info = m && window.__IMG__ && window.__IMG__[m[1]];
   if (!info || props.srcSet) return;
-  props.srcSet = info.v.map((w, i) => `/assets/${m[1]}-${[800, 1600][i]}.webp ${w}w`).concat(`${props.src} ${info.w}w`).join(', ');
+  props.srcSet = info.v.map(([name, w]) => `/assets/${m[1]}-${name}.webp ${w}w`).concat(`${props.src} ${info.w}w`).join(', ');
+  if (inDialog) { if (!props.sizes) props.sizes = '100vw'; return; }
   // the column is 900px wide on desktop and full width on phones; full-screen views ask for more
   if (!props.sizes) props.sizes = '(max-width: 767px) 100vw, (max-width: 1100px) 88vw, 900px';
 }
@@ -236,6 +247,9 @@ class Guard extends React.Component {
     noteError(err);
     if (this.tries++ < 3) setTimeout(() => this.setState((s) => ({ n: s.n + 1, failed: false })), 30);
   }
+  // right after React commits (before the browser decides which lazy image copies to fetch), size images to their real width
+  componentDidMount() { fitSizes(document.getElementById('dc-root')); }
+  componentDidUpdate() { fitSizes(document.getElementById('dc-root')); }
   render() { return this.state.failed ? null : React.createElement(React.Fragment, { key: this.state.n }, this.props.children); }
 }
 export function noteError(err) {
@@ -265,6 +279,9 @@ export function mount(tplEl, scriptEl, mountEl, sync) {
   if (sync) flushSync(() => reactRoot.render(el)); else reactRoot.render(el);
   if (sync) startFastBlob(mountEl, true); else requestAnimationFrame(() => startFastBlob(mountEl));
   requestAnimationFrame(() => startStampCache(mountEl));
+  // tell each image its real on-screen width before it loads (pairs, stacks and small images fetch a smaller copy;
+  // still at least the screen's pixel density, so nothing gets softer). Expanded views keep the full-size copy.
+  setTimeout(() => fitSizes(mountEl), 400);
 }
 
 // ---------- films: the boards show a cover + glass play button; on the live site a click loads the Vimeo player in place ----------

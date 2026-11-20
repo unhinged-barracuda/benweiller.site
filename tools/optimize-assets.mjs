@@ -1,7 +1,8 @@
 // Makes lighter web copies of the design's images (run after adding or replacing assets in design/assets/):
 //   node tools/optimize-assets.mjs
 // For every still image it writes design/web/<id>.webp (at most 2400px on the long edge) plus smaller
-// <id>-800.webp and <id>-1600.webp for phones and normal screens. Animated images and films are left as they are.
+// <id>-800 / -1200 / -1600 / -1800.webp (long edge) so each screen gets the size it shows: phones ~1200, a Retina 900px column 1800;
+// the full copy is kept for expanded views. Quality is unchanged (80, 85 with transparency). Animated images and films are left as they are.
 // The build serves these instead of the originals; the originals stay in design/assets/ untouched.
 // Needs `sharp` (npm i -D sharp) — it is only used here, not by the Cloudflare build.
 import fs from 'node:fs'; import path from 'node:path'; import sharp from 'sharp';
@@ -17,14 +18,14 @@ for (const f of fs.readdirSync(SRC)) {
   const long = Math.max(meta.width, meta.height);
   const alpha = meta.hasAlpha;
   const widths = [];
-  for (const w of [800, 1600]) if (long > w * 1.15) widths.push(w);
+  for (const w of [800, 1200, 1600, 1800]) if (long > w * 1.1) widths.push(w);
   const enc = (img) => img.webp({ quality: alpha ? 85 : 80, effort: 5, alphaQuality: 90 });
   const scale = (w) => meta.width >= meta.height ? { width: w } : { height: w };
   await enc(sharp(input).rotate().resize({ ...scale(Math.min(long, 2400)), withoutEnlargement: true })).toFile(path.join(OUT, id + '.webp'));
-  for (const w of widths) await enc(sharp(input).rotate().resize(scale(w))).toFile(path.join(OUT, `${id}-${w}.webp`));
+  for (const w of widths) { const out = path.join(OUT, `${id}-${w}.webp`); if (!fs.existsSync(out) || fs.statSync(out).mtimeMs < fs.statSync(input).mtimeMs) await enc(sharp(input).rotate().resize(scale(w))).toFile(out); }
   // srcset widths are in CSS-image width units, so record the real pixel widths
   const full = Math.round(meta.width * Math.min(1, 2400 / long));
-  manifest[id] = { w: full, v: widths.map((w) => Math.round(meta.width >= meta.height ? w : meta.width * w / meta.height)) };
+  manifest[id] = { w: full, v: widths.map((w) => [w, Math.round(meta.width >= meta.height ? w : meta.width * w / meta.height)]) };
 }
 fs.writeFileSync(path.join(OUT, 'manifest.json'), JSON.stringify(manifest));
 const before = fs.readdirSync(SRC).reduce((a, f) => a + fs.statSync(path.join(SRC, f)).size, 0);
