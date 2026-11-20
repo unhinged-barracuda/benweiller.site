@@ -347,7 +347,7 @@ class Component extends DCLogic {
         label: sb.label,
         href: { 'K5 GT': 'Project-Kia-v2.dc.html', 'X-LINE': 'Project-Kia-XLine.dc.html', 'EV6/EV9': 'Project-Kia-EV.dc.html' }[sb.label] || '#',
         delay: j * 50,
-        opacity: hv === null || hv === sb.id || hv === 'w4' ? 1 : 0.35,
+        opacity: hv === null || hv === sb.id || hv === 'w3' ? 1 : 0.35,
         enter: () => { this.kiaOpen(); this.show(sb.id); },
         leave: () => this.off(),
         click: () => {}

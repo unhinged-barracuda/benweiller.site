@@ -167,7 +167,7 @@ class Component extends DCLogic {
     // the blob moves, reshapes and recolours on its own: every 2.6s it steps to the next campaign's colours and spot (no touch needed)
     const still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (still) return;
-    const ids = ['w0', 'w1', 'w2', 'w3', 'k0', 'k1', 'k2', 'w5', 'w6', 'w7', 'w8', 'w9'];
+    const ids = ['w0', 'w1', 'w2', 'k0', 'k1', 'k2', 'w4', 'w5', 'w6', 'w7', 'w8', 'w9'];
     let k = 0;
     // its own wander, not tied to the campaigns: every 2.6s a new spot somewhere on the page, a new shape and a fresh colour mix
     this.auto = setInterval(() => { this.setState({ step: (this.state.step || 0) + 1 }); }, 2600);
