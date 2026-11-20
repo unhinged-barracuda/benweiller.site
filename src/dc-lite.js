@@ -7,6 +7,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { flushSync } from 'react-dom';
 import { startFastBlob } from './fastblob.js';
+import { startStampCache } from './stampcache.js';
 
 // ---------- holes ----------
 const HOLE = /\{\{\s*([^}]+?)\s*\}\}/g;
@@ -263,6 +264,7 @@ export function mount(tplEl, scriptEl, mountEl, sync) {
   const el = React.createElement(Guard, null, React.createElement(Component, props));
   if (sync) flushSync(() => reactRoot.render(el)); else reactRoot.render(el);
   if (sync) startFastBlob(mountEl, true); else requestAnimationFrame(() => startFastBlob(mountEl));
+  requestAnimationFrame(() => startStampCache(mountEl));
 }
 
 // ---------- films: the boards show a cover + glass play button; on the live site a click loads the Vimeo player in place ----------
