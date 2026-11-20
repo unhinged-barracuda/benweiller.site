@@ -456,7 +456,7 @@ class Component extends DCLogic {
   // blob palettes (halo, accent, body, core) now match this campaign's menu thumbnail: the same swatches as the vizio menu item,
   // run through the same thumbPal roles as the menu, shuffled four ways so the colour still drifts as you scroll
   pal(i) {
-    const SW = ['#DF4A34', '#8F1406', '#ED8068', '#310B07', '#090604'];
+    const SW = ['#E9D2AC', '#A1825C', '#E8C84A', '#3E7FD8', '#0B0907']; // vizio menu card v3 swatches (Nov 20)
     return this.thumbPal(SW, 101 + (((i % 4) + 4) % 4) * 977);
   }
   // the single blob: pinned to the screen behind the page, it follows you down the page on its own random path,

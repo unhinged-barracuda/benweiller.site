@@ -37,7 +37,7 @@ if (fs.existsSync(ASSETS)) {
 }
 const missing = new Set();
 // assets not yet pulled from the canvas: show the previous version until the file is added to design/assets
-const STANDIN = {};
+const STANDIN = { '6bd05efdbc461905da28bfba28676a32': 'f955de1a10c4383a21da5cd1fc347494' /* vizio menu card v3 -> v2 until sub_yellow.png is added */ };
 function rewriteAssets(s) {
   // canvas exports write assets as relative "assets/<id>.<ext>"; the canvas itself uses "/_blob/<id>"
   s = s.replace(/(^|[^\w/.])(?:\.\/)?assets\/([0-9a-f]{32})\.[a-z0-9]+/g, (m, pre, id) => pre + '/_blob/' + id);
