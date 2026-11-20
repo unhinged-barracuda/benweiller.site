@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Menu · mobile — list only</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- MOBILE · menu, alt 3 (list only): no thumbnails. "/selected works" and the list over the menu blob, which moves around, reshapes and changes colour on its own (no touch needed), stepping through the campaigns' thumbnail colours. a tap on a name spins its arrow a full turn, then opens it -->
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&amp;family=Inter+Tight:wght@400&amp;display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'Dirtbag TM';src:url('/_blob/a15098c6e2313273da5b37f609489781') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+body{margin:0}
+a{color:#1E1E1C}a:hover{color:#000000}
+.settle,.settleB{transform-box:fill-box;transform-origin:50% 50%;animation:settle 1500ms cubic-bezier(.3,1.35,.45,1) both}
+.settleB{animation-name:settleB}
+@keyframes settle{from{transform:translate(-18px,22px) scale(.97)}to{transform:none}}
+@keyframes settleB{from{transform:translate(-18px,22px) scale(.97)}to{transform:none}}
+.breathe{transform-box:fill-box;transform-origin:50% 50%;animation:breathe 9s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.035) rotate(1.5deg)}}
+.morph{transition:d 1000ms cubic-bezier(.3,.6,.2,1),fill 1000ms ease}
+.flipper{transition:transform 820ms cubic-bezier(.45,.05,.25,1)}
+.face{}
+.item{transition:opacity 250ms ease}
+.chev{transition:transform 280ms cubic-bezier(.3,.6,.2,1)}
+.fold{transition:grid-template-rows 500ms cubic-bezier(.3,.7,.2,1)}
+.fold ul{transition:opacity 350ms ease,visibility 0s linear 0s}
+.fold.shut ul{transition:opacity 300ms ease,visibility 0s linear 450ms}
+.flyIn{animation:flyIn 380ms cubic-bezier(.2,.75,.15,1) both}
+@keyframes flyIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
+.item:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:3px}
+.ctl:focus-visible{outline:1.5px dashed #1E1E1C;outline-offset:3px;border-radius:4px}
+@media (prefers-reduced-motion: reduce){.settle,.settleB,.breathe,.flyIn{animation:none}.morph,.flipper,.item,.fold,.fold ul{transition:none}}
+.ico{transition:transform 350ms cubic-bezier(.3,.7,.2,1)}
+.ico[aria-expanded="true"] .plus{transform:rotate(45deg)}
+.drawer a{opacity:0;transform:translateX(10px);transition:opacity 300ms ease,transform 400ms cubic-bezier(.3,.7,.2,1)}
+.drawer.open a{opacity:1;transform:none}
+.drawer.open a:nth-child(2){transition-delay:50ms}.drawer.open a:nth-child(3){transition-delay:100ms}
+.burger line{transition:transform 350ms cubic-bezier(.3,.7,.2,1),opacity 200ms ease;transform-box:fill-box;transform-origin:50% 50%}
+.ico[aria-expanded="true"] .burger .l1{transform:translateX(7px) rotate(24deg)}
+.ico[aria-expanded="true"] .burger .l2{opacity:0}
+.ico[aria-expanded="true"] .burger .l3{transform:translateX(-7px) rotate(-66deg)}
+@media (prefers-reduced-motion: reduce){.burger line{transition:none}}
+@media (prefers-reduced-motion: reduce){.drawer a{transition:none}}
+.nb{color:#55554F;text-decoration:none;white-space:nowrap;transition:color 200ms ease}
+.nb:hover,.nb:focus-visible,.nb.on{color:#1E1E1C}
+.nb:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:4px}
+.ico:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:4px}
+/* keyboard focus on text (links, menu words, wordmark): no box. a soft glass rectangle leaning at the lean angle sits behind the word */
+.nb:focus-visible,.tlk:focus-visible,.lnk:focus-visible{outline:none;position:relative;z-index:0}
+.nb:focus-visible::before,.tlk:focus-visible::before,.lnk:focus-visible::before{content:"";position:absolute;left:-9px;right:-9px;top:-5px;bottom:-5px;z-index:-1;transform:skewX(-16.7deg);background:linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.36));backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 1px rgba(255,255,255,0.85),0 1px 10px rgba(30,30,28,0.12)}
+/* FOCUS (approved, site-wide): keyboard only, no outlines anywhere.
+   text, words and small controls: a soft glass rectangle leaning at the lean angle behind them.
+   media and glass buttons: no frame, a soft shadow that lifts them off the page */
+*:focus-visible{outline:none!important}
+.nb:focus-visible:not([style*="position: absolute"]),.tlk:focus-visible:not([style*="position: absolute"]),.lnk:focus-visible:not([style*="position: absolute"]),.ctl:focus-visible:not([style*="position: absolute"]),.tl:focus-visible:not([style*="position: absolute"]),.ic:focus-visible:not([style*="position: absolute"]),.hereBtn:focus-visible:not([style*="position: absolute"]),.ico:focus-visible:not([style*="position: absolute"]),.item:focus-visible:not([style*="position: absolute"]),a:not(.card):not(.xp):not(.band):focus-visible:not([style*="position: absolute"]),button:not(.gb):not(.xp):not(.pp):focus-visible:not([style*="position: absolute"]){position:relative;z-index:0}
+.nb:focus-visible::before,.tlk:focus-visible::before,.lnk:focus-visible::before,.ctl:focus-visible::before,.tl:focus-visible::before,.ic:focus-visible::before,.hereBtn:focus-visible::before,.ico:focus-visible::before,.item:focus-visible::before,a:not(.card):not(.xp):not(.band):focus-visible::before,button:not(.gb):not(.xp):not(.pp):focus-visible::before{content:"";position:absolute;left:-9px;right:-9px;top:-5px;bottom:-5px;z-index:-1;transform:skewX(-16.7deg);background:linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.36));backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 1px rgba(255,255,255,0.85),0 1px 10px rgba(30,30,28,0.12)}
+.card:focus-visible::after,.xp:focus-visible::after,.band:focus-visible::after,.gbw:has(.gb:focus-visible)::after{content:none!important}
+.card:focus-visible,.xp:focus-visible,.band:focus-visible,[tabindex]:not(a):not(button):focus-visible,.gbw:has(.gb:focus-visible),.gfocus{box-shadow:0 14px 34px -8px rgba(30,30,28,0.38),0 2px 8px rgba(30,30,28,0.12)}
+.gbw:has(.gb:focus-visible),.gfocus.round{border-radius:50%}
+/* mobile: the picked campaign gets a small arrow; everything else dims */
+.item{-webkit-tap-highlight-color:transparent}
+.arw{display:inline-block;margin-left:6px;transition:opacity 200ms ease,transform 260ms cubic-bezier(.3,.7,.2,1)}
+.drawer.vert a{transform:translateY(-6px)}
+.drawer.vert.open a{transform:none}
+.scroller{scrollbar-width:none}.scroller::-webkit-scrollbar{display:none}
+.arw{transform-origin:50% 55%}
+/* a tap spins the arrow one full turn (fast and clean), then the page opens */
+.arw.spin{animation:spin360 520ms cubic-bezier(.3,.7,.2,1)}
+.arw.spin2{animation:spin360b 520ms cubic-bezier(.3,.7,.2,1)}
+@keyframes spin360{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes spin360b{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.arw.spin,.arw.spin2{animation:none}}
+</style>
+</helmet>
+<div style="position: relative; height: 100vh; height: 100svh; min-height: 760px; overflow: hidden; background: #F1F1EE; font-family: 'Inter', system-ui, sans-serif; color: #1E1E1C">
+<svg aria-hidden="true" viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" style="position: absolute; inset: 0; pointer-events: none">
+<defs>
+<filter id="gXL" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="62" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="32" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="gL" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="38" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="26" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="gM" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="22" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="7" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="20" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="gS" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="11" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="7" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="16" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="pageGrain" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"></feTurbulence>
+<feColorMatrix type="matrix" values="0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0.10 0"></feColorMatrix>
+</filter>
+<linearGradient id="clearB" gradientUnits="userSpaceOnUse" x1="0" y1="330" x2="0" y2="420"><stop offset="0" stop-color="#fff"></stop><stop offset="1" stop-color="#000"></stop></linearGradient>
+<mask id="keepOffList" maskUnits="userSpaceOnUse" x="0" y="0" width="390" height="844"><rect width="390" height="844" fill="url(#clearB)"></rect></mask>
+</defs>
+<g><g transform="translate(-260.6 120.5) scale(0.55)">
+<g style="transform: {{blobT}}; transition: transform 1300ms cubic-bezier(.3,.6,.2,1)">
+<g class="{{settleCls}}">
+<g class="breathe">
+<path class="morph" d="{{haloPath}}" fill="{{halo}}" filter="url(#gXL)" opacity="0.92"></path>
+<path class="morph" d="{{accentPath}}" fill="{{accent}}" filter="url(#gL)" opacity="0.9"></path>
+<path class="morph" d="{{midPath}}" fill="{{mid}}" filter="url(#gL)" opacity="0.88"></path>
+<path class="morph" d="{{corePath}}" fill="{{core}}" filter="url(#gM)" opacity="0.8"></path>
+</g>
+</g>
+</g>
+</g></g>
+<rect width="390" height="844" filter="url(#pageGrain)"></rect>
+</svg>
+<header style="position: absolute; top: 16px; left: 16px; right: 16px; height: 48px; display: flex; justify-content: space-between; align-items: center; z-index: 5">
+<a href="Mobile-Home.dc.html" aria-label="Ben Weiller — home" style="font-family: 'Dirtbag TM', 'Inter', sans-serif; font-size: 44px; line-height: 1; letter-spacing: 0.03em; position: relative; top: 6px; text-decoration: none; color: #1E1E1C">BEN WEILLER</a>
+<button class="ico" type="button" onClick="{{toggleG}}" aria-expanded="{{openStrG}}" aria-controls="hdrMenuG" aria-label="{{icoLabelG}}" style="width: 48px; height: 48px; margin-right: -7px; padding: 0; border: 0; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<svg class="burger" width="33" height="27" viewBox="0 0 22 18" overflow="visible" aria-hidden="true"><line class="l1" x1="1" y1="17" x2="7.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l2" x1="8" y1="17" x2="14.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l3" x1="15" y1="17" x2="21.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line></svg>
+</button>
+<!-- the four words drop down as a right-aligned stack under the icon (no room for a row on a phone) -->
+<nav id="hdrMenuG" aria-label="Main" class="drawer vert {{openClsG}}" style="position: absolute; top: 56px; right: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 18px; font-size: 14px; line-height: 1; visibility: {{drawerVisG}}">
+<a class="nb on" href="Mobile-Menu-List.dc.html" aria-current="page" tabindex="{{tabG}}">/work</a>
+<a class="nb" href="https://www.instagram.com/un_finished_lines/" target="_blank" rel="noopener" tabindex="{{tabG}}">/@un_finished_lines</a>
+<a class="nb" href="Mobile-About.dc.html" tabindex="{{tabG}}">/who, me?</a>
+<a class="nb" href="Mobile-Contact.dc.html" tabindex="{{tabG}}">/contact</a>
+</nav>
+</header>
+
+<!-- the list: 14px words on roomy 36px rows (thumb-sized), left on the 24px gutter. first tap shows the campaign on the card and adds a small arrow; second tap opens it -->
+<nav aria-label="Selected works" style="position: absolute; left: 24px; top: 168px; z-index: 2; width: 150px">
+<p style="margin: 0 0 12px; font-size: 14px; line-height: 20px; letter-spacing: -0.01em">/selected works</p>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column">
+<sc-for list="{{items}}" as="it" hint-placeholder-count="10">
+<li style="display: flex; height: 28px; align-items: center">
+<a class="item" href="{{it.href}}" onClick="{{it.click}}" aria-expanded="{{it.expanded}}" aria-haspopup="{{it.popup}}" style="display: inline-flex; align-items: center; height: 28px; padding-right: 16px; font-size: 14px; line-height: 20px; text-decoration: none; color: #1E1E1C; opacity: {{it.opacity}}">{{it.label}}<span class="arw {{it.spin}}" aria-hidden="true">→</span></a>
+</li>
+</sc-for>
+</ul>
+<sc-if value="{{kiaOpen}}" hint-placeholder-val="{{ false }}">
+<!-- kia's three campaigns open to the right of "kia", level with it, in the empty space beside the list -->
+<ul aria-label="kia campaigns" style="list-style: none; margin: 0; padding: 0; position: absolute; left: 152px; top: {{flyTop}}px; display: flex; flex-direction: column; white-space: nowrap">
+<sc-for list="{{subs}}" as="sub" hint-placeholder-count="3">
+<li class="flyIn" style="display: flex; height: 28px; align-items: center; animation-delay: {{sub.delay}}ms">
+<a class="item" href="{{sub.href}}" onClick="{{sub.click}}" style="display: inline-flex; align-items: center; height: 28px; padding-right: 16px; font-size: 14px; line-height: 20px; text-decoration: none; color: #1E1E1C; opacity: {{sub.opacity}}">{{sub.label}}<span class="arw {{sub.spin}}" aria-hidden="true">→</span></a>
+</li>
+</sc-for>
+</ul>
+</sc-if>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { seed: Math.floor(Math.random() * 1e6), shownId: 'w0', front: 'w0', back: 'w0', top: 'front', fade: true, kia: false, sel: null, openG: false };
+    this.t = null; this.lt = null; this.kt = null; this.raf = null;
+  }
+  componentDidMount() {
+    // the blob moves, reshapes and recolours on its own: every 2.6s it steps to the next campaign's colours and spot (no touch needed)
+    const still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (still) return;
+    const ids = ['w0', 'w1', 'w2', 'w3', 'k0', 'k1', 'k2', 'w5', 'w6', 'w7', 'w8', 'w9'];
+    let k = 0;
+    // its own wander, not tied to the campaigns: every 2.6s a new spot somewhere on the page, a new shape and a fresh colour mix
+    this.auto = setInterval(() => { this.setState({ step: (this.state.step || 0) + 1 }); }, 2600);
+  }
+  componentWillUnmount() { clearTimeout(this.t); clearTimeout(this.lt); clearTimeout(this.kt); clearTimeout(this.spinT); clearInterval(this.auto); cancelAnimationFrame(this.raf); }
+  // a tap: spin that arrow a full turn, then open the link (kia: open / close its three)
+  spinGo(key, e, isKia) {
+    if (this.passing) return;
+    if (e && e.preventDefault) e.preventDefault();
+    const el = e && e.currentTarget;
+    const still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.setState({ spin: key, spinN: (this.state.spinN || 0) + 1 });
+    clearTimeout(this.spinT);
+    this.spinT = setTimeout(() => { if (isKia) { this.setState({ kia: !this.state.kia }); return; } if (el) { this.passing = true; el.click(); this.passing = false; } }, still ? 0 : 520);
+  }
+  kiaOpen() { clearTimeout(this.kt); if (!this.state.kia) this.setState({ kia: true }); }
+  kiaClose() { clearTimeout(this.kt); this.kt = setTimeout(() => this.setState({ kia: false }), 450); }
+  rng(seed) {
+    let a = seed >>> 0;
+    return function () { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  }
+  blob(seed, cx, cy, rx, ry, wob, n) {
+    const r = this.rng(seed), harm = [];
+    for (let k = 2; k <= 5; k++) harm.push({ k: k, a: (r() * 2 - 1) * wob / (k * 0.7), p: r() * 6.283 });
+    const pts = [];
+    for (let i = 0; i < n; i++) {
+      const t = (i / n) * 6.283; let f = 1;
+      harm.forEach((h) => { f += h.a * Math.sin(h.k * t + h.p); });
+      pts.push([cx + Math.cos(t) * rx * f, cy + Math.sin(t) * ry * f]);
+    }
+    let d = 'M' + pts[0][0].toFixed(1) + ' ' + pts[0][1].toFixed(1);
+    for (let i = 0; i < n; i++) {
+      const p0 = pts[(i - 1 + n) % n], p1 = pts[i], p2 = pts[(i + 1) % n], p3 = pts[(i + 2) % n];
+      d += ' C' + (p1[0] + (p2[0] - p0[0]) / 6).toFixed(1) + ' ' + (p1[1] + (p2[1] - p0[1]) / 6).toFixed(1) + ' ' + (p2[0] - (p3[0] - p1[0]) / 6).toFixed(1) + ' ' + (p2[1] - (p3[1] - p1[1]) / 6).toFixed(1) + ' ' + p2[0].toFixed(1) + ' ' + p2[1].toFixed(1);
+    }
+    return d + ' Z';
+  }
+  // homepage-style shape: rotated, with its own proportions and 2nd–6th lobes of varying strength, so every layer has a different character
+  vblob(seed, cx, cy, rx, ry, n) {
+    const r = this.rng(seed), harm = [];
+    const rot = (r() - 0.5) * 2.2, sx = 0.75 + r() * 0.55, sy = 0.75 + r() * 0.55, wob = 0.22 + r() * 0.34;
+    for (let k = 2; k <= 6; k++) {
+      const a0 = (r() * 2 - 1) * wob / (k * 0.7);
+      harm.push({ k: k, a: a0 * (1 + 0.45 * Math.sin(k * 1.7 + r() * 3)) + (r() < 0.35 ? (0.08 + r() * 0.08) / k : 0), p: r() * 6.283 });
+    }
+    const pts = [], c = Math.cos(rot), sn = Math.sin(rot);
+    for (let i = 0; i < n; i++) {
+      const t = (i / n) * 6.283; let f = 1;
+      harm.forEach((h) => { f += h.a * Math.sin(h.k * t + h.p); });
+      f = Math.max(0.35, f);
+      const x = Math.cos(t) * rx * sx * f, y = Math.sin(t) * ry * sy * f;
+      pts.push([cx + x * c - y * sn, cy + x * sn + y * c]);
+    }
+    let d = 'M' + pts[0][0].toFixed(1) + ' ' + pts[0][1].toFixed(1);
+    for (let i = 0; i < n; i++) {
+      const p0 = pts[(i - 1 + n) % n], p1 = pts[i], p2 = pts[(i + 1) % n], p3 = pts[(i + 2) % n];
+      d += ' C' + (p1[0] + (p2[0] - p0[0]) / 6).toFixed(1) + ' ' + (p1[1] + (p2[1] - p0[1]) / 6).toFixed(1) + ' ' + (p2[0] - (p3[0] - p1[0]) / 6).toFixed(1) + ' ' + (p2[1] - (p3[1] - p1[1]) / 6).toFixed(1) + ' ' + p2[0].toFixed(1) + ' ' + p2[1].toFixed(1);
+    }
+    return d + ' Z';
+  }
+  mix(h1, h2, t) {
+    const a = parseInt(h1.slice(1), 16), b = parseInt(h2.slice(1), 16);
+    const c = (sh) => Math.round(((a >> sh) & 255) * (1 - t) + ((b >> sh) & 255) * t);
+    return 'rgb(' + c(16) + ',' + c(8) + ',' + c(0) + ')';
+  }
+  show(id) {
+    clearTimeout(this.lt);
+    const s = this.state;
+    if (id === s.shownId) { this.setState({ hover: id }); return; }
+    // the card stays: the new campaign is laid on top of the old one and fades in, so the card is never empty
+    const top = s.top === 'front' ? 'back' : 'front';
+    const patch = { hover: id, shownId: id, top: top, fade: false };
+    patch[top] = id;
+    this.setState(patch);
+    cancelAnimationFrame(this.raf);
+    this.raf = requestAnimationFrame(() => { this.raf = requestAnimationFrame(() => this.setState({ fade: true })); });
+  }
+  off() { clearTimeout(this.lt); this.lt = setTimeout(() => this.setState({ hover: null }), 120); }
+  // hex <-> hsl helpers for thumbnail palettes
+  hsl(hex) {
+    const n = parseInt(hex.slice(1), 16), r = (n >> 16 & 255) / 255, g = (n >> 8 & 255) / 255, b = (n & 255) / 255;
+    const mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, d = mx - mn;
+    let h = 0, s = 0;
+    if (d) { s = d / (1 - Math.abs(2 * l - 1)); h = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h *= 60; if (h < 0) h += 360; }
+    return [h, s, l];
+  }
+  hex(h, s, l) {
+    const c = (1 - Math.abs(2 * l - 1)) * s, x = c * (1 - Math.abs((h / 60) % 2 - 1)), m = l - c / 2;
+    const [r, g, b] = h < 60 ? [c, x, 0] : h < 120 ? [x, c, 0] : h < 180 ? [0, c, x] : h < 240 ? [0, x, c] : h < 300 ? [x, 0, c] : [c, 0, x];
+    const t = (v) => Math.round((v + m) * 255).toString(16).padStart(2, '0');
+    return '#' + t(r) + t(g) + t(b);
+  }
+  thumbPal(sw, seed, mono) {
+    // a black-and-white campaign (speak your vote) stays pure greyscale: white halo, light and mid grey, near-black core
+    // a parchment campaign (vicks) stays soft tan and beige: hue kept, saturation held low (0.18 to 0.42) instead of lifted, so no colour pops
+    if (mono === 'tan') { const r = this.rng(seed + 77), o = sw.slice(); for (let i = o.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); const t = o[i]; o[i] = o[j]; o[j] = t; } const t = (hx, L, S) => { const c = this.hsl(hx); return this.hex(c[0], Math.min(S, Math.max(c[1], 0.18)), L); }; return [t(o[0], 0.86, 0.32), t(o[1 % o.length], 0.72, 0.42), t(o[2 % o.length], 0.5, 0.34), t(o[3 % o.length], 0.24, 0.24)]; }
+    // a street campaign (heelys) keeps its greys and blacks true neutral instead of tinting them; its tan only ever sits light (halo or accent) so it never turns brown, its teal takes the halo or body, and the core is always near-black
+    if (mono === 'ink') { const r = this.rng(seed + 77), hs = (h) => this.hsl(h), c = sw.filter((h) => hs(h)[1] >= 0.15), n = sw.filter((h) => hs(h)[1] < 0.15); const warm = c.filter((h) => hs(h)[0] >= 15 && hs(h)[0] <= 70), cool = c.filter((h) => !(hs(h)[0] >= 15 && hs(h)[0] <= 70)); const lightN = n.slice().sort((a, b) => hs(b)[2] - hs(a)[2])[0] || '#D6D4D0'; const tone = (hx, L, Smin, Smax) => { const h = hs(hx); return this.hex(h[0], Math.min(Smax, Math.max(h[1], Smin)), L); }; const tan = (L) => warm.length ? tone(warm[0], L, 0.22, 0.38) : this.hex(0, 0, L), teal = (L) => cool.length ? tone(cool[0], L, 0.4, 0.62) : this.hex(0, 0, L); return r() > 0.5 ? [tan(0.8), this.hex(0, 0, Math.min(0.86, hs(lightN)[2])), teal(0.42), this.hex(0, 0, 0.08)] : [teal(0.72), tan(0.78), this.hex(0, 0, 0.2), this.hex(0, 0, 0.07)]; }
+    if (mono) { const r = this.rng(seed + 77), g = (L) => this.hex(0, 0, L), o = [0.95, 0.66, 0.4, 0.08]; for (let i = 3; i > 1; i--) { const j = 1 + Math.floor(r() * i); const t = o[i]; o[i] = o[j]; o[j] = t; } return o.map(g); }
+    const r = this.rng(seed + 77), o = sw.slice();
+    for (let i = o.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); const t = o[i]; o[i] = o[j]; o[j] = t; }
+    // keep each swatch's hue, set lightness for its role, and lift dull swatches so the blob still glows
+    const role = (hx, L, Smin) => { const c = this.hsl(hx); return this.hex(c[0], Math.min(0.78, Math.max(c[1], Smin)), L); };
+    return [role(o[0], 0.80, 0.45), role(o[1 % o.length], 0.62, 0.5), role(o[2 % o.length], 0.40, 0.45), role(o[3 % o.length], 0.17, 0.4)];
+  }
+  // mobile menu only: the blob wanders through many spots and colour mixes of its own (it doesn't follow the campaigns or the project pages)
+  wander() {
+    const st = this.state.step || 0, r = this.rng(this.state.seed * 31 + st * 7919 + 3);
+    // a new spot each step, anywhere from behind the header to the bottom of the screen, edge to edge (drawing units; the blob is scaled 0.42 into the phone)
+    const x = (r() - 0.5) * 620, y = (r() - 0.5) * 1500;
+    // colours: a random base hue each step, with the halo, accent, body and core spread around the wheel so every mix is different
+    const H = r() * 360, hs = (h, s, l) => 'hsl(' + (((h % 360) + 360) % 360).toFixed(0) + ',' + s.toFixed(0) + '%,' + l.toFixed(0) + '%)';
+    const aH = H + 40 + r() * 140, hH = H + 150 + r() * 120;
+    const sd = this.state.seed + st * 104729;
+    const acx = 20 + r() * 220, acy = (r() - 0.5) * 300, kx = (r() - 0.5) * 200, ky = (r() - 0.5) * 140;
+    return {
+      blobT: 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)',
+      haloPath: this.vblob(sd + 12, 960, 450, 515, 350, 10),
+      accentPath: this.vblob(sd + 212, 960 + acx, 450 + acy, 275, 198, 9),
+      midPath: this.vblob(sd + 112, 1010, 500, 330, 230, 10),
+      corePath: this.vblob(sd + 312, 1010 + kx, 500 + ky, 155, 110, 9),
+      halo: hs(hH, 60 + r() * 25, 84 + r() * 6), accent: hs(aH, 45 + r() * 30, 62 + r() * 12), mid: hs(H, 45 + r() * 25, 38 + r() * 10), core: hs(H + 10 - r() * 20, 50 + r() * 20, 22 + r() * 8)
+    };
+  }
+  renderVals() {
+    const works = [
+      ['san diego zoo', '#5A4636', '/_blob/c2ccfc4b9f4ed3520ff76036b9164e0a', ['#4E3526', '#644920', '#7A5C2A', '#897B76', '#1F150D']], ['heelys', '#242928', '/_blob/065c5781157d7fae54d606b834368aef', ['#1C5465', '#D9C8A1', '#1E1E1C', '#D6D4D0', '#2B2F2E']], ['vizio', '#090604', '/_blob/6702b1bc966884f58788c5c0e8968d10', ['#DF4A34', '#8F1406', '#ED8068', '#310B07', '#090604']], ['dropbox', '#6FB0D2', '/_blob/1eda541d56b069a9878a66f2fae6e086', ['#6FB0D2', '#B26DC3', '#9CF3C4', '#6063A2', '#1D2053'], '/_blob/e6adc1d7cf3e59ed12ed2a98da301b10'], ['kia', '#1C2A33', '/_blob/967f26f849529d9b0b7316d58fc67c97', ['#3A515A', '#213242', '#8E9CA3', '#D9783A', '#0F1A21']],
+      ['jollibee', '#721C18', '/_blob/c5d1200bd312195bab019de2be1cfaed', ['#C73024', '#590610', '#ECBC83', '#F38B3C', '#4E030B']], ['speak your vote', '#111111', '/_blob/4251bff1ca6418f8350ec12b63d26695', ['#0A0A0A', '#2B2B29', '#55554F', '#9A9A92', '#E3E3DC']], ['motel 6', '#2C7A80', '/_blob/cd99d364db92c70c76d15ab364eb2a9e', ['#B12231', '#6B2E42', '#9E5041', '#A39BA7', '#251B1B']], ['bmw', '#686965', '/_blob/89062c841879f24add5b9d460efb673c', ['#6B7879', '#282727', '#9C9A91', '#1C69D4', '#6C5743']], ['vicks vaporub', '#CCC0AA', '/_blob/c3c1d5143a6d216d022cfa1f61762c82', ['#EAE0C7', '#DDD3BA', '#C8B48E', '#8C7A5C', '#5A4A35']]
+    ];
+    const subs = [['K5 GT', '#1C2A33', '/_blob/967f26f849529d9b0b7316d58fc67c97', ['#3A515A', '#213242', '#8E9CA3', '#D9783A', '#0F1A21']], ['X-LINE', '#2F3639', '/_blob/02c79c870ffe8bf9fb6b42854e341964', ['#3C474A', '#232A2E', '#A0ADA2', '#E3A24A', '#13161C']], ['EV6/EV9', '#836B61', '/_blob/d01058f53795df20c40e2afe0d67c060', ['#B2907F', '#7D6C6E', '#D5A98A', '#E2643A', '#221C1E']]];
+    const all = [];
+    works.forEach((w, i) => { all.push({ id: 'w' + i, label: w[0], color: w[1], img: w[2], sw: w[3], vid: w[4], kia: w[0] === 'kia', mono: w[0] === 'speak your vote' ? true : w[0] === 'vicks vaporub' ? 'tan' : w[0] === 'heelys' ? 'ink' : false }); if (w[0] === 'kia') subs.forEach((s, j) => all.push({ id: 'k' + j, label: s[0], color: s[1], img: s[2], sw: s[3], vid: s[4], sub: true })); });
+    const byId = {}; all.forEach((x) => { byId[x.id] = x; });
+    const HREF = { 'san diego zoo': 'Mobile-San-Diego-Zoo.dc.html', 'heelys': 'Mobile-Heelys.dc.html', 'vizio': 'Mobile-Vizio.dc.html', 'dropbox': 'Mobile-Dropbox.dc.html', 'jollibee': 'Mobile-Jollibee.dc.html', 'speak your vote': 'Mobile-Speak-Your-Vote.dc.html', 'motel 6': 'Mobile-Motel-6.dc.html', 'bmw': 'Mobile-BMW.dc.html', 'vicks vaporub': 'Mobile-Vicks.dc.html', 'K5 GT': 'Mobile-Kia-v2.dc.html', 'X-LINE': 'Mobile-Kia-XLine.dc.html', 'EV6/EV9': 'Mobile-Kia-EV.dc.html' };
+    const face = (x) => x.img ? x.color + " url('" + x.img + "') center / " + (x.color === 'transparent' ? 'contain' : 'cover') + " no-repeat" : x.color;
+    const PALS = [['#CDBDF2', '#7FC6BE', '#2C7A80', '#0B2B30'], ['#F6B49A', '#E07AA6', '#8C2F64', '#2A0C29']];
+    const si = all.findIndex((x) => x.id === this.state.shownId);
+    const hc = byId[this.state.shownId].color;
+    const sd = this.state.seed + si * 7919;
+    const shownSw = byId[this.state.shownId].sw;
+    const pal = shownSw ? this.thumbPal(shownSw, sd, byId[this.state.shownId].mono) : PALS[0];
+    const ar = this.rng(sd + 5);
+    const acx = 20 + ar() * 220, acy = (ar() - 0.5) * 300, kx = (ar() - 0.5) * 200, ky = (ar() - 0.5) * 140;
+    // each campaign gets its own spot around the card (golden-angle steps), smaller moves than desktop since the screen is narrow
+    const ang = si * 2.39996, rad = si <= 0 ? 0 : 150 + 40 * Math.sin(si * 1.7);
+    // list menu: the blob travels the whole height of the page — each campaign has its own spot, from near the top to near the bottom, swinging left and right a little
+    const blobT = 'translate(' + (Math.cos(si * 1.3 + 0.4) * 210).toFixed(1) + 'px,' + (Math.sin(si * 2.1 + 0.5) * 560).toFixed(1) + 'px)';
+    const blobVals = {
+      blobT: blobT,
+      haloPath: this.vblob(sd + 12, 960, 450, 515, 350, 10),
+      accentPath: this.vblob(sd + 212, 960 + acx, 450 + acy, 275, 198, 9),
+      midPath: this.vblob(sd + 112, 1010, 500, 330, 230, 10),
+      corePath: this.vblob(sd + 312, 1010 + kx, 500 + ky, 155, 110, 9),
+      halo: this.mix(pal[0], hc, 0.25), accent: pal[1], mid: this.mix(pal[2], hc, 0.35), core: this.mix(pal[3], pal[2], 0.55),
+      settleCls: (this.state.replays || 0) % 2 ? 'settleB' : 'settle',
+      openClsG: this.state.openG ? 'open' : '', openStrG: this.state.openG ? 'true' : 'false', drawerVisG: this.state.openG ? 'visible' : 'hidden', tabG: this.state.openG ? '0' : '-1',
+      icoLabelG: this.state.openG ? 'Close menu' : 'Open menu',
+      toggleG: () => this.setState({ openG: !this.state.openG })
+    };
+    const list = all.filter((x) => !x.sub), subList = all.filter((x) => x.sub);
+    const sel = this.state.sel;
+    // first tap: show it (card fades to it, blob moves and recolours) and mark it; second tap on the same word: open it
+    // one tap: the arrow spins, then the page opens (the blob runs on its own, see componentDidMount)
+    const pick = () => {};
+    const shown = byId[this.state.shownId];
+    return Object.assign(blobVals, this.wander(), {
+      frontZ: this.state.top === 'front' ? 2 : 1, backZ: this.state.top === 'back' ? 2 : 1,
+      frontO: this.state.top === 'front' ? (this.state.fade ? 1 : 0) : (this.state.fade && this.state.front !== this.state.back ? 0 : 1),
+      backO: this.state.top === 'back' ? (this.state.fade ? 1 : 0) : (this.state.fade && this.state.front !== this.state.back ? 0 : 1),
+      frontTr: this.state.top === 'front' ? (this.state.fade ? 'opacity 450ms ease' : 'none') : (this.state.fade ? 'opacity 0ms linear 460ms' : 'none'),
+      backTr: this.state.top === 'back' ? (this.state.fade ? 'opacity 450ms ease' : 'none') : (this.state.fade ? 'opacity 0ms linear 460ms' : 'none'),
+      frontBg: face(byId[this.state.front]), backBg: face(byId[this.state.back]),
+      frontVid: byId[this.state.front].vid ? 'block' : 'none', backVid: byId[this.state.back].vid ? 'block' : 'none',
+            kiaOpen: this.state.kia,
+      flyTop: 32 + list.findIndex((x) => x.kia) * 28,
+      items: list.map((it) => ({
+        label: it.label,
+        href: it.kia ? '#' : (HREF[it.label] || '#'),
+        popup: it.kia ? 'true' : null,
+        expanded: it.kia ? (this.state.kia ? 'true' : 'false') : null,
+        opacity: 1,
+        spin: this.state.spin === it.id ? ((this.state.spinN || 0) % 2 ? 'spin2' : 'spin') : '',
+        // kia only opens its three campaigns (and shows the K5 GT card)
+        click: (e) => this.spinGo(it.id, e, !!it.kia)
+      })),
+      subs: subList.map((sb, j) => ({
+        label: sb.label, href: HREF[sb.label] || '#', delay: j * 50,
+        opacity: 1,
+        spin: this.state.spin === sb.id ? ((this.state.spinN || 0) % 2 ? 'spin2' : 'spin') : '',
+        click: (e) => this.spinGo(sb.id, e, false)
+      }))
+    });
+  }
+}
+</script>
+</body>
+</html>

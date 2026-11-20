@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Contact — option A (ASK AHEAD + stamp cluster)</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.breathe{transform-box:fill-box;transform-origin:50% 50%;animation:breathe 10s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.035) rotate(1.5deg)}}
+.mph{transition:d 700ms cubic-bezier(.3,.7,.2,1)}
+.fl{transition:transform 1500ms cubic-bezier(.2,.65,.2,1)}
+.ctl:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:3px}
+@media (prefers-reduced-motion: reduce){.breathe{animation:none}.mph,.fl{transition:none}}
+
+@font-face{font-family:'Dirtbag TM';src:url('./assets/a15098c6e2313273da5b37f609489781.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+body{margin:0}
+a{color:#1E1E1C}a:hover{color:#000000}
+.page{scrollbar-width:none}.page::-webkit-scrollbar{display:none}
+.lnk:focus-visible,.card:focus-visible,.ctl:focus-visible,.ico:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:4px}
+.breathe{transform-box:fill-box;transform-origin:50% 50%;animation:breathe 10s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.03) rotate(1deg)}}
+.cardIn{animation:cardIn 1000ms cubic-bezier(.2,.75,.15,1) both}
+@keyframes cardIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.glowIn{animation:glowIn 1400ms ease both}
+@keyframes glowIn{from{opacity:0}to{opacity:1}}
+.play{transition:transform 300ms ease}
+.card:hover .play{transform:scale(1.08)}
+.lift{transition:transform 400ms cubic-bezier(.2,.7,.2,1)}
+.lift:hover{transform:none}
+@media (prefers-reduced-motion: reduce){.breathe,.cardIn,.glowIn{animation:none}.play,.lift{transition:none}}
+.ico{transition:transform 350ms cubic-bezier(.3,.7,.2,1)}
+.ico[aria-expanded="true"] .plus{transform:rotate(45deg)}
+.drawer a{opacity:0;transform:translateX(10px);transition:opacity 300ms ease,transform 400ms cubic-bezier(.3,.7,.2,1)}
+.drawer.open a{opacity:1;transform:none}
+.drawer.open a:nth-child(2){transition-delay:50ms}.drawer.open a:nth-child(3){transition-delay:100ms}
+.tl{position:relative;display:inline-flex;align-items:flex-end;height:20px;color:#55554F;text-decoration:none;transition:color 200ms ease}
+.tl .sl{display:inline-block;line-height:1}
+.tl .w{position:relative;display:inline-block;width:24px;height:20px}
+.tl .w span{position:absolute;left:14px;bottom:0;white-space:nowrap;transform:rotate(-71deg) translateX(-100%);transform-origin:0 100%;line-height:1}
+.tl:hover,.tl:focus-visible,.tl.on{color:#1E1E1C}
+.tl:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:6px}
+@media (prefers-reduced-motion: reduce){.tl{transition:none}}
+.burger line{transition:transform 350ms cubic-bezier(.3,.7,.2,1),opacity 200ms ease;transform-box:fill-box;transform-origin:50% 50%}
+.ico[aria-expanded="true"] .burger .l1{transform:translateX(7px) rotate(24deg)}
+.ico[aria-expanded="true"] .burger .l2{opacity:0}
+.ico[aria-expanded="true"] .burger .l3{transform:translateX(-7px) rotate(-66deg)}
+@media (prefers-reduced-motion: reduce){.burger line{transition:none}}
+@media (prefers-reduced-motion: reduce){.drawer a{transition:none}}
+.nb{color:#55554F;text-decoration:none;white-space:nowrap;transition:color 200ms ease}
+.nb:hover,.nb:focus-visible,.nb.on{color:#1E1E1C}
+.nb:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:4px}
+.breathe{transform-box:fill-box;transform-origin:50% 50%;animation:breathe 10s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.035) rotate(1.5deg)}}
+.settle{transform-box:fill-box;transform-origin:50% 50%;animation:settle 1500ms cubic-bezier(.3,1.35,.45,1) both}
+@keyframes settle{from{transform:translate(-18px,22px) scale(.97)}to{transform:none}}
+.mph{transition:d 700ms cubic-bezier(.3,.7,.2,1)}
+.icons a{opacity:0;transform:translateY(-6px);transition:opacity 250ms ease,transform 300ms cubic-bezier(.3,.7,.2,1)}
+.icons.on a{opacity:1;transform:none}
+.icons.on a:nth-child(2){transition-delay:50ms}
+.ic{display:block;padding:2px}
+.ic:hover{opacity:.7}
+.hereBtn:focus-visible,.ic:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:3px}
+@media (prefers-reduced-motion: reduce){.breathe,.settle{animation:none}.mph{transition:none}.icons a{transition:none}}
+/* keyboard focus on text (links, menu words, wordmark): no box. a soft glass rectangle leaning at the lean angle sits behind the word */
+.nb:focus-visible,.tlk:focus-visible,.lnk:focus-visible{outline:none;position:relative;z-index:0}
+.nb:focus-visible::before,.tlk:focus-visible::before,.lnk:focus-visible::before{content:"";position:absolute;left:-9px;right:-9px;top:-5px;bottom:-5px;z-index:-1;transform:skewX(-16.7deg);background:linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.36));backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 1px rgba(255,255,255,0.85),0 1px 10px rgba(30,30,28,0.12)}
+/* FOCUS (approved, site-wide): keyboard only, no outlines anywhere.
+   text, words and small controls: a soft glass rectangle leaning at the lean angle behind them.
+   media and glass buttons: no frame, a soft shadow that lifts them off the page */
+*:focus-visible{outline:none!important}
+.nb:focus-visible:not([style*="position: absolute"]),.tlk:focus-visible:not([style*="position: absolute"]),.lnk:focus-visible:not([style*="position: absolute"]),.ctl:focus-visible:not([style*="position: absolute"]),.tl:focus-visible:not([style*="position: absolute"]),.ic:focus-visible:not([style*="position: absolute"]),.hereBtn:focus-visible:not([style*="position: absolute"]),.ico:focus-visible:not([style*="position: absolute"]),.item:focus-visible:not([style*="position: absolute"]),a:not(.card):not(.xp):not(.band):focus-visible:not([style*="position: absolute"]),button:not(.gb):not(.xp):not(.pp):focus-visible:not([style*="position: absolute"]){position:relative;z-index:0}
+.nb:focus-visible::before,.tlk:focus-visible::before,.lnk:focus-visible::before,.ctl:focus-visible::before,.tl:focus-visible::before,.ic:focus-visible::before,.hereBtn:focus-visible::before,.ico:focus-visible::before,.item:focus-visible::before,a:not(.card):not(.xp):not(.band):focus-visible::before,button:not(.gb):not(.xp):not(.pp):focus-visible::before{content:"";position:absolute;left:-9px;right:-9px;top:-5px;bottom:-5px;z-index:-1;transform:skewX(-16.7deg);background:linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.36));backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 1px rgba(255,255,255,0.85),0 1px 10px rgba(30,30,28,0.12)}
+.card:focus-visible::after,.xp:focus-visible::after,.band:focus-visible::after,.gbw:has(.gb:focus-visible)::after{content:none!important}
+.card:focus-visible,.xp:focus-visible,.band:focus-visible,[tabindex]:not(a):not(button):focus-visible,.gbw:has(.gb:focus-visible),.gfocus{box-shadow:0 14px 34px -8px rgba(30,30,28,0.38),0 2px 8px rgba(30,30,28,0.12)}
+.gbw:has(.gb:focus-visible),.gfocus.round{border-radius:50%}
+</style>
+</helmet>
+<div onMouseMove="{{onMove}}" onMouseLeave="{{onLeave}}" style="position: relative; height: 100vh; min-height: 560px; overflow: hidden; background: #F1F1EE; color: #1E1E1C; font-family: 'Inter', system-ui, sans-serif">
+<!-- footer: the small copyright line, bottom-left corner -->
+<p class="copyr" style="position: absolute; left: 4vw; bottom: 20px; margin: 0; z-index: 4; font-size: 11px; line-height: 1; letter-spacing: 0.04em; color: #55554F; pointer-events: none">© Ben Weiller 2026</p>
+<svg aria-hidden="true" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" style="position: absolute; inset: 0; pointer-events: none">
+<defs>
+<filter id="iXL" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="46" result="b"></feGaussianBlur><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="n"></feTurbulence><feDisplacementMap in="b" in2="n" scale="28" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
+<filter id="iL" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="26" result="b"></feGaussianBlur><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="n"></feTurbulence><feDisplacementMap in="b" in2="n" scale="22" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
+<filter id="iM" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="16" result="b"></feGaussianBlur><feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="7" result="n"></feTurbulence><feDisplacementMap in="b" in2="n" scale="16" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
+<!-- hand-cut edge: a little roughness so shapes read as ink / paper, not vector -->
+<filter id="rough" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="4" result="n1"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n1" scale="{{roughness}}" xChannelSelector="R" yChannelSelector="G" result="w"></feDisplacementMap><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="1" seed="9" result="n2"></feTurbulence><feDisplacementMap in="w" in2="n2" scale="2.2" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
+<!-- worn rubber stamp: rough edge plus speckled gaps where the ink didn't take -->
+<filter id="worn" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="4" result="n1"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n1" scale="5" xChannelSelector="R" yChannelSelector="G" result="w"></feDisplacementMap><feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="11" result="sp"></feTurbulence><feColorMatrix in="sp" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -18 0 0 0 12.4" result="spA"></feColorMatrix><feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="1" seed="21" result="pa"></feTurbulence><feColorMatrix in="pa" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -12 0 0 0 11.2" result="paA"></feColorMatrix><feComposite in="spA" in2="paA" operator="in" result="keep"></feComposite><feComposite in="w" in2="keep" operator="in"></feComposite></filter>
+<filter id="softEdge" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="5"></feGaussianBlur></filter>
+<filter id="pGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"></feTurbulence><feColorMatrix type="matrix" values="0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0.10 0"></feColorMatrix></filter>
+<!-- inversion masks: the blob's body (same shape, same movement) decides where the illustration flips -->
+<mask id="inBlob" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="900"><g class="fl" style="transform: {{b.t}}"><path class="mph" d="{{b.mid}}" fill="#fff" filter="url(#softEdge)"></path></g></mask>
+<mask id="outBlob" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="900"><rect width="1440" height="900" fill="#fff"></rect><g class="fl" style="transform: {{b.t}}"><path class="mph" d="{{b.mid}}" fill="#000" filter="url(#softEdge)"></path></g></mask>
+</defs>
+
+<!-- the blob (same three-layer, cursor-following blob as the contact page) -->
+<g class="fl" style="transform: {{b.t}}">
+<g class="breathe">
+<path class="mph" d="{{b.halo}}" fill="{{b.cHalo}}" filter="url(#iXL)" opacity="0.92"></path>
+<path class="mph" d="{{b.mid}}" fill="{{b.cMid}}" filter="url(#iL)" opacity="0.9"></path>
+<path class="mph" d="{{b.core}}" fill="{{b.cCore}}" filter="url(#iM)" opacity="0.85"></path>
+</g>
+</g>
+
+<!-- the illustration, drawn twice: in ink outside the blob, in the ground colour inside it (the inverse) -->
+<sc-for list="{{passes}}" as="ps" hint-placeholder-count="2">
+<g mask="url(#{{ps.mask}})" filter="url(#{{ps.filter}})">
+<sc-for list="{{ps.shapes}}" as="sh" hint-placeholder-count="20">
+<path transform="{{sh.tf}}" d="{{sh.d}}" fill="{{sh.fill}}" fill-rule="{{sh.rule}}" stroke="{{sh.stroke}}" stroke-width="{{sh.sw}}" stroke-linejoin="round" stroke-linecap="round" opacity="{{sh.o}}"><sc-for list="{{sh.anims}}" as="an" hint-placeholder-count="0"><animateTransform attributeName="transform" type="rotate" values="{{an.v}}" dur="{{an.dur}}" repeatCount="indefinite" additive="sum" calcMode="spline" keyTimes="0;0.5;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1"></animateTransform></sc-for></path>
+</sc-for>
+</g>
+</sc-for>
+<rect width="1440" height="900" filter="url(#pGrain)"></rect>
+</svg>
+
+<div style="position: absolute; inset: 0; z-index: 1; overflow-y: auto">
+<header style="height: 11vh; min-height: 72px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; padding: 0 4vw">
+<a class="lnk" href="Bloburblur.dc.html" aria-label="Ben Weiller — home" style="display: inline-block; font-family: 'Dirtbag TM', 'Inter', sans-serif; font-size: 44px; line-height: 1; letter-spacing: 0.03em; position: relative; top: 9px; text-decoration: none; color: #1E1E1C">BEN WEILLER</a>
+<div style="display: flex; align-items: center; gap: 26px">
+<nav id="hdrMenuG" aria-label="Main" class="drawer {{openClsG}}" style="display: flex; gap: 28px; align-items: center; font-size: 13px; line-height: 1; visibility: {{drawerVisG}}">
+<a class="nb" href="Menu-Blob-Bold.dc.html" tabindex="{{tabG}}">/work</a>
+<a class="nb" href="https://www.instagram.com/un_finished_lines/" target="_blank" rel="noopener" tabindex="{{tabG}}">/@un_finished_lines</a>
+<a class="nb" href="About-A.dc.html" tabindex="{{tabG}}">/who, me?</a>
+<a class="nb on" href="Contact-A.dc.html" aria-current="page" tabindex="{{tabG}}">/contact</a>
+</nav>
+<button class="ico" type="button" onClick="{{toggleG}}" aria-expanded="{{openStrG}}" aria-controls="hdrMenuG" aria-label="{{icoLabelG}}" style="width: 48px; height: 48px; margin-right: -7px; padding: 0; border: 0; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<svg class="burger" width="33" height="27" viewBox="0 0 22 18" overflow="visible" aria-hidden="true"><line class="l1" x1="1" y1="17" x2="7.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l2" x1="8" y1="17" x2="14.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l3" x1="15" y1="17" x2="21.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line></svg>
+</button>
+</div>
+</header>
+<main style="width: min(1120px, 90vw); margin: 0 auto; padding: 44vh 0 8vh">
+<section aria-label="Contact" style="max-width: 420px; margin-left: auto; margin-right: 70px">
+<h1 style="margin: 0 0 12px; font-size: 22px; font-weight: 400; letter-spacing: -0.035em; line-height: 1.25">ask ahead</h1>
+<p style="margin: 0; font-size: 14px; line-height: 1.55">this is the part where I ask you to ask me for some fresh words or ideas. even if you just want to jam on some gig posters for your garage band that’s finally moving out of the garage-into another one.&nbsp; I’m <span class="here" style="position: relative; display: inline-block"><span style="text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px">here</span><span id="hereIcons" style="position: absolute; left: 0; top: 100%; padding-top: 30px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; white-space: nowrap">
+<a class="ic" href="https://www.linkedin.com/in/benjaminweiller/" target="_blank" rel="noopener" aria-label="Ben Weiller on LinkedIn" style="display: flex; align-items: center; gap: 8px; text-decoration: none; color: #1E1E1C; font-size: 13px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 14 14" style="display: block; flex: none"><rect width="14" height="14" rx="2" fill="#1E1E1C"></rect><circle cx="3.6" cy="3.4" r="1.15" fill="#F1F1EE"></circle><rect x="2.6" y="5.3" width="2" height="6.2" fill="#F1F1EE"></rect><path d="M6.2 5.3h1.9v.9c.4-.7 1.1-1.1 2-1.1 1.5 0 2.2 1 2.2 2.7v3.7h-2V8.3c0-.8-.3-1.3-.95-1.3-.7 0-1.15.5-1.15 1.3v3.2H6.2z" fill="#F1F1EE"></path></svg><span aria-hidden="true">Ben Weiller</span></a>
+<a class="ic" href="mailto:bweiller2@gmail.com" aria-label="Email bweiller2@gmail.com" style="display: flex; align-items: center; gap: 8px; text-decoration: none; color: #1E1E1C; font-size: 13px"><svg aria-hidden="true" width="20" height="18" viewBox="0 0 20 18" style="display: block; flex: none"><rect x="1" y="3" width="18" height="12" rx="1" fill="none" stroke="#1E1E1C" stroke-width="1.1"></rect><path d="M1.5 3.6 L10 10 L18.5 3.6" fill="none" stroke="#1E1E1C" stroke-width="1.1" stroke-linejoin="round"></path></svg><span aria-hidden="true">bweiller2@gmail.com</span></a>
+<a class="ic" href="https://drive.google.com/file/d/1mTToHY3NtLPFwvyO971khSHzdQX7BbZc/view?usp=sharing" target="_blank" rel="noopener" aria-label="Resumé (opens in Google Drive)" style="display: flex; align-items: center; gap: 8px; text-decoration: none; color: #1E1E1C; font-size: 13px"><svg aria-hidden="true" width="20" height="18" viewBox="0 0 20 18" style="display: block; flex: none"><path d="M5 1.5 H12 L16 5.5 V16.5 H5 Z" fill="none" stroke="#1E1E1C" stroke-width="1.1" stroke-linejoin="round"></path><path d="M12 1.5 V5.5 H16" fill="none" stroke="#1E1E1C" stroke-width="1.1" stroke-linejoin="round"></path></svg><span aria-hidden="true">resumé</span></a>
+</span></span> for it.</p>
+</section>
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { style: 2, subject: 0, openG: false, seed: Math.floor(Math.random() * 1e6), mx: null, my: null, travel: 0 }; this.pend = null; this.raf = null; }
+  componentWillUnmount() { cancelAnimationFrame(this.raf); }
+  rng(seed) {
+    let a = seed >>> 0;
+    return function () { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  }  sblob(seed, cx, cy, rx, ry, rot, wob, n, t) {
+    const r = this.rng(seed), harm = [];
+    for (let k = 2; k <= 6; k++) {
+      const a0 = (r() * 2 - 1) * wob / (k * 0.7), p0 = r() * 6.283, sp = (r() * 2 - 1) * (0.5 + r() * 0.8), q = r() * 6.283;
+      harm.push({ k: k, a: a0 * (0.6 + 0.7 * Math.abs(Math.sin(t * 0.6 + q))) + (0.12 / k) * Math.sin(t * 0.9 + q * 2), p: p0 + t * sp });
+    }
+    const pts = [], c = Math.cos(rot), sn = Math.sin(rot);
+    for (let i = 0; i < n; i++) {
+      const th = (i / n) * 6.283; let f = 1;
+      harm.forEach((h) => { f += h.a * Math.sin(h.k * th + h.p); });
+      f = Math.max(0.35, f);
+      const x = Math.cos(th) * rx * f, y = Math.sin(th) * ry * f;
+      pts.push([cx + x * c - y * sn, cy + x * sn + y * c]);
+    }
+    let d = 'M' + pts[0][0].toFixed(1) + ' ' + pts[0][1].toFixed(1);
+    for (let i = 0; i < n; i++) {
+      const p0 = pts[(i - 1 + n) % n], p1 = pts[i], p2 = pts[(i + 1) % n], p3 = pts[(i + 2) % n];
+      d += ' C' + (p1[0] + (p2[0] - p0[0]) / 6).toFixed(1) + ' ' + (p1[1] + (p2[1] - p0[1]) / 6).toFixed(1) + ' ' + (p2[0] - (p3[0] - p1[0]) / 6).toFixed(1) + ' ' + (p2[1] - (p3[1] - p1[1]) / 6).toFixed(1) + ' ' + p2[0].toFixed(1) + ' ' + p2[1].toFixed(1);
+    }
+    return d + ' Z';
+  }  circ(r) { return 'M' + r + ' 0 A' + r + ' ' + r + ' 0 1 0 ' + (-r) + ' 0 A' + r + ' ' + r + ' 0 1 0 ' + r + ' 0 Z'; }
+  renderVals() {
+    const ST = [
+      // A: solid ink silhouette, hand-cut edge; details cut out of it
+      { label: 'A · ink silhouette', mode: 'fill', rough: 6 },
+      // B: brush-marker outline, slightly uneven, like quick hand drawing
+      { label: 'B · marker line', mode: 'line', rough: 5 },
+      // A+B: alternates solid and outlined, like a solid bubble answering an outlined one
+      { label: 'A+B · mixed', mode: 'mix', rough: 5.5 }
+    ];
+    const SUB = ['cluster · stamps', 'cluster · bubbles (saved)', 'bubbles', 'bubbles → ear', 'bubbles → receiver', 'bubbles → ear drums', 'dart → bullseye'];
+    const si = this.state.style, st = ST[si], su = this.state.subject || 0, INK = '#1E1E1C', G = '#F1F1EE';
+    const sd = this.state.seed, r = this.rng(sd + 3);
+    const T = (this.state.travel || 0) / 700, H = r() * 360 + 140 * Math.sin(T * 0.8 + r() * 6), H2 = H + (r() < 0.5 ? 1 : -1) * (60 + r() * 120) + 90 * Math.sin(T * 0.6 + 2), H3 = H - 25 + 50 * Math.sin(T * 1.1 + 4);
+    const hsl = (h, sa, l) => 'hsl(' + (((h % 360) + 360) % 360).toFixed(1) + ',' + sa.toFixed(1) + '%,' + l.toFixed(1) + '%)';
+    const cx = 390, cy = 380, t = (this.state.travel || 0) / 260;
+    const rot = (r() - 0.5) * 1.6, rx = (165 + r() * 30) * 0.85, ry = (135 + r() * 30) * 0.85; // a touch smaller here, so it stays under the copy
+    const b = {
+      halo: this.sblob(sd + 1, cx, cy, rx * 1.35, ry * 1.35, rot, 0.28, 10, t),
+      mid: this.sblob(sd + 3, cx, cy, rx, ry, rot, 0.34, 10, t * 1.1),
+      core: this.sblob(sd + 4, cx - 30, cy + 8, rx * 0.55, ry * 0.5, rot - 0.4, 0.38, 9, t * 1.2),
+      cHalo: hsl(H2, 62 + r() * 22, 82 + r() * 7), cMid: hsl(H, 40 + r() * 30, 42 + r() * 14), cCore: hsl(H3, 48 + r() * 24, 26 + r() * 10)
+    };
+    const reduce = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const on = this.state.mx !== null, K = 0.75;
+    // follows the cursor as one, but stops short of the ASK AHEAD copy on the right
+    const ftx = on ? Math.min(cx + (this.state.mx - cx) * K, 620) : cx, fty = on ? cy + (this.state.my - cy) * K : cy;
+    b.t = reduce || !on ? 'translate(0px,0px)' : 'translate(' + (ftx - cx).toFixed(1) + 'px,' + (fty - cy).toFixed(1) + 'px)';
+
+    // ---------- drawings (each centred on 0,0) ----------
+    // kinds: body = the main mass; cut = strokes drawn into a body; dot = small filled marks inside a body; line = free strokes
+    const C = (x, y, rr) => 'M' + (x + rr) + ' ' + y + ' A' + rr + ' ' + rr + ' 0 1 0 ' + (x - rr) + ' ' + y + ' A' + rr + ' ' + rr + ' 0 1 0 ' + (x + rr) + ' ' + y + ' Z';
+    const E = (x, y, ax, ay) => 'M' + (x + ax) + ' ' + y + ' A' + ax + ' ' + ay + ' 0 1 0 ' + (x - ax) + ' ' + y + ' A' + ax + ' ' + ay + ' 0 1 0 ' + (x + ax) + ' ' + y + ' Z';
+    const star = (x, y, k) => { const p = (a, b2) => (x + a * k).toFixed(1) + ' ' + (y + b2 * k).toFixed(1); return 'M' + p(0, -16) + ' C' + p(2, -4) + ' ' + p(4, -2) + ' ' + p(16, 0) + ' C' + p(4, 2) + ' ' + p(2, 4) + ' ' + p(0, 16) + ' C' + p(-2, 4) + ' ' + p(-4, 2) + ' ' + p(-16, 0) + ' C' + p(-4, -2) + ' ' + p(-2, -4) + ' ' + p(0, -16) + ' Z'; };
+    const BUB = {
+      round: 'M-6 38 C-30 38 -50 22 -50 0 C-50 -24 -26 -40 0 -40 C26 -40 50 -24 50 0 C50 24 28 40 4 40 C-2 46 -14 54 -28 56 C-20 50 -14 44 -6 38 Z',
+      cloud: 'M-40 10 A18 18 0 0 1 -30 -20 A22 22 0 0 1 4 -36 A22 22 0 0 1 36 -18 A18 18 0 0 1 40 14 A20 20 0 0 1 10 34 A22 22 0 0 1 -28 30 A16 16 0 0 1 -40 10 Z ' + C(-46, 44, 7) + ' ' + C(-58, 58, 4),
+      oval: 'M-58 0 C-58 -26 -30 -36 0 -36 C32 -36 58 -26 58 0 C58 24 34 34 4 34 L-16 34 L-34 50 L-30 31 C-48 27 -58 16 -58 0 Z',
+      box: 'M-44 -34 L44 -34 Q54 -34 54 -24 L54 22 Q54 32 44 32 L-10 32 L-28 48 L-24 32 L-44 32 Q-54 32 -54 22 L-54 -24 Q-54 -34 -44 -34 Z'
+    };
+    // four bubbles that change shape and contents as they travel: typing dots → a sparkle → a tangled thought → a spiral
+    const bubbles = [
+      [{ k: 'body', d: BUB.round }, { k: 'dot', d: C(-16, 0, 4.5) + ' ' + C(0, 0, 4.5) + ' ' + C(16, 0, 4.5) }],
+      [{ k: 'body', d: BUB.cloud }, { k: 'dot', d: star(0, 0, 1.1) }],
+      [{ k: 'body', d: BUB.oval }, { k: 'cut', d: 'M-22 4 C-26 -14 10 -20 16 -4 C20 10 -12 16 -16 2 C-20 -12 22 -14 24 4 C26 18 -8 18 -6 6 C-4 -6 14 -4 10 6', w: 3.2 }],
+      // last bubble: a hand-drawn !?
+      [{ k: 'body', d: BUB.box }, { k: 'cut', d: 'M-14 -17 L-12 5 M3 -11 C4 -22 23 -23 23 -10 C23 -2 12 0 12 7', w: 4.2 }, { k: 'dot', d: C(-11.5, 15, 3.2) + ' ' + C(12, 16, 3.2) }]
+    ];
+    const EAR_OUT = 'M-30 -40 C-30 -66 0 -78 22 -70 C46 -62 54 -34 46 -12 C40 4 26 12 22 30 C18 50 4 64 -12 62 C-26 60 -30 48 -24 40 C-20 34 -14 30 -16 20 C-18 10 -30 0 -30 -40 Z';
+    const EAR_IN = 'M-12 -34 C-6 -54 24 -52 28 -30 C30 -14 16 -6 10 6 C6 14 -2 14 -4 6';
+    const ear = (x, y, k) => [{ k: 'body', d: EAR_OUT, tf: 'translate(' + x + ' ' + y + ') scale(' + k + ')' }, { k: 'cut', d: EAR_IN, w: 6, tf: 'translate(' + x + ' ' + y + ') scale(' + k + ')' }, { k: 'dot', d: C(-12, -6, 5), tf: 'translate(' + x + ' ' + y + ') scale(' + k + ')' }];
+    const RECEIVERS = {
+      ear: ear(0, 0, 1.25),
+      // an old telephone handset, cord curling down
+      receiver: [
+        { k: 'body', d: 'M-80 12 L-30 12 L-30 4 C-18 -24 18 -24 30 4 L30 12 L80 12 C82 0 76 -12 62 -15 C42 -60 -42 -60 -62 -15 C-76 -12 -82 0 -80 12 Z' },
+        { k: 'dot', d: C(-64, 4, 2.6) + ' ' + C(-55, 4, 2.6) + ' ' + C(-46, 4, 2.6) + ' ' + C(46, 4, 2.6) + ' ' + C(55, 4, 2.6) + ' ' + C(64, 4, 2.6) },
+        { k: 'line', d: 'M64 14 C74 26 56 32 66 42 C76 52 58 58 68 68 C78 78 60 84 70 94', w: 3 }
+      ],
+      // a little kit: kick drum with an ear on its face, two ear toms, a cymbal on a stand
+      drums: [
+        { k: 'body', d: C(0, 40, 54) }, { k: 'cut', d: EAR_IN, w: 5, tf: 'translate(4 46) scale(0.75)' },
+        { k: 'body', d: EAR_OUT, tf: 'translate(-40 -36) scale(0.52) rotate(-14)' }, { k: 'cut', d: EAR_IN, w: 6, tf: 'translate(-40 -36) scale(0.52) rotate(-14)' },
+        { k: 'body', d: EAR_OUT, tf: 'translate(36 -40) scale(0.48) rotate(12)' }, { k: 'cut', d: EAR_IN, w: 6, tf: 'translate(36 -40) scale(0.48) rotate(12)' },
+        { k: 'body', d: E(-104, -40, 36, 6) }, { k: 'line', d: 'M-104 -34 L-104 94 M-118 94 L-90 94', w: 3 },
+        { k: 'line', d: 'M-30 92 L-40 104 M30 92 L40 104', w: 3 }
+      ],
+      dart: []
+    };
+    const DART = [
+      { k: 'body', d: 'M64 0 C50 -7 30 -10 -28 -9 L-44 -28 L-60 -28 L-48 -8 L-52 0 L-48 8 L-60 28 L-44 28 L-28 9 C30 10 50 7 64 0 Z' },
+      { k: 'body', d: 'M-54 -6 C-66 -12 -78 -3 -96 0 C-78 3 -66 12 -54 6 C-59 3 -59 -3 -54 -6 Z', flame: 1 },
+      { k: 'line', d: 'M-108 -14 L-150 -14 M-112 0 L-176 0 M-108 14 L-140 14', w: 2, flame: 1 }
+    ];
+    // ---------- composition: four travellers on an arc into the receiver ----------
+    const P = [[290, 630, -18, 0.86], [510, 555, -12, 0.94], [730, 480, -6, 1.02], [950, 410, -2, 1.1]];
+    const BS = 1.45; // bubbles drawn a bit larger than the darts
+    const key = ['stampN', 'cluster', 'none', 'ear', 'receiver', 'drums', 'dart'][su];
+    const stamp = key === 'stampN';
+    let items = [];
+    const CL = [
+      [{ k: 'body', d: 'M-6 38 C-30 38 -50 22 -50 0 C-50 -24 -26 -40 0 -40 C26 -40 50 -24 50 0 C50 24 28 40 4 40 C-2 46 -14 54 -28 56 C-20 50 -14 44 -6 38 Z' }, { k: 'dot', d: C(-16, 0, 4.5) + ' ' + C(0, 0, 4.5) + ' ' + C(16, 0, 4.5) }],
+      [{ k: 'body', d: 'M-40 10 A18 18 0 0 1 -30 -20 A22 22 0 0 1 4 -36 A22 22 0 0 1 36 -18 A18 18 0 0 1 40 14 A20 20 0 0 1 10 34 A22 22 0 0 1 -28 30 A16 16 0 0 1 -40 10 Z ' + C(-46, 44, 7) + ' ' + C(-58, 58, 4) }, { k: 'dot', d: star(-6, -4, 1.05) + ' ' + star(18, -15, 0.48) + ' ' + star(17, 13, 0.58) + ' ' + star(-24, 15, 0.38) + ' ' + star(4, 20, 0.3) }],
+      [{ k: 'body', d: 'M-58 0 C-58 -26 -30 -36 0 -36 C32 -36 58 -26 58 0 C58 24 34 34 4 34 L-16 34 L-34 50 L-30 31 C-48 27 -58 16 -58 0 Z' }, { k: 'dot', d: 'M-21.8 22 L-18.2 22 L-18.8 -8 L-21.2 -8 Z M-1.8 22 L1.8 22 L1.2 -14 L-1.2 -14 Z M17.2 22 L20.8 22 L20.2 -5 L17.8 -5 Z' + ' ' + E(-25, -10, 4.2, 3) + ' ' + E(-16, -12, 4.5, 3.2) + ' ' + E(-21, -17, 4, 3.4) + ' ' + E(-14, -4, 3.6, 2.6) + ' ' + E(-26, -2, 3.4, 2.6) + ' ' + E(-19, -6, 3.6, 2.8) + ' ' + E(-5, -16, 4.2, 3) + ' ' + E(4, -18, 4.5, 3.2) + ' ' + E(-1, -23, 4, 3.4) + ' ' + E(6, -10, 3.6, 2.6) + ' ' + E(-6, -8, 3.4, 2.6) + ' ' + E(1, -12, 3.6, 2.8) + ' ' + E(14, -7, 4.2, 3) + ' ' + E(23, -9, 4.5, 3.2) + ' ' + E(18, -14, 4, 3.4) + ' ' + E(25, -1, 3.6, 2.6) + ' ' + E(13, 1, 3.4, 2.6) + ' ' + E(20, -3, 3.6, 2.8) }, { k: 'ink', d: 'M-21.8 15.4 L-19.4 15.4 M-20.6 8.5 L-18.2 8.5 M-21.8 1.6 L-20 1.6 M-1.8 14.1 L0.6 14.1 M-0.6 5.8 L1.8 5.8 M-1.8 -2.5 L0 -2.5 M17.2 16.1 L19.6 16.1 M18.4 9.8 L20.8 9.8 M17.2 3.6 L19 3.6', w: 1.3 }, { k: 'cut', d: 'M-32 23 L32 23', w: 2 }],
+      [{ k: 'body', d: 'M-44 -34 L44 -34 Q54 -34 54 -24 L54 22 Q54 32 44 32 L-10 32 L-28 48 L-24 32 L-44 32 Q-54 32 -54 22 L-54 -24 Q-54 -34 -44 -34 Z' }, { k: 'cut', d: 'M-29 -11 C-28 -22 -11 -23 -11 -10 C-11 -2 -20 0 -20 7 M0 -17 L2 5 M11 -11 C12 -22 29 -23 29 -10 C29 -2 20 0 20 7', w: 4.2 }, { k: 'dot', d: C(-20, 16, 3.2) + ' ' + C(2.5, 15, 3.2) + ' ' + C(20, 16, 3.2) }]
+      ,
+      // a row of eyeballs, pupils glancing toward the cursor
+      [{ k: 'body', d: 'M-40 -32 L40 -32 C58 -32 66 -18 66 -2 C66 16 56 30 38 30 L18 30 L28 48 L4 30 L-40 30 C-58 30 -66 16 -66 -2 C-66 -18 -58 -32 -40 -32 Z' }, { k: 'dot', ring: true, d: C(-36, -2, 10.5) + ' ' + C(-12, -2, 10.5) + ' ' + C(12, -2, 10.5) + ' ' + C(36, -2, 10.5) }, { k: 'pupil', eyes: [-36, -12, 12, 36] }]
+      ,
+      // a dead devil fish: x for an eye, little horns, a pointed devil tail; soft rounded fins
+      [{ k: 'body', d: 'M-6 38 C-30 38 -50 22 -50 0 C-50 -24 -26 -40 0 -40 C26 -40 50 -24 50 0 C50 24 28 40 4 40 C-2 46 -14 54 -28 56 C-20 50 -14 44 -6 38 Z' },
+       { k: 'dot', d: 'M-36 2 C-29 -13 -3 -16 12 -7 C17 -12 25 -15 29 -12 C27 -7 25 -3 25 1 C25 5 27 9 29 14 C25 17 17 15 12 10 C-3 19 -29 17 -36 2 Z' },
+       { k: 'dot', d: 'M-27 -5 C-31 -12 -30 -19 -25 -23 C-25 -17 -23 -12 -19 -8 Z M-16 -9 C-18 -15 -15 -22 -9 -24 C-11 -19 -11 -14 -9 -9 Z' },
+       { k: 'cut', d: 'M27 2 C35 4 39 10 37 17', w: 2 },
+       { k: 'dot', d: 'M37 15 L42 22 L33 23 Z' },
+       { k: 'ink', d: 'M-26.5 -5 L-19.5 2 M-19.5 -5 L-26.5 2', w: 2.2 },
+       { k: 'ink', d: 'M-9 -7 C-6.5 -2.5 -6.5 6.5 -9 11', w: 1.3 },
+       { k: 'ink', d: 'M-36 2 C-33 4 -31 4 -29 3', w: 1.4 }],
+      // a road bicycle (drop bars)
+      [{ k: 'body', d: 'M-58 0 C-58 -26 -30 -36 0 -36 C32 -36 58 -26 58 0 C58 24 34 34 4 34 L-16 34 L-34 50 L-30 31 C-48 27 -58 16 -58 0 Z' }, { k: 'cut', d: C(-24, 8, 14) + ' ' + C(24, 8, 14) + ' M-24 8 L-7 -11 L15 -11 L1 8 Z M1 8 L-7 -11 M15 -11 L24 8 M15 -11 L18 -16 C25 -17 27 -10 22 -7 M-13 -14 L-1 -14', w: 2.8 }, { k: 'spokes', wheels: [[-24, 8, 1], [24, 8, 1.4]] }],
+      // a place setting: fork, a plate with a ? on it, knife (what's on the menu?)
+      [{ k: 'body', d: 'M-58 0 C-58 -26 -30 -36 0 -36 C32 -36 58 -26 58 0 C58 24 34 34 4 34 L-16 34 L-34 50 L-30 31 C-48 27 -58 16 -58 0 Z' },
+       { k: 'dot', d: C(0, -1, 19) },
+       { k: 'ink', d: C(0, -1, 13.5), w: 1.1 },
+       { k: 'ink', d: 'M-4.6 -7.5 C-4.6 -13 4.6 -13 4.6 -7.5 C4.6 -3.5 0 -2.8 0 2.2', w: 2.6 },
+       { k: 'mainfill', d: C(0, 7, 1.7) },
+       { k: 'cut', d: 'M-35 -19 L-35 -9 M-31 -19 L-31 -9 M-27 -19 L-27 -9 M-35 -9 C-35 -4 -27 -4 -27 -9', w: 1.6 },
+       { k: 'cut', d: 'M-31 -5 L-31 19', w: 2.8 },
+       { k: 'dot', d: 'M29 -21 C36 -17 36 -6 33 -2 L29 -2 Z' },
+       { k: 'cut', d: 'M31 -2 L31 19', w: 2.8 }]
+    ];
+
+    // ---------- the cluster as ink stamps / micrologos (no speech bubbles) ----------
+    // same seven motifs and spots as the cluster, each just the inked motif (no frame), printed with a worn rubber-stamp texture
+    const RR = (w, h, q) => { const x = w / 2, y = h / 2; return 'M' + (-x + q) + ' ' + (-y) + ' L' + (x - q) + ' ' + (-y) + ' Q' + x + ' ' + (-y) + ' ' + x + ' ' + (-y + q) + ' L' + x + ' ' + (y - q) + ' Q' + x + ' ' + y + ' ' + (x - q) + ' ' + y + ' L' + (-x + q) + ' ' + y + ' Q' + (-x) + ' ' + y + ' ' + (-x) + ' ' + (y - q) + ' L' + (-x) + ' ' + (-y + q) + ' Q' + (-x) + ' ' + (-y) + ' ' + (-x + q) + ' ' + (-y) + ' Z'; };
+    const TRI = 'M-7 -41 Q0 -52 7 -41 L45 27 Q51 39 37 39 L-37 39 Q-51 39 -45 27 Z';
+    const TRI2 = 'M-8 -49 Q0 -61 8 -49 L53 31 Q60 45 44 45 L-44 45 Q-60 45 -53 31 Z';
+    const EYES = [-36, -12, 12, 36];
+    const FISH = CL[5][1].d, HORNS = CL[5][2].d, FTAIL = CL[5][3].d, FARROW = CL[5][4].d, FX = CL[5][5].d, FGILL = CL[5][6].d;
+    const BIKE = CL[6][1].d;
+    const spokes = [[-24, 8], [24, 8]].map((w) => { let o = ''; for (let q = 0; q < 3; q++) { const an = 0.4 + q * Math.PI / 3, dx = Math.cos(an) * 12, dy = Math.sin(an) * 12; o += 'M' + (w[0] - dx).toFixed(1) + ' ' + (w[1] - dy).toFixed(1) + ' L' + (w[0] + dx).toFixed(1) + ' ' + (w[1] + dy).toFixed(1) + ' '; } return o; }).join('');
+    const FORK = 'M-35 -19 L-35 -9 M-31 -19 L-31 -9 M-27 -19 L-27 -9 M-35 -9 C-35 -4 -27 -4 -27 -9 M-31 -5 L-31 19', KNIFE = 'M29 -21 C36 -17 36 -6 33 -2 L29 -2 Z', KNIFEH = 'M31 -2 L31 19';
+    const QM = 'M-4.6 -7.5 C-4.6 -13 4.6 -13 4.6 -7.5 C4.6 -3.5 0 -2.8 0 2.2';
+    // fish motion (SVG rotate: angle, pivot x, pivot y in the fish's own drawing); off for reduced motion
+    const FLOP = reduce ? [] : [{ v: '-5 -4 2;5 -4 2;-5 -4 2', dur: '3.4s' }], WAG = reduce ? [] : [{ v: '-14 27 2;10 27 2;-14 27 2', dur: '1.3s' }];
+    const SN = [
+      null,
+      null, // the sparkles in the centre of the cluster removed (user's call, Nov 20); the five stamps keep their ring around the empty centre
+      [{ k: 'mainfill', d: CL[2][1].d, sub: 'scale(1.35)' }, { k: 'cut', d: CL[2][2].d, w: 1.3, sub: 'scale(1.35)' }, { k: 'ink', d: 'M-34 23 L34 23', w: 2.4, sub: 'scale(1.35)' }],
+      null, // ?!? removed from the stamp cluster (felt crowded)
+      // four eyeballs: inked rims, pupils glancing toward the cursor
+      [{ k: 'ink', d: EYES.map((x) => C(x * 1.3, 0, 13.5)).join(' '), w: 2.8 }, { k: 'glance', eyes: EYES.map((x) => x * 1.3), r: 6.2, reach: 5.6 }],
+      // devil fish (horns, x eye; devil tail removed): rocks gently
+      [{ k: 'mainfill', d: FISH, sub: 'scale(1.45)', anims: FLOP }, { k: 'mainfill', d: HORNS, sub: 'scale(1.45)', anims: FLOP }, { k: 'cut', d: FX, w: 2.4, sub: 'scale(1.45)', anims: FLOP }, { k: 'cut', d: FGILL, w: 1.4, sub: 'scale(1.45)', anims: FLOP }],
+      // bike: spokes turn as the cursor travels, the front wheel a little faster
+      [{ k: 'ink', d: BIKE, w: 3.2, sub: 'scale(1.4)' }, { k: 'spokes', ink: true, w: 1.2, sub: 'scale(1.4)', wheels: [[-24, 8, 1], [24, 8, 1.4]] }],
+      [{ k: 'mainfill', d: C(0, -1, 26) }, { k: 'cut', d: C(0, -1, 19), w: 1.2 }, { k: 'cut', d: QM, w: 3, sub: 'scale(1.25)' }, { k: 'dot', d: C(0, 8.5, 2.2) }, { k: 'mainfill', d: KNIFE, sub: 'translate(10 0) scale(1.15)' }, { k: 'ink', d: KNIFEH, w: 3, sub: 'translate(10 0) scale(1.15)' }, { k: 'ink', d: FORK, w: 2, sub: 'translate(-10 0) scale(1.15)' }]
+    ];
+    // the saved cluster from the contact page, plus the place-setting bubble: seven ink-silhouette bubbles grouped around the blob
+    if (key === 'cluster' || stamp) {
+      const POS = stamp
+        // stamps: the five around the stars sit evenly on an ellipse (every 72°, clockwise from the top: fish, place setting, bike, eyes, trees)
+        ? [null, [390, 380, -6, 1.1], [195, 332, -8, 0.92], null, [272, 520, 4, 0.85], [390, 210, 5, 0.98], [508, 520, -4, 0.9], [585, 332, 4, 0.92]]
+        : [null, [720, 470, -6, 1.12], [500, 380, -8, 0.98], [870, 380, -3, 1.0], [535, 600, 4, 0.9], [680, 285, 5, 1.08], [745, 655, -4, 0.95], [935, 560, 4, 1.02]];
+      const turn = (this.state.travel || 0) / 38;
+      (stamp ? SN : CL).forEach((parts, i) => {
+        const pp = POS[i]; if (!pp) return;
+        const tf = 'translate(' + pp[0] + ' ' + pp[1] + ') rotate(' + pp[2] + ') scale(' + pp[3] + ')';
+        if (!parts) return;
+        parts.forEach((pt) => {
+          if (pt.skip) return;
+          const t2 = tf + (pt.sub ? ' ' + pt.sub : '');
+          if (pt.k === 'glance') { const on = this.state.mx !== null; const an = on ? Math.atan2(this.state.my - pp[1], this.state.mx - pp[0]) - pp[2] * Math.PI / 180 : 0.3; const ox = Math.cos(an) * pt.reach, oy = Math.sin(an) * pt.reach; items.push({ k: 'mfill', d: pt.eyes.map((ex) => C(+(ex + ox).toFixed(2), +oy.toFixed(2), pt.r)).join(' '), tf: tf, frame: 0 }); }
+          else if (pt.k === 'pupil') items.push({ k: 'mfill', d: pt.eyes.map((ex) => C(ex + 3, -0.5, 5.2)).join(' '), tf: tf, frame: 0 });
+          else if (pt.k === 'spokes') items.push({ k: pt.ink ? 'inkline' : 'cut', w: pt.w || 1.3, frame: 0, tf: t2, d: pt.wheels.map((w) => { let o = ''; for (let q = 0; q < 3; q++) { const an = turn * w[2] + q * Math.PI / 3, dx = Math.cos(an) * 12, dy = Math.sin(an) * 12; o += 'M' + (w[0] - dx).toFixed(1) + ' ' + (w[1] - dy).toFixed(1) + ' L' + (w[0] + dx).toFixed(1) + ' ' + (w[1] + dy).toFixed(1) + ' '; } return o; }).join('') });
+          else if (pt.k === 'mainfill') items.push({ k: 'mfill', d: pt.d, tf: t2, frame: 0, anims: pt.anims });
+          else if (pt.k === 'ink') items.push({ k: 'inkline', d: pt.d, w: pt.w, tf: t2, frame: 0, anims: pt.anims });
+          else items.push({ k: pt.k, d: pt.d, w: pt.w, tf: t2, frame: 0, anims: pt.anims });
+        });
+      });
+    }
+    if (key !== 'cluster' && !stamp) P.forEach((p, i) => {
+      const parts = key === 'dart' ? DART : bubbles[i];
+      const sc = key === 'dart' ? p[3] : p[3] * BS;
+      parts.forEach((pt) => items.push(Object.assign({}, pt, { tf: 'translate(' + p[0] + ' ' + p[1] + ') rotate(' + p[2] + ') scale(' + sc.toFixed(3) + ')' + (pt.tf ? ' ' + pt.tf : ''), frame: i })));
+    });
+    const RX = 1170, RY = 330;
+    if (key === 'dart') {
+      items.push({ k: 'body', d: C(0, 0, 60) + ' ' + C(0, 0, 46) + ' ' + C(0, 0, 32) + ' ' + C(0, 0, 18) + ' ' + C(0, 0, 6), rule: 'evenodd', ring: 1, tf: 'translate(' + RX + ' ' + RY + ')', frame: 4 });
+      DART.filter((d) => !d.flame).forEach((pt) => items.push(Object.assign({}, pt, { tf: 'translate(' + (RX - 66) + ' ' + (RY + 4) + ') rotate(-4)', frame: 5 })));
+    } else if (key !== 'none' && key !== 'cluster' && !stamp) {
+      const rr = key === 'receiver' ? ' rotate(-18) scale(1.2)' : key === 'drums' ? ' scale(1.15)' : '';
+      RECEIVERS[key].forEach((pt) => items.push(Object.assign({}, pt, { tf: 'translate(' + RX + ' ' + RY + ')' + rr + (pt.tf ? ' ' + pt.tf : ''), frame: 4 })));
+    }
+    // resolve colours per pass: outside the blob ink on ground; inside, the inverse
+    const pass = (inside) => {
+      const main = inside ? G : INK, counter = inside ? INK : G;
+      const shapeOf = (it) => {
+        const line = key !== 'cluster' && !stamp && (st.mode === 'line' || (st.mode === 'mix' && it.frame % 2 === 1));
+        const o = '1';
+        if (it.ring && line) return { tf: it.tf, d: it.d, rule: 'nonzero', fill: 'none', stroke: main, sw: 2.6, o: o };
+        if (it.k === 'body') return line ? { tf: it.tf, d: it.d, rule: it.rule || 'nonzero', fill: 'none', stroke: main, sw: 3.4, o: o } : { tf: it.tf, d: it.d, rule: it.rule || 'nonzero', fill: main, stroke: 'none', sw: 0, o: o };
+        if (it.k === 'cut') return { tf: it.tf, d: it.d, rule: 'nonzero', fill: 'none', stroke: line ? main : counter, sw: line ? Math.min(it.w || 3, 3.2) : (it.w || 3), o: o };
+        if (it.k === 'mfill') return { tf: it.tf, d: it.d, rule: 'nonzero', fill: main, stroke: 'none', sw: 0, o: o };
+        if (it.k === 'inkline') return { tf: it.tf, d: it.d, rule: 'nonzero', fill: 'none', stroke: main, sw: it.w, o: o };
+        if (it.k === 'dot') return { tf: it.tf, d: it.d, rule: 'nonzero', fill: line ? main : counter, stroke: 'none', sw: 0, o: o };
+        if (line && it.w > 6) return [{ tf: it.tf, d: it.d, rule: 'nonzero', fill: 'none', stroke: main, sw: it.w, o: o }, { tf: it.tf, d: it.d, rule: 'nonzero', fill: 'none', stroke: counter, sw: it.w - 6.8, o: o }];
+        return { tf: it.tf, d: it.d, rule: 'nonzero', fill: 'none', stroke: main, sw: it.w || 3, o: o };
+      };
+      const shapes = items.map((it) => { const out = shapeOf(it); (Array.isArray(out) ? out : [out]).forEach((o) => { o.anims = it.anims || []; }); return out; }).flat();
+      return { mask: inside ? 'inBlob' : 'outBlob', shapes: shapes, filter: stamp ? 'worn' : 'rough' };
+    };
+    const chip = (o) => ({ bg: o ? '#1E1E1C' : 'rgba(255,255,255,0.6)', ink: o ? '#F1F1EE' : '#1E1E1C', pressed: o ? 'true' : 'false' });
+    return {
+      b: b, roughness: st.rough,
+      openClsG: this.state.openG ? 'open' : '', openStrG: this.state.openG ? 'true' : 'false', drawerVisG: this.state.openG ? 'visible' : 'hidden', tabG: this.state.openG ? '0' : '-1',
+      icoLabelG: this.state.openG ? 'Close menu' : 'Open menu',
+      toggleG: () => this.setState({ openG: !this.state.openG }),
+      subjects: SUB.map((x, i) => Object.assign({ label: x, pick: () => this.setState({ subject: i }) }, chip(i === su))),
+      passes: [pass(false), pass(true)],
+      styles: ST.map((x, i) => Object.assign({ label: x.label, pick: () => this.setState({ style: i }) }, chip(i === si))),
+      onMove: (e) => {
+        const r0 = e.currentTarget.getBoundingClientRect();
+        const sc = Math.max(r0.width / 1440, r0.height / 900), ox = (r0.width - 1440 * sc) / 2, oy = (r0.height - 900 * sc) / 2;
+        const nx = (e.clientX - r0.left - ox) / sc, ny = (e.clientY - r0.top - oy) / sc;
+        const d = this.lastP ? Math.min(90, Math.hypot(nx - this.lastP[0], ny - this.lastP[1])) : 0; this.lastP = [nx, ny];
+        this.pend = { mx: nx, my: ny, travel: (this.pend && this.pend.travel !== undefined ? this.pend.travel : (this.state.travel || 0)) + d };
+        if (this.raf) return;
+        this.raf = requestAnimationFrame(() => { this.raf = null; if (this.pend) { const q = this.pend; this.pend = null; this.setState(q); } });
+      },
+      onLeave: () => { this.lastP = null; this.setState({ mx: null, my: null }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

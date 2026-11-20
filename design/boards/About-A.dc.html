@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>About — who, me?</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&amp;display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'Dirtbag TM';src:url('./assets/a15098c6e2313273da5b37f609489781.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+body{margin:0}
+a{color:#1E1E1C}a:hover{color:#000000}
+.page{scrollbar-width:none}.page::-webkit-scrollbar{display:none}
+.lnk:focus-visible,.card:focus-visible,.ctl:focus-visible,.ico:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:4px}
+.breathe{transform-box:fill-box;transform-origin:50% 50%;animation:breathe 10s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.03) rotate(1deg)}}
+.cardIn{animation:cardIn 1000ms cubic-bezier(.2,.75,.15,1) both}
+@keyframes cardIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.glowIn{animation:glowIn 1400ms ease both}
+@keyframes glowIn{from{opacity:0}to{opacity:1}}
+.play{transition:transform 300ms ease}
+.card:hover .play{transform:scale(1.08)}
+.lift{transition:transform 400ms cubic-bezier(.2,.7,.2,1)}
+.lift:hover{transform:none}
+@media (prefers-reduced-motion: reduce){.breathe,.cardIn,.glowIn{animation:none}.play,.lift{transition:none}}
+.ico{transition:transform 350ms cubic-bezier(.3,.7,.2,1)}
+.ico[aria-expanded="true"] .plus{transform:rotate(45deg)}
+.drawer a{opacity:0;transform:translateX(10px);transition:opacity 300ms ease,transform 400ms cubic-bezier(.3,.7,.2,1)}
+.drawer.open a{opacity:1;transform:none}
+.drawer.open a:nth-child(2){transition-delay:50ms}.drawer.open a:nth-child(3){transition-delay:100ms}
+.tl{position:relative;display:inline-flex;align-items:flex-end;height:20px;color:#55554F;text-decoration:none;transition:color 200ms ease}
+.tl .sl{display:inline-block;line-height:1}
+.tl .w{position:relative;display:inline-block;width:24px;height:20px}
+.tl .w span{position:absolute;left:14px;bottom:0;white-space:nowrap;transform:rotate(-71deg) translateX(-100%);transform-origin:0 100%;line-height:1}
+.tl:hover,.tl:focus-visible,.tl.on{color:#1E1E1C}
+.tl:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:6px}
+@media (prefers-reduced-motion: reduce){.tl{transition:none}}
+.burger line{transition:transform 350ms cubic-bezier(.3,.7,.2,1),opacity 200ms ease;transform-box:fill-box;transform-origin:50% 50%}
+.ico[aria-expanded="true"] .burger .l1{transform:translateX(7px) rotate(24deg)}
+.ico[aria-expanded="true"] .burger .l2{opacity:0}
+.ico[aria-expanded="true"] .burger .l3{transform:translateX(-7px) rotate(-66deg)}
+@media (prefers-reduced-motion: reduce){.burger line{transition:none}}
+@media (prefers-reduced-motion: reduce){.drawer a{transition:none}}
+.nb{color:#55554F;text-decoration:none;white-space:nowrap;transition:color 200ms ease}
+.nb:hover,.nb:focus-visible,.nb.on{color:#1E1E1C}
+.nb:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:4px}
+.breathe{transform-box:fill-box;transform-origin:50% 50%;animation:breathe 10s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.035) rotate(1.5deg)}}
+.settle{transform-box:fill-box;transform-origin:50% 50%;animation:settle 1500ms cubic-bezier(.3,1.35,.45,1) both}
+@keyframes settle{from{transform:translate(-18px,22px) scale(.97)}to{transform:none}}
+.mph{transition:d 700ms cubic-bezier(.3,.7,.2,1),fill 900ms ease}
+.icons a{opacity:0;transform:translateY(-6px);transition:opacity 250ms ease,transform 300ms cubic-bezier(.3,.7,.2,1)}
+.icons.on a{opacity:1;transform:none}
+.icons.on a:nth-child(2){transition-delay:50ms}
+.ic{display:block;padding:2px}
+.ic:hover{opacity:.7}
+.hereBtn:focus-visible,.ic:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:3px}
+@media (prefers-reduced-motion: reduce){.breathe,.settle{animation:none}.mph{transition:none}.icons a{transition:none}}
+/* keyboard focus on text (links, menu words, wordmark): no box. a soft glass rectangle leaning at the lean angle sits behind the word */
+.nb:focus-visible,.tlk:focus-visible,.lnk:focus-visible{outline:none;position:relative;z-index:0}
+.nb:focus-visible::before,.tlk:focus-visible::before,.lnk:focus-visible::before{content:"";position:absolute;left:-9px;right:-9px;top:-5px;bottom:-5px;z-index:-1;transform:skewX(-16.7deg);background:linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.36));backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 1px rgba(255,255,255,0.85),0 1px 10px rgba(30,30,28,0.12)}
+/* FOCUS (approved, site-wide): keyboard only, no outlines anywhere.
+   text, words and small controls: a soft glass rectangle leaning at the lean angle behind them.
+   media and glass buttons: no frame, a soft shadow that lifts them off the page */
+*:focus-visible{outline:none!important}
+.nb:focus-visible:not([style*="position: absolute"]),.tlk:focus-visible:not([style*="position: absolute"]),.lnk:focus-visible:not([style*="position: absolute"]),.ctl:focus-visible:not([style*="position: absolute"]),.tl:focus-visible:not([style*="position: absolute"]),.ic:focus-visible:not([style*="position: absolute"]),.hereBtn:focus-visible:not([style*="position: absolute"]),.ico:focus-visible:not([style*="position: absolute"]),.item:focus-visible:not([style*="position: absolute"]),a:not(.card):not(.xp):not(.band):focus-visible:not([style*="position: absolute"]),button:not(.gb):not(.xp):not(.pp):focus-visible:not([style*="position: absolute"]){position:relative;z-index:0}
+.nb:focus-visible::before,.tlk:focus-visible::before,.lnk:focus-visible::before,.ctl:focus-visible::before,.tl:focus-visible::before,.ic:focus-visible::before,.hereBtn:focus-visible::before,.ico:focus-visible::before,.item:focus-visible::before,a:not(.card):not(.xp):not(.band):focus-visible::before,button:not(.gb):not(.xp):not(.pp):focus-visible::before{content:"";position:absolute;left:-9px;right:-9px;top:-5px;bottom:-5px;z-index:-1;transform:skewX(-16.7deg);background:linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.36));backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 1px rgba(255,255,255,0.85),0 1px 10px rgba(30,30,28,0.12)}
+.card:focus-visible::after,.xp:focus-visible::after,.band:focus-visible::after,.gbw:has(.gb:focus-visible)::after{content:none!important}
+.card:focus-visible,.xp:focus-visible,.band:focus-visible,[tabindex]:not(a):not(button):focus-visible,.gbw:has(.gb:focus-visible),.gfocus{box-shadow:0 14px 34px -8px rgba(30,30,28,0.38),0 2px 8px rgba(30,30,28,0.12)}
+.gbw:has(.gb:focus-visible),.gfocus.round{border-radius:50%}
+</style>
+</helmet>
+<div onMouseMove="{{onMove}}" onMouseLeave="{{onLeave}}" style="position: relative; height: 100vh; min-height: 560px; overflow: hidden; background: #F1F1EE; color: #1E1E1C; font-family: 'Inter', system-ui, sans-serif">
+<svg aria-hidden="true" width="100%" height="100%" style="position: absolute; inset: 0; pointer-events: none"><filter id="aGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"></feTurbulence><feColorMatrix type="matrix" values="0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0.10 0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#aGrain)"></rect></svg>
+<svg aria-hidden="true" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" style="position: absolute; inset: 0; pointer-events: none">
+<defs>
+<filter id="cXL" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="54" result="b"></feGaussianBlur><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="n"></feTurbulence><feDisplacementMap in="b" in2="n" scale="30" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
+<filter id="cL" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="32" result="b"></feGaussianBlur><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="n"></feTurbulence><feDisplacementMap in="b" in2="n" scale="24" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
+<filter id="cM" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="20" result="b"></feGaussianBlur><feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="7" result="n"></feTurbulence><feDisplacementMap in="b" in2="n" scale="18" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
+<!-- a soft quiet zone behind the copy: the blob dims to ~25% there so it never fights the words -->
+<filter id="qBlur" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="34"></feGaussianBlur></filter>
+<mask id="quiet" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="900"><rect width="1440" height="900" fill="#fff"></rect></mask>
+<!-- illustration: hand-cut edge, and the inversion masks (the blob's body decides where the bubbles flip) -->
+<filter id="rough" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="4" result="n1"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n1" scale="5.5" xChannelSelector="R" yChannelSelector="G" result="w"></feDisplacementMap><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="1" seed="9" result="n2"></feTurbulence><feDisplacementMap in="w" in2="n2" scale="2.2" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
+<filter id="softEdge" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="5"></feGaussianBlur></filter>
+<mask id="inBlob" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="900"><g style="transform: {{b.t}}; transition: transform 1500ms cubic-bezier(.2,.65,.2,1)"><path class="mph" d="{{b.mid}}" fill="#fff" filter="url(#softEdge)"></path></g></mask>
+<mask id="outBlob" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="900"><rect width="1440" height="900" fill="#fff"></rect><g style="transform: {{b.t}}; transition: transform 1500ms cubic-bezier(.2,.65,.2,1)"><path class="mph" d="{{b.mid}}" fill="#000" filter="url(#softEdge)"></path></g></mask>
+</defs>
+<!-- one grainy two-colour blob to the right of the copy; its pale edge meets the ends of the lines, the core sits away from the words -->
+<!-- each layer chases the cursor at its own speed and reach, so the blob stretches, splits a little and regroups as it dances after the pointer -->
+<g mask="url(#quiet)">
+<g class="settle">
+<!-- three aligned layers like the homepage (pale halo, body, lighter core) moving as one; only their outlines shift as it follows the cursor -->
+<g style="transform: {{b.t}}; transition: transform 1500ms cubic-bezier(.2,.65,.2,1)">
+<g class="breathe">
+<path class="mph" d="{{b.halo}}" fill="{{b.cHalo}}" filter="url(#cXL)" opacity="0.75"></path>
+<path class="mph" d="{{b.mid}}" fill="{{b.cMid}}" filter="url(#cL)" opacity="0.7"></path>
+<path class="mph" d="{{b.core}}" fill="{{b.cCore}}" filter="url(#cM)" opacity="0.62"></path>
+</g>
+</g>
+</g>
+</g>
+<!-- the bubble illustration: ink outside the blob, the inverse inside it -->
+<sc-for list="{{passes}}" as="ps" hint-placeholder-count="2">
+<g mask="url(#{{ps.mask}})" filter="url(#rough)">
+<sc-for list="{{ps.shapes}}" as="sh" hint-placeholder-count="12">
+<path transform="{{sh.tf}}" d="{{sh.d}}" fill="{{sh.fill}}" stroke="{{sh.stroke}}" stroke-width="{{sh.sw}}" stroke-linejoin="round" stroke-linecap="round"></path>
+</sc-for>
+</g>
+</sc-for>
+</svg>
+<div style="position: absolute; inset: 0; z-index: 1; overflow-y: auto">
+<header style="height: 11vh; min-height: 72px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; padding: 0 4vw">
+<a class="lnk" href="Bloburblur.dc.html" aria-label="Ben Weiller — home" style="display: inline-block; font-family: 'Dirtbag TM', 'Inter', sans-serif; font-size: 44px; line-height: 1; letter-spacing: 0.03em; position: relative; top: 9px; text-decoration: none; color: #1E1E1C">BEN WEILLER</a>
+<div style="display: flex; align-items: center; gap: 26px">
+<nav id="hdrMenuG" aria-label="Main" class="drawer {{openClsG}}" style="display: flex; gap: 28px; align-items: center; font-size: 13px; line-height: 1; visibility: {{drawerVisG}}">
+<a class="nb" href="Menu-Blob-Bold.dc.html" tabindex="{{tabG}}">/work</a>
+<a class="nb" href="https://www.instagram.com/un_finished_lines/" target="_blank" rel="noopener" tabindex="{{tabG}}">/@un_finished_lines</a>
+<a class="nb on" href="About-A.dc.html" aria-current="page" tabindex="{{tabG}}">/who, me?</a>
+<a class="nb" href="Contact-A.dc.html" tabindex="{{tabG}}">/contact</a>
+</nav>
+<button class="ico" type="button" onClick="{{toggleG}}" aria-expanded="{{openStrG}}" aria-controls="hdrMenuG" aria-label="{{icoLabelG}}" style="width: 48px; height: 48px; margin-right: -7px; padding: 0; border: 0; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<svg class="burger" width="33" height="27" viewBox="0 0 22 18" overflow="visible" aria-hidden="true"><line class="l1" x1="1" y1="17" x2="7.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l2" x1="8" y1="17" x2="14.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l3" x1="15" y1="17" x2="21.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line></svg>
+</button>
+</div>
+</header>
+<main style="width: min(1120px, 90vw); margin: 0 auto; padding: 16vh 0 12vh; display: flex; gap: 9vw; align-items: flex-start">
+<!-- portrait: a card on the page with the same hovering shadow as the menu card; the blob peeks out from behind it -->
+<figure style="margin: 0; flex: none; width: min(22vw, 300px)">
+<img src="./assets/0843f9d7ff57f2bd39f4b271f856d46c.jpg" alt="Ben Weiller sitting under the trees in a slouchy knit hat" style="display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; filter: saturate(0.92) contrast(1.02)">
+</figure>
+<!-- the piece: set like a poem, narrow column, generous leading; placeholder until Ben's text arrives -->
+<section aria-label="About" style="max-width: 400px; padding-top: 4vh">
+<h1 style="margin: 0 0 18px; font-size: 22px; font-weight: 400; letter-spacing: -0.035em; line-height: 1.25">who, me?</h1>
+<div style="font-size: 14px; line-height: 1.75; color: #1E1E1C">
+<p style="margin: 0 0 18px">as a kid you might find me binging Avatar: The Last Airbender on Nickelodeon, buried in a good book or coming up with siiiick new tricks on my old school Razor scooter. “The Illustrated Man” by Ray Bradbury along with a litany of other literature inspired me to pursue my passion for wordsmithing and storytelling. later, at the University of Denver, I was enthralled by the world of big ideas and entrepreneurship. before long my two interests merged and I found myself sitting in class at Denver Ad School.</p>
+<p style="margin: 0">I’m infinitely passionate about crafting new ideas and weaving syllables into sentences, which you’ll find me doing on the daily. you can also catch me writing poetry, short fiction, cycling, camping and traveling the world. group rides and group writes encouraged.</p>
+</div>
+</section>
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { four: true, openG: false, seed: Math.floor(Math.random() * 1e6), mx: null, my: null, here: false }; this.pend = null; this.raf = null; this.ht = null; }
+  componentWillUnmount() { cancelAnimationFrame(this.raf); clearTimeout(this.ht); }
+  rng(seed) {
+    let a = seed >>> 0;
+    return function () { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  }
+  // homepage-style layer: shared centre and rotation, its own lobes; t (cursor travel) makes the lobes drift and swell
+  sblob(seed, cx, cy, rx, ry, rot, wob, n, t) {
+    const r = this.rng(seed), harm = [];
+    for (let k = 2; k <= 6; k++) {
+      const a0 = (r() * 2 - 1) * wob / (k * 0.7), p0 = r() * 6.283, sp = (r() * 2 - 1) * (0.5 + r() * 0.8), q = r() * 6.283;
+      harm.push({ k: k, a: a0 * (0.6 + 0.7 * Math.abs(Math.sin(t * 0.6 + q))) + (0.12 / k) * Math.sin(t * 0.9 + q * 2), p: p0 + t * sp });
+    }
+    const pts = [], c = Math.cos(rot), sn = Math.sin(rot);
+    for (let i = 0; i < n; i++) {
+      const th = (i / n) * 6.283; let f = 1;
+      harm.forEach((h) => { f += h.a * Math.sin(h.k * th + h.p); });
+      f = Math.max(0.35, f);
+      const x = Math.cos(th) * rx * f, y = Math.sin(th) * ry * f;
+      pts.push([cx + x * c - y * sn, cy + x * sn + y * c]);
+    }
+    let d = 'M' + pts[0][0].toFixed(1) + ' ' + pts[0][1].toFixed(1);
+    for (let i = 0; i < n; i++) {
+      const p0 = pts[(i - 1 + n) % n], p1 = pts[i], p2 = pts[(i + 1) % n], p3 = pts[(i + 2) % n];
+      d += ' C' + (p1[0] + (p2[0] - p0[0]) / 6).toFixed(1) + ' ' + (p1[1] + (p2[1] - p0[1]) / 6).toFixed(1) + ' ' + (p2[0] - (p3[0] - p1[0]) / 6).toFixed(1) + ' ' + (p2[1] - (p3[1] - p1[1]) / 6).toFixed(1) + ' ' + p2[0].toFixed(1) + ' ' + p2[1].toFixed(1);
+    }
+    return d + ' Z';
+  }
+  // t = cursor travel: each lobe drifts at its own speed and swells/settles, so the shape keeps shifting as you move
+  vblob(seed, cx, cy, rx, ry, n, t) {
+    t = t || 0;
+    const r = this.rng(seed), harm = [];
+    const rot = (r() - 0.5) * 2.2, sx = 0.75 + r() * 0.55, sy = 0.75 + r() * 0.55, wob = 0.22 + r() * 0.34;
+    for (let k = 2; k <= 6; k++) {
+      const a0 = (r() * 2 - 1) * wob / (k * 0.7);
+      const base = a0 * (1 + 0.45 * Math.sin(k * 1.7 + r() * 3)) + (r() < 0.35 ? (0.08 + r() * 0.08) / k : 0), p0 = r() * 6.283, sp = (r() * 2 - 1) * (0.6 + r() * 0.9), q = r() * 6.283;
+      harm.push({ k: k, a: base * (0.55 + 0.8 * Math.abs(Math.sin(t * 0.7 + q))) + (0.07 / k) * Math.sin(t * 1.1 + q * 2), p: p0 + t * sp });
+    }
+    const pts = [], c = Math.cos(rot), sn = Math.sin(rot);
+    for (let i = 0; i < n; i++) {
+      const t = (i / n) * 6.283; let f = 1;
+      harm.forEach((h) => { f += h.a * Math.sin(h.k * t + h.p); });
+      f = Math.max(0.35, f);
+      const x = Math.cos(t) * rx * sx * f, y = Math.sin(t) * ry * sy * f;
+      pts.push([cx + x * c - y * sn, cy + x * sn + y * c]);
+    }
+    let d = 'M' + pts[0][0].toFixed(1) + ' ' + pts[0][1].toFixed(1);
+    for (let i = 0; i < n; i++) {
+      const p0 = pts[(i - 1 + n) % n], p1 = pts[i], p2 = pts[(i + 1) % n], p3 = pts[(i + 2) % n];
+      d += ' C' + (p1[0] + (p2[0] - p0[0]) / 6).toFixed(1) + ' ' + (p1[1] + (p2[1] - p0[1]) / 6).toFixed(1) + ' ' + (p2[0] - (p3[0] - p1[0]) / 6).toFixed(1) + ' ' + (p2[1] - (p3[1] - p1[1]) / 6).toFixed(1) + ' ' + p2[0].toFixed(1) + ' ' + p2[1].toFixed(1);
+    }
+    return d + ' Z';
+  }
+  mix(h1, h2, t) {
+    const a = parseInt(h1.slice(1), 16), b = parseInt(h2.slice(1), 16);
+    const c = (sh) => Math.round(((a >> sh) & 255) * (1 - t) + ((b >> sh) & 255) * t);
+    return 'rgb(' + c(16) + ',' + c(8) + ',' + c(0) + ')';
+  }
+  renderVals() {
+    const o = !!this.state.openG;
+    // randomised per visit: palette pairing and shapes (homepage palettes; the core lifted so it reads as a third colour)
+    // colours from the whole wheel (like the homepage): a random body hue, a halo hue offset from it, a core that's deeper but not dark
+    const sd = this.state.seed, r = this.rng(sd + 3);
+    // colours: a random start anywhere on the wheel, then every layer drifts through hues on its own as the cursor moves (like the homepage)
+    // static on this page: no cursor following or morphing — colours and shape are still picked fresh each visit
+    // colour drifts slowly with how far the cursor has travelled (slower than the contact page); the shape itself stays put
+    const T = (this.state.travel || 0) / 1800, H = r() * 360 + 140 * Math.sin(T * 0.8 + r() * 6), H2 = H + (r() < 0.5 ? 1 : -1) * (60 + r() * 120) + 90 * Math.sin(T * 0.6 + 2), H3 = H - 25 + 50 * Math.sin(T * 1.1 + 4);
+    const hsl = (h, sa, l) => 'hsl(' + (((h % 360) + 360) % 360).toFixed(1) + ',' + sa.toFixed(1) + '%,' + l.toFixed(1) + '%)';
+    // home: just left of the copy (copy sits on the right), so the words start on the blob's pale right edge
+    const cx = 1105 + r() * 15, cy = 470 + r() * 30, t = 0;
+    // smaller than before (homepage proportions, scaled down)
+    const rot = (r() - 0.5) * 1.6, rx = 120 + r() * 30, ry = 105 + r() * 30;
+    const ox = -28 - r() * 30, oy = (r() - 0.5) * 34;
+    const b = {
+      halo: this.sblob(sd + 1, cx, cy, rx * 1.35, ry * 1.35, rot, 0.28, 10, t),
+      mid: this.sblob(sd + 3, cx, cy, rx, ry, rot, 0.34, 10, t * 1.1),
+      core: this.sblob(sd + 4, cx + ox, cy + oy, rx * 0.55, ry * 0.5, rot - 0.4, 0.38, 9, t * 1.2),
+      cHalo: hsl(H2, 62 + r() * 22, 82 + r() * 7), cMid: hsl(H, 40 + r() * 30, 42 + r() * 14), cCore: hsl(H3, 48 + r() * 24, 26 + r() * 10)
+    };
+    const reduce = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const on = this.state.mx !== null, dx = on ? this.state.mx - cx : 0, dy = on ? this.state.my - cy : 0;
+    // the whole blob follows the cursor as one (same reach as before); near the copy's height it stops short of the text's left edge
+    const TX = 660, TY0 = 240, TY1 = 620, K = 0.75;
+    let tx = cx + dx * K; const ty = cy + dy * K;
+    if (ty > TY0 - 150 && ty < TY1 + 150) tx = Math.min(tx, Math.max(cx, TX - 160));
+    // subtle drift only: the blob leans toward the cursor (max 28px across, 20px up/down), no reshaping
+    const still = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const sx = Math.max(-28, Math.min(28, dx * 0.06)), sy = Math.max(-20, Math.min(20, dy * 0.06));
+    b.t = still ? 'none' : 'translate(' + sx.toFixed(1) + 'px,' + sy.toFixed(1) + 'px)';
+    const here = !!this.state.here;
+    // ---------- bubble illustration (all ink silhouettes, details cut out), arcing up toward the copy ----------
+    const INK = '#1E1E1C', GR = '#F1F1EE';
+    const C = (x, y, rr) => 'M' + (x + rr) + ' ' + y + ' A' + rr + ' ' + rr + ' 0 1 0 ' + (x - rr) + ' ' + y + ' A' + rr + ' ' + rr + ' 0 1 0 ' + (x + rr) + ' ' + y + ' Z';
+    const star = (x, y, k) => { const q = (a, b2) => (x + a * k).toFixed(1) + ' ' + (y + b2 * k).toFixed(1); return 'M' + q(0, -16) + ' C' + q(2, -4) + ' ' + q(4, -2) + ' ' + q(16, 0) + ' C' + q(4, 2) + ' ' + q(2, 4) + ' ' + q(0, 16) + ' C' + q(-2, 4) + ' ' + q(-4, 2) + ' ' + q(-16, 0) + ' C' + q(-4, -2) + ' ' + q(-2, -4) + ' ' + q(0, -16) + ' Z'; };
+    const E = (x, y, ax, ay) => 'M' + (x + ax) + ' ' + y + ' A' + ax + ' ' + ay + ' 0 1 0 ' + (x - ax) + ' ' + y + ' A' + ax + ' ' + ay + ' 0 1 0 ' + (x + ax) + ' ' + y + ' Z';
+    const BUB = [
+      [{ k: 'body', d: 'M-6 38 C-30 38 -50 22 -50 0 C-50 -24 -26 -40 0 -40 C26 -40 50 -24 50 0 C50 24 28 40 4 40 C-2 46 -14 54 -28 56 C-20 50 -14 44 -6 38 Z' }, { k: 'dot', d: C(-16, 0, 4.5) + ' ' + C(0, 0, 4.5) + ' ' + C(16, 0, 4.5) }],
+      [{ k: 'body', d: 'M-40 10 A18 18 0 0 1 -30 -20 A22 22 0 0 1 4 -36 A22 22 0 0 1 36 -18 A18 18 0 0 1 40 14 A20 20 0 0 1 10 34 A22 22 0 0 1 -28 30 A16 16 0 0 1 -40 10 Z ' + C(-46, 44, 7) + ' ' + C(-58, 58, 4) }, { k: 'dot', d: star(-6, -4, 1.05) + ' ' + star(18, -15, 0.48) + ' ' + star(17, 13, 0.58) + ' ' + star(-24, 15, 0.38) + ' ' + star(4, 20, 0.3) }],
+      [{ k: 'body', d: 'M-58 0 C-58 -26 -30 -36 0 -36 C32 -36 58 -26 58 0 C58 24 34 34 4 34 L-16 34 L-34 50 L-30 31 C-48 27 -58 16 -58 0 Z' }, { k: 'dot', d: 'M-21.8 22 L-18.2 22 L-18.8 -8 L-21.2 -8 Z M-1.8 22 L1.8 22 L1.2 -14 L-1.2 -14 Z M17.2 22 L20.8 22 L20.2 -5 L17.8 -5 Z' + ' ' + E(-25, -10, 4.2, 3) + ' ' + E(-16, -12, 4.5, 3.2) + ' ' + E(-21, -17, 4, 3.4) + ' ' + E(-14, -4, 3.6, 2.6) + ' ' + E(-26, -2, 3.4, 2.6) + ' ' + E(-19, -6, 3.6, 2.8) + ' ' + E(-5, -16, 4.2, 3) + ' ' + E(4, -18, 4.5, 3.2) + ' ' + E(-1, -23, 4, 3.4) + ' ' + E(6, -10, 3.6, 2.6) + ' ' + E(-6, -8, 3.4, 2.6) + ' ' + E(1, -12, 3.6, 2.8) + ' ' + E(14, -7, 4.2, 3) + ' ' + E(23, -9, 4.5, 3.2) + ' ' + E(18, -14, 4, 3.4) + ' ' + E(25, -1, 3.6, 2.6) + ' ' + E(13, 1, 3.4, 2.6) + ' ' + E(20, -3, 3.6, 2.8) }, { k: 'ink', d: 'M-21.8 15.4 L-19.4 15.4 M-20.6 8.5 L-18.2 8.5 M-21.8 1.6 L-20 1.6 M-1.8 14.1 L0.6 14.1 M-0.6 5.8 L1.8 5.8 M-1.8 -2.5 L0 -2.5 M17.2 16.1 L19.6 16.1 M18.4 9.8 L20.8 9.8 M17.2 3.6 L19 3.6', w: 1.3 }, { k: 'cut', d: 'M-32 23 L32 23', w: 2 }],
+      [{ k: 'body', d: 'M-44 -34 L44 -34 Q54 -34 54 -24 L54 22 Q54 32 44 32 L-10 32 L-28 48 L-24 32 L-44 32 Q-54 32 -54 22 L-54 -24 Q-54 -34 -44 -34 Z' }, { k: 'cut', d: 'M-29 -11 C-28 -22 -11 -23 -11 -10 C-11 -2 -20 0 -20 7 M0 -17 L2 5 M11 -11 C12 -22 29 -23 29 -10 C29 -2 20 0 20 7', w: 4.2 }, { k: 'dot', d: C(-20, 16, 3.2) + ' ' + C(2.5, 15, 3.2) + ' ' + C(20, 16, 3.2) }]
+      ,
+      // a row of eyeballs, pupils glancing toward the cursor
+      [{ k: 'body', d: 'M-40 -32 L40 -32 C58 -32 66 -18 66 -2 C66 16 56 30 38 30 L18 30 L28 48 L4 30 L-40 30 C-58 30 -66 16 -66 -2 C-66 -18 -58 -32 -40 -32 Z' }, { k: 'dot', ring: true, d: C(-36, -2, 10.5) + ' ' + C(-12, -2, 10.5) + ' ' + C(12, -2, 10.5) + ' ' + C(36, -2, 10.5) }, { k: 'pupil', eyes: [-36, -12, 12, 36] }]
+      ,
+      // an ear, listening
+      [{ k: 'body', d: 'M-6 38 C-30 38 -50 22 -50 0 C-50 -24 -26 -40 0 -40 C26 -40 50 -24 50 0 C50 24 28 40 4 40 C-2 46 -14 54 -28 56 C-20 50 -14 44 -6 38 Z' }, { k: 'dot', d: 'M-30 -40 C-30 -66 0 -78 22 -70 C46 -62 54 -34 46 -12 C40 4 26 12 22 30 C18 50 4 64 -12 62 C-26 60 -30 48 -24 40 C-20 34 -14 30 -16 20 C-18 10 -30 0 -30 -40 Z', sub: 'translate(0 -2) scale(0.42)' }, { k: 'ink', d: 'M-12 -34 C-6 -54 24 -52 28 -30 C30 -14 16 -6 10 6 C6 14 -2 14 -4 6', w: 7, sub: 'translate(0 -2) scale(0.42)' }],
+      // a road bicycle (drop bars)
+      [{ k: 'body', d: 'M-58 0 C-58 -26 -30 -36 0 -36 C32 -36 58 -26 58 0 C58 24 34 34 4 34 L-16 34 L-34 50 L-30 31 C-48 27 -58 16 -58 0 Z' }, { k: 'cut', d: C(-24, 8, 14) + ' ' + C(24, 8, 14) + ' M-24 8 L-7 -11 L15 -11 L1 8 Z M1 8 L-7 -11 M15 -11 L24 8 M15 -11 L18 -16 C25 -17 27 -10 22 -7 M-13 -14 L-1 -14', w: 2.8 }, { k: 'spokes', wheels: [[-24, 8, 1], [24, 8, 1.4]] }]
+    ];
+    // positions: lower left, rising toward the headline; the blob's home sits over the third
+    // the arc: eyes → sparkle cloud → road bike → ?!? (dots, trees and ear sit this one out)
+    // quieter + more room: slightly smaller, nudged up-left so the headline has space
+    // arc rising from the lower left toward the headline (shifted with the copy so the headline keeps its breathing room)
+    const PP = [null, [422, 510, -7, 0.7], null, [705, 392, -2, 0.77], [275, 566, -10, 0.65], null, [565, 452, -4, 0.72]];
+    // trial: just the sparkly thought bubble, larger, sitting by the blob's home so it starts half-flipped
+    const ONE = false; // the arc is the chosen layout (the cluster is saved on the illustration board)
+    // the cluster: all roughly the same size
+    const PP1 = [null, [640, 560, -6, 1.12], [420, 470, -8, 0.98], [790, 470, -3, 1.0], [455, 690, 4, 0.9], [600, 375, 5, 1.08], [665, 745, -4, 0.95]];
+    const passes = [false, true].map((inside) => {
+      // in the arc the bubbles are printed in the soft caption grey so the copy stays the darkest thing on the page
+      const tone = ONE ? INK : '#6B6B64';
+      const main = inside ? GR : tone, counter = inside ? tone : GR, shapes = [];
+      BUB.forEach((parts, i) => {
+        const pp = ONE ? PP1[i] : PP[i];
+        if (!pp) return;
+        const tf = 'translate(' + pp[0] + ' ' + pp[1] + ') rotate(' + pp[2] + ') scale(' + pp[3] + ')', line = false; // all solid ink silhouettes
+        parts.forEach((pt) => {
+          if (pt.k === 'body') shapes.push(line ? { tf: tf, d: pt.d, fill: 'none', stroke: main, sw: 3.4 } : { tf: tf, d: pt.d, fill: main, stroke: 'none', sw: 0 });
+          else if (pt.k === 'cut') shapes.push({ tf: tf + (pt.sub ? ' ' + pt.sub : ''), d: pt.d, fill: 'none', stroke: line ? main : counter, sw: line ? Math.min(pt.w, 3.4) : pt.w });
+          else if (pt.k === 'pupil') {
+            // pupils look toward the cursor (or straight ahead when it's away)
+            const ang = this.state.mx === null ? 0 : Math.atan2(this.state.my - pp[1], this.state.mx - pp[0]) - pp[2] * Math.PI / 180;
+            const ox = this.state.mx === null ? 3 : Math.cos(ang) * 4.5, oy = this.state.mx === null ? 1.5 : Math.sin(ang) * 4.5;
+            shapes.push({ tf: tf, d: pt.eyes.map((ex) => C(+(ex + ox).toFixed(1), +(-2 + oy).toFixed(1), 5.2)).join(' '), fill: main, stroke: 'none', sw: 0 });
+          }
+          else if (pt.k === 'spokes') {
+            // the wheels turn as the cursor moves (each at its own speed); still when the cursor rests
+            const turn = (this.state.travel || 0) / 38;
+            const d = pt.wheels.map((w) => { let out = ''; for (let q = 0; q < 3; q++) { const a = turn * w[2] + q * Math.PI / 3, dx = Math.cos(a) * 12, dy = Math.sin(a) * 12; out += 'M' + (w[0] - dx).toFixed(1) + ' ' + (w[1] - dy).toFixed(1) + ' L' + (w[0] + dx).toFixed(1) + ' ' + (w[1] + dy).toFixed(1) + ' '; } return out; }).join('');
+            shapes.push({ tf: tf, d: d, fill: 'none', stroke: line ? main : counter, sw: 1.3 });
+          }
+          else if (pt.k === 'mainfill') shapes.push({ tf: tf + (pt.sub ? ' ' + pt.sub : ''), d: pt.d, fill: main, stroke: 'none', sw: 0 });
+          else if (pt.k === 'ink') shapes.push({ tf: tf + (pt.sub ? ' ' + pt.sub : ''), d: pt.d, fill: 'none', stroke: main, sw: pt.w });
+          else if (pt.ring && line) shapes.push({ tf: tf, d: pt.d, fill: 'none', stroke: main, sw: 2.2 });
+          else shapes.push({ tf: tf + (pt.sub ? ' ' + pt.sub : ''), d: pt.d, fill: line ? main : counter, stroke: 'none', sw: 0 });
+        });
+      });
+      return { mask: inside ? 'inBlob' : 'outBlob', shapes: shapes };
+    });
+    return {
+      b: b, passes: [],
+      fourLabel: this.state.four ? 'arc (tap for the cluster)' : 'cluster (tap for the arc)', toggleFour: () => this.setState({ four: !this.state.four }),
+      onMove: (e) => {
+        const r0 = e.currentTarget.getBoundingClientRect();
+        // map to the blob's 1440x900 (slice) space
+        const sc = Math.max(r0.width / 1440, r0.height / 900), ox = (r0.width - 1440 * sc) / 2, oy = (r0.height - 900 * sc) / 2;
+        const nx = (e.clientX - r0.left - ox) / sc, ny = (e.clientY - r0.top - oy) / sc;
+        const d = this.lastP ? Math.min(90, Math.hypot(nx - this.lastP[0], ny - this.lastP[1])) : 0; this.lastP = [nx, ny];
+        this.pend = { mx: nx, my: ny, travel: (this.pend && this.pend.travel !== undefined ? this.pend.travel : (this.state.travel || 0)) + d };
+        if (this.raf) return;
+        this.raf = requestAnimationFrame(() => { this.raf = null; if (this.pend) { const q = this.pend; this.pend = null; this.setState(q); } });
+      },
+      onLeave: () => { this.lastP = null; this.setState({ mx: null, my: null }); },
+      // "HERE": hover (or click / focus) shows the LinkedIn and email icons above it
+      hereCls: here ? 'on' : '', hereVis: here ? 'visible' : 'hidden', hereTab: here ? '0' : '-1', hereOpenStr: here ? 'true' : 'false',
+      hereOn: () => { clearTimeout(this.ht); this.setState({ here: true }); },
+      hereOff: () => { clearTimeout(this.ht); this.ht = setTimeout(() => this.setState({ here: false }), 350); },
+      hereToggle: () => { clearTimeout(this.ht); this.setState({ here: !this.state.here }); },
+      openClsG: o ? 'open' : '', openStrG: o ? 'true' : 'false', drawerVisG: o ? 'visible' : 'hidden', tabG: o ? '0' : '-1',
+      icoLabelG: o ? 'Close menu' : 'Open menu',
+      toggleG: () => this.setState({ openG: !this.state.openG })
+    };
+  }
+}
+</script>
+</body>
+</html>

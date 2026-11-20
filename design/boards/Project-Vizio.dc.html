@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Project — vizio · bring the cinema home</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&amp;display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'Dirtbag TM';src:url('./assets/a15098c6e2313273da5b37f609489781.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+body{margin:0}
+a{color:#1E1E1C}a:hover{color:#000000}
+.page{scrollbar-width:none}.page::-webkit-scrollbar{display:none}
+.lnk:focus-visible,.card:focus-visible,.ctl:focus-visible,.ico:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:4px}
+.breathe{transform-box:fill-box;transform-origin:50% 50%;animation:breathe 10s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.03) rotate(1deg)}}
+.cardIn{animation:cardIn 1000ms cubic-bezier(.2,.75,.15,1) both}
+@keyframes cardIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.glowIn{animation:glowIn 1400ms ease both}
+@keyframes glowIn{from{opacity:0}to{opacity:1}}
+.play{transition:transform 300ms ease}
+.card:hover .play{transform:scale(1.08)}
+.lift{transition:transform 400ms cubic-bezier(.2,.7,.2,1)}
+.lift:hover{transform:none}
+.band:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:3px}
+
+@media (prefers-reduced-motion: reduce){.breathe,.cardIn,.glowIn{animation:none}.play,.lift{transition:none}}
+.ico{transition:transform 350ms cubic-bezier(.3,.7,.2,1)}
+.ico[aria-expanded="true"] .plus{transform:rotate(45deg)}
+.drawer a{opacity:0;transform:translateX(10px);transition:opacity 300ms ease,transform 400ms cubic-bezier(.3,.7,.2,1)}
+.drawer.open a{opacity:1;transform:none}
+.drawer.open a:nth-child(2){transition-delay:50ms}.drawer.open a:nth-child(3){transition-delay:100ms}
+.tl{position:relative;display:inline-flex;align-items:flex-end;height:20px;color:#55554F;text-decoration:none;transition:color 200ms ease}
+.tl .sl{display:inline-block;line-height:1}
+.tl .w{position:relative;display:inline-block;width:24px;height:20px}
+.tl .w span{position:absolute;left:14px;bottom:0;white-space:nowrap;transform:rotate(-71deg) translateX(-100%);transform-origin:0 100%;line-height:1}
+.tl:hover,.tl:focus-visible,.tl.on{color:#1E1E1C}
+.tl:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:6px}
+@media (prefers-reduced-motion: reduce){.tl{transition:none}}
+.burger line{transition:transform 350ms cubic-bezier(.3,.7,.2,1),opacity 200ms ease;transform-box:fill-box;transform-origin:50% 50%}
+.ico[aria-expanded="true"] .burger .l1{transform:translateX(7px) rotate(24deg)}
+.ico[aria-expanded="true"] .burger .l2{opacity:0}
+.ico[aria-expanded="true"] .burger .l3{transform:translateX(-7px) rotate(-66deg)}
+@media (prefers-reduced-motion: reduce){.burger line{transition:none}}
+@media (prefers-reduced-motion: reduce){.drawer a{transition:none}}
+.nb{color:#55554F;text-decoration:none;white-space:nowrap;transition:color 200ms ease}
+.nb:hover,.nb:focus-visible,.nb.on{color:#1E1E1C}
+.nb:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:4px}
+/* keyboard focus on text (links, menu words, wordmark): no box. a soft glass rectangle leaning at the lean angle sits behind the word */
+.nb:focus-visible,.tlk:focus-visible,.lnk:focus-visible{outline:none;position:relative;z-index:0}
+.nb:focus-visible::before,.tlk:focus-visible::before,.lnk:focus-visible::before{content:"";position:absolute;left:-9px;right:-9px;top:-5px;bottom:-5px;z-index:-1;transform:skewX(-16.7deg);background:linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.36));backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 1px rgba(255,255,255,0.85),0 1px 10px rgba(30,30,28,0.12)}
+/* FOCUS (approved, site-wide): keyboard only, no outlines anywhere.
+   text, words and small controls: a soft glass rectangle leaning at the lean angle behind them.
+   media and glass buttons: no frame, a soft shadow that lifts them off the page */
+*:focus-visible{outline:none!important}
+.nb:focus-visible:not([style*="position: absolute"]),.tlk:focus-visible:not([style*="position: absolute"]),.lnk:focus-visible:not([style*="position: absolute"]),.ctl:focus-visible:not([style*="position: absolute"]),.tl:focus-visible:not([style*="position: absolute"]),.ic:focus-visible:not([style*="position: absolute"]),.hereBtn:focus-visible:not([style*="position: absolute"]),.ico:focus-visible:not([style*="position: absolute"]),.item:focus-visible:not([style*="position: absolute"]),a:not(.card):not(.xp):not(.band):focus-visible:not([style*="position: absolute"]),button:not(.gb):not(.xp):not(.pp):focus-visible:not([style*="position: absolute"]){position:relative;z-index:0}
+.nb:focus-visible::before,.tlk:focus-visible::before,.lnk:focus-visible::before,.ctl:focus-visible::before,.tl:focus-visible::before,.ic:focus-visible::before,.hereBtn:focus-visible::before,.ico:focus-visible::before,.item:focus-visible::before,a:not(.card):not(.xp):not(.band):focus-visible::before,button:not(.gb):not(.xp):not(.pp):focus-visible::before{content:"";position:absolute;left:-9px;right:-9px;top:-5px;bottom:-5px;z-index:-1;transform:skewX(-16.7deg);background:linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.36));backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 1px rgba(255,255,255,0.85),0 1px 10px rgba(30,30,28,0.12)}
+.card:focus-visible::after,.xp:focus-visible::after,.band:focus-visible::after,.gbw:has(.gb:focus-visible)::after{content:none!important}
+.card:focus-visible,.xp:focus-visible,.band:focus-visible,[tabindex]:not(a):not(button):focus-visible,.gbw:has(.gb:focus-visible),.gfocus{box-shadow:0 14px 34px -8px rgba(30,30,28,0.38),0 2px 8px rgba(30,30,28,0.12)}
+.gbw:has(.gb:focus-visible),.gfocus.round{border-radius:50%}
+/* glass buttons + expanded asset (ported from K5 GT, approved site-wide) */
+.gbw{position:relative;display:block;flex:none}
+.gbs{position:absolute;left:-30%;top:-10%;width:160%;height:160%;pointer-events:none;overflow:visible;transition:transform 400ms cubic-bezier(.3,.7,.2,1),opacity 400ms ease}
+.gbb{position:absolute;inset:0;display:block;transition:transform 600ms cubic-bezier(.3,.7,.2,1)}
+.gb{position:absolute;inset:0;display:block;box-sizing:border-box;padding:0;border:0;border-radius:50%;cursor:pointer;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,0.42),rgba(255,255,255,0.16));backdrop-filter:blur(24px) saturate(1.1);-webkit-backdrop-filter:blur(24px) saturate(1.1);box-shadow:inset 0 1px 3px rgba(255,255,255,0.32),inset 0 -2px 6px rgba(255,255,255,0.12);-webkit-mask-size:100% 100%;mask-size:100% 100%}
+.gb .fog{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0.5}
+.win{position:absolute;inset:0;display:block;border-radius:50%;pointer-events:none;background:rgba(255,255,255,0.05);backdrop-filter:blur(3px) saturate(1.35);-webkit-backdrop-filter:blur(3px) saturate(1.35);-webkit-mask-size:100% 100%;mask-size:100% 100%}
+.gbb .ico{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.gbw{cursor:pointer;perspective:160px}
+.gb{border-radius:0}
+.gic{position:absolute;inset:0;display:block;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,0.5),rgba(255,255,255,0.2));backdrop-filter:blur(24px) saturate(1.1);-webkit-backdrop-filter:blur(24px) saturate(1.1);-webkit-mask-size:100% 100%;mask-size:100% 100%}
+.gbw:has(.gb:focus-visible){outline:1px solid #1E1E1C;outline-offset:5px;border-radius:50%}
+.gb:focus-visible{outline:none}
+/* watch on vimeo: a small external link under the bottom-left corner of every film */
+.watch{margin:12px 0 0;font-size:13px;line-height:20px}
+.tlk{color:#1E1E1C;text-decoration:underline;text-decoration-color:rgba(30,30,28,0.35);text-decoration-thickness:1px;text-underline-offset:4px;transition:text-decoration-color 200ms ease}
+.tlk:hover{color:#1E1E1C;text-decoration-color:#1E1E1C}
+.tlk:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:4px}
+.gbw:hover .gbb,.card:hover .gbb{transform:translateY(-1px)}
+.gbw:hover .gbs,.card:hover .gbs{transform:translateY(2px) scale(1.04);opacity:0.8}
+.gb:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:6px}
+.card{container-type:inline-size}
+.card .gbw{position:absolute;left:50%;top:50%;width:max(44px,8cqw);height:max(44px,8cqw);transform:translate(-50%,-50%)}
+@media (prefers-reduced-motion: reduce){.gbb,.gbs{transition:none}}
+/* text links match the homepage words: grey, no underline, ink on hover */
+.tlk{color:#55554F;text-decoration:none;transition:color 200ms ease}
+.tlk:hover,.tlk-hover{color:#1E1E1C}
+/* keyboard focus on assets and glass buttons: a thin glass frame instead of a black outline */
+.card:focus-visible,.xp:focus-visible,.gbw:has(.gb:focus-visible){outline:none}
+.card:focus-visible::after,.xp:focus-visible::after,.gbw:has(.gb:focus-visible)::after,.gfocus::after{content:"";position:absolute;inset:-7px;pointer-events:none;z-index:4;border:1.5px solid rgba(255,255,255,0.85);box-shadow:0 0 0 0.5px rgba(30,30,28,0.22),inset 0 0 0 0.5px rgba(30,30,28,0.12),0 1px 8px rgba(30,30,28,0.1)}
+.gfocus{position:relative}
+/* HOVER · CLICK (approved): hover /clear — the frost thins and the colour behind comes through; press /sink — down half a pixel and in a touch */
+.gbw:hover .gbb,.card:hover .gbb,.gbw:hover .gbs,.card:hover .gbs{transform:none}
+.gb,.gic,.win{transition:filter 160ms ease,background 260ms ease}
+.gbw:hover .gb,.card:hover .gb{filter:saturate(1.35) brightness(1.06);background:linear-gradient(180deg,rgba(255,255,255,0.26),rgba(255,255,255,0.06))}
+.gbw:hover .gic,.card:hover .gic{filter:saturate(1.3) brightness(1.08)}
+.xp{position:relative;display:block;padding:0;border:0;background:none;cursor:zoom-in}
+/* carousel arrows: D dark glass (approved site-wide, Nov 7) so they read on the off-white page */
+.gv-dark .gb{background:linear-gradient(180deg,rgba(30,30,28,0.95),rgba(30,30,28,0.78))!important;box-shadow:inset 0 1px 2px rgba(255,255,255,0.25)!important}
+.gv-dark .gic{background:linear-gradient(180deg,rgba(30,30,28,0.97),rgba(30,30,28,0.82))!important}
+.gv-dark .ico{opacity:0.35}
+/* STICKY "///" : once the header scrolls away, the plain "///" stays in the top-right corner, exactly as in the header (ink slashes, no button, no glass). tapped, it folds into an × and its four words open beneath it as a vertical stack, plain text like the header words */
+.fab{opacity:0;visibility:hidden;transition:opacity 220ms ease,visibility 0s linear 220ms}
+.fab.on{opacity:1;visibility:visible;transition:opacity 220ms ease,visibility 0s}
+.fabBtn{width:48px;height:48px;margin-right:-7px;border:0;padding:0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.fabNav{position:absolute;top:52px;right:0;display:flex;flex-direction:column;align-items:flex-end;gap:16px}
+.fabNav a{color:#55554F;font-size:13px;line-height:1;text-decoration:none;white-space:nowrap;opacity:0;transform:translateY(-6px);transition:opacity 300ms ease,transform 400ms cubic-bezier(.3,.7,.2,1),color 200ms ease}
+.fabNav a:hover{color:#1E1E1C}
+.fabNav.open a{opacity:1;transform:none}
+.fabNav.open a:nth-child(2){transition-delay:50ms}.fabNav.open a:nth-child(3){transition-delay:100ms}.fabNav.open a:nth-child(4){transition-delay:150ms}
+/* no jump: the header's own "///" is replaced by this fixed one from the very top, so the symbol never moves while the wordmark scrolls away. at the top its words open in a row to its left (as before); once you've scrolled down they open as a vertical stack beneath it */
+header .ico,header #hdrMenuG{visibility:hidden!important}
+.fab,.fab.on{opacity:1!important;visibility:visible!important}
+.fabNav.row{top:0;right:54px;height:48px;flex-direction:row;align-items:center;gap:28px}
+.fabNav.row a{transform:translateX(10px)}
+.fabNav.row.open a{transform:none}
+.fabBtn .burger line{stroke:#1E1E1C}
+/* the flip: the symbol and its words are drawn in light tones with "difference" blending, so over the light page they read as ink / grey (as before), and over dark images or films they turn light — no box behind them */
+.fab{mix-blend-mode:difference}
+.fabBtn .burger line{stroke:#FFFFFF!important}
+.fabNav a{color:#A9A9B0!important}
+.fabNav a:hover,.fabNav a:focus-visible{color:#FFFFFF!important}
+
+.fabBtn[aria-expanded="true"] .burger .l1{transform:translateX(7px) rotate(24deg)}
+.fabBtn[aria-expanded="true"] .burger .l2{opacity:0}
+.fabBtn[aria-expanded="true"] .burger .l3{transform:translateX(-7px) rotate(-66deg)}
+@media (prefers-reduced-motion: reduce){.fab,.fab.on,.fabNav a{transition:none}}
+</style>
+</helmet>
+<div onMouseMove="{{onMove}}" onMouseLeave="{{onLeave}}" style="position: relative; height: 100vh; min-height: 560px; overflow: hidden; background: #F1F1EE; color: #1E1E1C; font-family: 'Inter', system-ui, sans-serif">
+
+<svg aria-hidden="true" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" style="position: absolute; inset: 0; pointer-events: none; z-index: 0">
+<defs>
+<filter id="gA" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="40" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="26" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="gB" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="22" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="18" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="gC" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="14" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="7" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="16" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="pageGrain" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"></feTurbulence>
+<feColorMatrix type="matrix" values="0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0.10 0"></feColorMatrix>
+</filter>
+</defs>
+<g class="glowIn">
+<g style="transform: {{lean}}; transition: transform 900ms cubic-bezier(.3,.6,.2,1)">
+<g class="breathe">
+<path d="{{b.halo}}" fill="{{b.cHalo}}" filter="url(#gA)" opacity="0.75"></path>
+<path d="{{b.accent}}" fill="{{b.cAccent}}" filter="url(#gB)" opacity="0.65"></path>
+<path d="{{b.mid}}" fill="{{b.cMid}}" filter="url(#gB)" opacity="0.55"></path>
+<path d="{{b.core}}" fill="{{b.cCore}}" filter="url(#gC)" opacity="0.5"></path>
+</g>
+</g>
+</g>
+<rect width="1440" height="900" filter="url(#pageGrain)"></rect>
+</svg>
+
+<svg aria-hidden="true" width="0" height="0" style="position: absolute"><defs>
+<filter id="imp-raise" filterUnits="userSpaceOnUse" x="-20" y="-20" width="260" height="140" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceAlpha" stdDeviation="0.7" result="h"></feGaussianBlur><feDiffuseLighting in="h" surfaceScale="1.3" diffuseConstant="1" lighting-color="#FFFFFF" result="dif"><feDistantLight azimuth="225" elevation="58"></feDistantLight></feDiffuseLighting><feMorphology in="SourceAlpha" operator="dilate" radius="0.9" result="dl"></feMorphology><feGaussianBlur in="dl" stdDeviation="0.4" result="zone"></feGaussianBlur><feColorMatrix in="dif" type="matrix" values="0 0 0 0 0.118  0 0 0 0 0.118  0 0 0 0 0.11  -0.45 0 0 0 0.383" result="shA"></feColorMatrix><feComposite in="shA" in2="zone" operator="in" result="sh"></feComposite><feColorMatrix in="dif" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  1.5 0 0 0 -1.275" result="liA"></feColorMatrix><feComposite in="liA" in2="zone" operator="in" result="hl"></feComposite><feFlood flood-color="#FFFFFF" flood-opacity="0.1"></feFlood><feComposite in2="SourceAlpha" operator="in" result="top"></feComposite><feOffset in="SourceAlpha" dx="0.5" dy="0.8"></feOffset><feGaussianBlur stdDeviation="1"></feGaussianBlur><feComposite in2="SourceAlpha" operator="out" result="castA"></feComposite><feFlood flood-color="#1E1E1C" flood-opacity="0.07"></feFlood><feComposite in2="castA" operator="in" result="cast"></feComposite><feMerge><feMergeNode in="cast"></feMergeNode><feMergeNode in="top"></feMergeNode><feMergeNode in="sh"></feMergeNode><feMergeNode in="hl"></feMergeNode></feMerge></filter>
+<filter id="imp-etch" filterUnits="userSpaceOnUse" x="-20" y="-20" width="260" height="140" color-interpolation-filters="sRGB"><feComponentTransfer in="SourceAlpha" result="inv"><feFuncA type="table" tableValues="1 0"></feFuncA></feComponentTransfer><feFlood flood-color="#FFFFFF" flood-opacity="0.34"></feFlood><feComposite in2="SourceAlpha" operator="in" result="floor"></feComposite><feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="1" seed="2" result="gn"></feTurbulence><feColorMatrix in="gn" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.9 -0.32" result="gA"></feColorMatrix><feComposite in="gA" in2="SourceAlpha" operator="in" result="grain"></feComposite><feOffset in="inv" dx="0.5" dy="0.7"></feOffset><feGaussianBlur stdDeviation="0.6"></feGaussianBlur><feComposite in2="SourceAlpha" operator="in" result="shA"></feComposite><feFlood flood-color="#1E1E1C" flood-opacity="0.16"></feFlood><feComposite in2="shA" operator="in" result="sh"></feComposite><feMerge><feMergeNode in="floor"></feMergeNode><feMergeNode in="grain"></feMergeNode><feMergeNode in="sh"></feMergeNode></feMerge></filter>
+<filter id="grit" x="-60%" y="-120%" width="220%" height="340%">
+<feGaussianBlur in="SourceGraphic" stdDeviation="13" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="1.3" numOctaves="1" seed="4" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="22" xChannelSelector="R" yChannelSelector="G" result="d"></feDisplacementMap>
+<feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="9" result="n2"></feTurbulence>
+<feColorMatrix in="n2" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1.7 -0.38" result="mask"></feColorMatrix>
+<feComposite in="d" in2="mask" operator="in"></feComposite>
+</filter>
+<filter id="gfog"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="5"></feTurbulence><feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.22 0"></feColorMatrix></filter>
+</defs></svg>
+<div class="page" onScroll="{{onScroll}}" style="position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; z-index: 1">
+<header style="height: 11vh; min-height: 72px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; padding: 0 4vw">
+<a class="lnk" href="Bloburblur.dc.html" aria-label="Ben Weiller — home" style="display: inline-block; font-family: 'Dirtbag TM', 'Inter', sans-serif; font-size: 44px; line-height: 1; letter-spacing: 0.03em; position: relative; top: 9px; text-decoration: none; color: #1E1E1C">BEN WEILLER</a>
+<div style="display: flex; align-items: center; gap: 26px">
+<nav id="hdrMenuG" aria-label="Main" class="drawer {{openClsG}}" style="display: flex; gap: 28px; align-items: center; font-size: 13px; line-height: 1; visibility: {{drawerVisG}}">
+<a class="nb on" href="Menu-Blob-Bold.dc.html" aria-current="page" tabindex="{{tabG}}">/work</a>
+<a class="nb" href="https://www.instagram.com/un_finished_lines/" target="_blank" rel="noopener" tabindex="{{tabG}}">/@un_finished_lines</a>
+<a class="nb" href="About-A.dc.html" tabindex="{{tabG}}">/who, me?</a>
+<a class="nb" href="Contact-A.dc.html" tabindex="{{tabG}}">/contact</a>
+</nav>
+<button class="ico" type="button" onClick="{{toggleG}}" aria-expanded="{{openStrG}}" aria-controls="hdrMenuG" aria-label="{{icoLabelG}}" style="width: 48px; height: 48px; margin-right: -7px; padding: 0; border: 0; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<svg class="burger" width="33" height="27" viewBox="0 0 22 18" overflow="visible" aria-hidden="true"><line class="l1" x1="1" y1="17" x2="7.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l2" x1="8" y1="17" x2="14.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l3" x1="15" y1="17" x2="21.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line></svg>
+</button>
+</div>
+</header>
+
+<main style="width: min(900px, 88vw); margin: 0 auto; padding: 0 0 14vh">
+<!-- vertical column (same as the zoo and kia pages): 900px, 96px between every asset, 32px from a text block to its asset -->
+
+<section class="cardIn" aria-label="Intro" style="padding: 9vh 0 32px">
+<h1 style="margin: 0 0 12px; font-size: 22px; font-weight: 400; letter-spacing: -0.035em; line-height: 1.25">{{brand}}{{sep}}{{campaign}}</h1>
+<p style="margin: 0; max-width: 520px; font-size: 14px; line-height: 1.55">Vizio Quantum Pro QLED TV transforms ordinary suburban homes into personal cineplexes, literally.</p>
+</section>
+
+<!-- three print ads, full column width, one after another (2000 × 1418) -->
+<section class="cardIn" aria-label="Print ads" style="animation-delay: 150ms; display: flex; flex-direction: column; gap: 96px">
+<button class="xp" type="button" onClick="{{so0}}" aria-label="Expand: Vizio print ad: a suburban house lit up as Sally’s Cinema" data-expand="true" style="width: 100%"><img src="./assets/2b5fc7c55ffb65c0db154b2b738d7322.jpg" alt="Vizio print ad: a suburban house lit up as Sally’s Cinema" style="display: block; width: 100%; aspect-ratio: 2000 / 1417; object-fit: cover"></button>
+<button class="xp" type="button" onClick="{{so1}}" aria-label="Expand: Vizio print ad: a suburban house lit up as Johnny’s Theater" data-expand="true" style="width: 100%"><img src="./assets/58b811eb3c6e95fe57c4f5ed7d5db7a1.jpg" alt="Vizio print ad: a suburban house lit up as Johnny’s Theater" style="display: block; width: 100%; aspect-ratio: 2000 / 1417; object-fit: cover"></button>
+<button class="xp" type="button" onClick="{{so2}}" aria-label="Expand: Vizio print ad: a suburban house lit up as The Nelsons’ Megaplex" data-expand="true" style="width: 100%"><img src="./assets/0d844676075fe0ab766524e5cc17bab8.jpg" alt="Vizio print ad: a suburban house lit up as The Nelsons’ Megaplex" style="display: block; width: 100%; aspect-ratio: 2000 / 1418; object-fit: cover"></button>
+</section>
+
+<!-- a quick note, then the three versions that ran: lined up side by side, 16px gaps -->
+<section aria-label="The versions that ran" style="padding-top: 96px">
+<div style="margin: 0 0 32px; max-width: 520px">
+<h2 style="margin: 0 0 8px; font-size: 16px; font-weight: 400; letter-spacing: -0.02em; line-height: 1.4">/a quick note</h2>
+<p style="margin: 0; font-size: 14px; line-height: 1.55">above are some creative copy driven versions, below you’ll find the simplified versions that ended up running...you know how it goes.</p>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px">
+<button class="xp" type="button" onClick="{{ro0}}" aria-label="Expand: Vizio print ad as it ran: Sally’s Cinema, now playing holiday classics" data-expand="true" style="width: 100%"><img src="./assets/2707017fe229d4e1b71afaa5d6e9e44b.jpg" alt="Vizio print ad as it ran: Sally’s Cinema, now playing holiday classics" style="display: block; width: 100%; aspect-ratio: 800 / 567; object-fit: cover"></button>
+<button class="xp" type="button" onClick="{{ro1}}" aria-label="Expand: Vizio print ad as it ran: Johnny’s Theater, now playing holiday favorites" data-expand="true" style="width: 100%"><img src="./assets/a8fdc4426215f1ed665fae65f2b0a45b.jpg" alt="Vizio print ad as it ran: Johnny’s Theater, now playing holiday favorites" style="display: block; width: 100%; aspect-ratio: 800 / 567; object-fit: cover"></button>
+<button class="xp" type="button" onClick="{{ro2}}" aria-label="Expand: Vizio print ad as it ran: The Nelsons’ Megaplex, now playing holiday movie marathon" data-expand="true" style="width: 100%"><img src="./assets/3c287c826a8004c60102e8c37756fa6e.jpg" alt="Vizio print ad as it ran: The Nelsons’ Megaplex, now playing holiday movie marathon" style="display: block; width: 100%; aspect-ratio: 800 / 567; object-fit: cover"></button>
+</div>
+</section>
+
+<section aria-label="Credits" style="padding-top: 96px">
+<dl style="position: relative; margin: 0; display: flex; flex-direction: column; gap: 12px; font-size: 13px; line-height: 1.45">
+<div><dt>associate creative directors</dt><dd style="margin: 0; color: #55554F">Evan Bross, Chris Davis</dd></div>
+<div><dt>executive creative directors</dt><dd style="margin: 0; color: #55554F">Rob Casillas, Courtney Pulver</dd></div>
+<div><dt>chief creative officer</dt><dd style="margin: 0; color: #55554F">Ben Purcell</dd></div>
+</dl>
+</section>
+</main>
+</div>
+<!-- sticky "///" : appears once the header has scrolled away, plain like the header; its words open as a vertical stack -->
+<div class="fab {{fabCls}}" style="position: absolute; top: calc(max(5.5vh, 36px) - 24px); right: calc(4vw - 7px); z-index: 8">
+<button class="fabBtn" type="button" onClick="{{toggleF}}" aria-expanded="{{openStrF}}" aria-controls="fabMenu" aria-label="{{labelF}}" tabindex="{{fabTab}}">
+<svg class="burger" width="33" height="27" viewBox="0 0 22 18" overflow="visible" aria-hidden="true"><line class="l1" x1="1" y1="17" x2="7.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l2" x1="8" y1="17" x2="14.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l3" x1="15" y1="17" x2="21.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line></svg>
+</button>
+<nav id="fabMenu" aria-label="Main" class="fabNav {{openClsF}}" style="visibility: {{visF}}">
+<a href="Menu-Blob-Bold.dc.html" tabindex="{{tabF}}">/work</a>
+<a href="https://www.instagram.com/un_finished_lines/" target="_blank" rel="noopener" tabindex="{{tabF}}">/@un_finished_lines</a>
+<a href="About-A.dc.html" tabindex="{{tabF}}">/who, me?</a>
+<a href="Contact-A.dc.html" tabindex="{{tabF}}">/contact</a>
+</nav>
+</div>
+
+
+<!-- expanded still (approved ux/ui expanded asset): the page goes flat off-white, the still sits centred at the largest size that fits, small caption bottom left. no close button: glass ← → just under the image's bottom-right corner step through the set (the row around them swallows clicks); a click anywhere else, image included, or esc closes. clean cut, no zoom -->
+<sc-if value="{{xOpen}}" hint-placeholder-val="false">
+<div role="dialog" aria-modal="true" aria-label="Expanded print" onClick="{{xClose}}" style="position: fixed; inset: 0; z-index: 50; background: #F1F1EE; display: flex; align-items: center; justify-content: center; cursor: zoom-out">
+<div style="display: flex; flex-direction: column; align-items: flex-end">
+<img src="{{xCur.src}}" alt="{{xCur.alt}}" style="display: block; max-width: calc(100vw - 96px); max-height: calc(100vh - 156px); object-fit: contain">
+<div class="gv-dark" onClick="{{xStop}}" style="display: flex; gap: 10px; margin: 18px -2px 0 0; padding: 6px 0 6px 12px; cursor: default">
+<span class="gbw" style="width: 48px; height: 48px" onClick="{{xPrev}}">
+<svg class="gbs" viewBox="0 0 160 160" aria-hidden="true" style="opacity: 0.45"><ellipse cx="80" cy="112" rx="44" ry="13" fill="#1E1E1C" fill-opacity="0.11" filter="url(#grit)"></ellipse></svg>
+<span class="gbb">
+<button class="gb" type="button" aria-label="Previous print" style="-webkit-mask-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cpath%20d%3D%22M50%203%20A47%2047%200%201%201%2049.99%203%20Z%22%20fill%3D%22none%22%20stroke%3D%22white%22%20stroke-width%3D%222.2%22%2F%3E%3C%2Fsvg%3E'); mask-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cpath%20d%3D%22M50%203%20A47%2047%200%201%201%2049.99%203%20Z%22%20fill%3D%22none%22%20stroke%3D%22white%22%20stroke-width%3D%222.2%22%2F%3E%3C%2Fsvg%3E')"><svg class="fog" aria-hidden="true"><rect width="100%" height="100%" filter="url(#gfog)"></rect></svg></button>
+<span class="gic" aria-hidden="true" style="-webkit-mask-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cpath%20d%3D%22M71.63%2052.11%20Q72.35%2054.5%2069.85%2054.50%20L51.85%2054.50%20Q49.35%2054.5%2050.07%2056.89%20L51.78%2062.61%20Q52.5%2065%2050.37%2063.69%20L30.13%2051.31%20Q28%2050%2029.80%2048.26%20L41.70%2036.74%20Q43.5%2035%2044.22%2037.39%20L45.93%2043.11%20Q46.65%2045.5%2049.15%2045.50%20L67.15%2045.50%20Q69.65%2045.5%2070.37%2047.89%20Z%22%20fill%3D%22black%22%2F%3E%3C%2Fsvg%3E'); mask-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cpath%20d%3D%22M71.63%2052.11%20Q72.35%2054.5%2069.85%2054.50%20L51.85%2054.50%20Q49.35%2054.5%2050.07%2056.89%20L51.78%2062.61%20Q52.5%2065%2050.37%2063.69%20L30.13%2051.31%20Q28%2050%2029.80%2048.26%20L41.70%2036.74%20Q43.5%2035%2044.22%2037.39%20L45.93%2043.11%20Q46.65%2045.5%2049.15%2045.50%20L67.15%2045.50%20Q69.65%2045.5%2070.37%2047.89%20Z%22%20fill%3D%22black%22%2F%3E%3C%2Fsvg%3E')"></span>
+<svg class="ico" viewBox="0 0 100 100" aria-hidden="true"><g filter="url(#imp-raise)"><path d="M50 3 A47 47 0 1 1 49.99 3 Z" fill="none" stroke="#000" stroke-width="2.2"></path></g><g filter="url(#imp-etch)"><path d="M71.63 52.11 Q72.35 54.5 69.85 54.50 L51.85 54.50 Q49.35 54.5 50.07 56.89 L51.78 62.61 Q52.5 65 50.37 63.69 L30.13 51.31 Q28 50 29.80 48.26 L41.70 36.74 Q43.5 35 44.22 37.39 L45.93 43.11 Q46.65 45.5 49.15 45.50 L67.15 45.50 Q69.65 45.5 70.37 47.89 Z" fill="#000"></path></g></svg>
+</span>
+</span>
+<span class="gbw" style="width: 48px; height: 48px" onClick="{{xNext}}">
+<svg class="gbs" viewBox="0 0 160 160" aria-hidden="true" style="opacity: 0.45"><ellipse cx="80" cy="112" rx="44" ry="13" fill="#1E1E1C" fill-opacity="0.11" filter="url(#grit)"></ellipse></svg>
+<span class="gbb">
+<button class="gb" type="button" aria-label="Next print" style="-webkit-mask-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cpath%20d%3D%22M50%203%20A47%2047%200%201%201%2049.99%203%20Z%22%20fill%3D%22none%22%20stroke%3D%22white%22%20stroke-width%3D%222.2%22%2F%3E%3C%2Fsvg%3E'); mask-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cpath%20d%3D%22M50%203%20A47%2047%200%201%201%2049.99%203%20Z%22%20fill%3D%22none%22%20stroke%3D%22white%22%20stroke-width%3D%222.2%22%2F%3E%3C%2Fsvg%3E')"><svg class="fog" aria-hidden="true"><rect width="100%" height="100%" filter="url(#gfog)"></rect></svg></button>
+<span class="gic" aria-hidden="true" style="-webkit-mask-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cpath%20d%3D%22M29.63%2047.89%20Q30.35%2045.5%2032.85%2045.50%20L50.85%2045.50%20Q53.35%2045.5%2054.07%2043.11%20L55.78%2037.39%20Q56.5%2035%2058.30%2036.74%20L70.20%2048.26%20Q72%2050%2069.87%2051.31%20L49.63%2063.69%20Q47.5%2065%2048.22%2062.61%20L49.93%2056.89%20Q50.65%2054.5%2048.15%2054.50%20L30.15%2054.50%20Q27.65%2054.5%2028.37%2052.11%20Z%22%20fill%3D%22black%22%2F%3E%3C%2Fsvg%3E'); mask-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cpath%20d%3D%22M29.63%2047.89%20Q30.35%2045.5%2032.85%2045.50%20L50.85%2045.50%20Q53.35%2045.5%2054.07%2043.11%20L55.78%2037.39%20Q56.5%2035%2058.30%2036.74%20L70.20%2048.26%20Q72%2050%2069.87%2051.31%20L49.63%2063.69%20Q47.5%2065%2048.22%2062.61%20L49.93%2056.89%20Q50.65%2054.5%2048.15%2054.50%20L30.15%2054.50%20Q27.65%2054.5%2028.37%2052.11%20Z%22%20fill%3D%22black%22%2F%3E%3C%2Fsvg%3E')"></span>
+<svg class="ico" viewBox="0 0 100 100" aria-hidden="true"><g filter="url(#imp-raise)"><path d="M50 3 A47 47 0 1 1 49.99 3 Z" fill="none" stroke="#000" stroke-width="2.2"></path></g><g filter="url(#imp-etch)"><path d="M29.63 47.89 Q30.35 45.5 32.85 45.50 L50.85 45.50 Q53.35 45.5 54.07 43.11 L55.78 37.39 Q56.5 35 58.30 36.74 L70.20 48.26 Q72 50 69.87 51.31 L49.63 63.69 Q47.5 65 48.22 62.61 L49.93 56.89 Q50.65 54.5 48.15 54.50 L30.15 54.50 Q27.65 54.5 28.37 52.11 Z" fill="#000"></path></g></svg>
+</span>
+</span>
+</div>
+</div>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  flipInit() {
+    if (this.flipH) return;
+    const ST = [[0, 0], [0.09, 90], [0.2, 180], [0.33, 270], [0.48, 360], [0.68, 450], [1, 540]];
+    const EDGE = [0.09, 0.33, 0.68];
+    const run = (g, dir) => {
+      const b = g.querySelector('.gbb'); if (!b || !b.animate) return;
+      const ax = dir === 'd' ? 'X' : 'Y', sg = dir === 'r' ? 1 : -1, mir = dir === 'd' ? 'scaleY(-1)' : 'scaleX(-1)';
+      const o = { duration: 550, easing: 'linear' };
+      b.animate(ST.map(([p, a]) => ({ offset: p, transform: 'rotate' + ax + '(' + (sg * a) + 'deg)' })), o);
+      const s = g.querySelector('.gbs');
+      if (s) s.animate(ST.map(([p]) => { const e = EDGE.indexOf(p) >= 0; return { offset: p, transform: e ? (dir === 'd' ? 'scale(0.92)' : 'scaleX(0.35)') : 'none', opacity: e ? 0.7 : 1 }; }), o);
+      const mk = [[0, 'none'], [0.0899, 'none'], [0.09, mir], [0.3299, mir], [0.33, 'none'], [0.6799, 'none'], [0.68, mir], [1, mir]].map(([p, t]) => ({ offset: p, transform: t }));
+      g.querySelectorAll('.ico,.gic,.wtxt').forEach((el) => el.animate(mk, o));
+    };
+    this.flipH = (e) => {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const t = e.target && e.target.closest ? e.target.closest('.gbw,.card') : null; if (!t) return;
+      const g = t.classList.contains('gbw') ? t : t.querySelector('.gbw'); if (!g) return;
+      const host = g.querySelector('[aria-label]') || g.closest('[aria-label]');
+      const lbl = ((host && host.getAttribute('aria-label')) || '').toLowerCase();
+      const dir = /prev/.test(lbl) ? 'l' : (/next/.test(lbl) ? 'r' : 'd');
+      const r = g.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      requestAnimationFrame(() => { const el = document.elementFromPoint(cx, cy); const g2 = (el && el.closest && el.closest('.gbw')) || (g.isConnected ? g : null); if (g2) run(g2, dir); });
+    };
+    document.addEventListener('click', this.flipH, true);
+  }
+
+  componentDidMount() { this.flipInit(); window.addEventListener('keydown', this.onKey); }
+  componentWillUnmount() { if (this.flipH) document.removeEventListener('click', this.flipH, true); window.removeEventListener('keydown', this.onKey); }
+  constructor(props) {
+    super(props);
+    // every page load (and every project switch in the mockup) gets a fresh random blob
+    this.state = { proj: 0, sy: 0, sp: 0, mx: 0, my: 0, seed: Math.floor(Math.random() * 1e9), openG: false, xi: -1 };
+    this.onKey = (e) => { if (this.state.xi < 0) return; if (e.key === 'Escape') this.setState({ xi: -1 }); else if (e.key === 'ArrowRight') this.setState({ xi: (this.state.xi + 1) % 3 }); else if (e.key === 'ArrowLeft') this.setState({ xi: (this.state.xi + 2) % 3 }); };
+    // two separate expand sets: xs 'main' (the three main prints) or 'ran' (the three versions that ran); arrows stay inside the set
+    this.reduce = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.pending = false;
+    this.onScroll = (e) => {
+      // sticky "///": shows once the header (about 90px) has scrolled away; closes its words when you're back at the top
+      const fy = (e.target && e.target.scrollTop) || 0, fon = fy > 90;
+      if (fon !== !!this.state.fab) this.setState({ fab: fon });
+      if (this.reduce) return;
+      const el = e.target;
+      this.lastS = { sy: el.scrollTop || 0, sp: (el.scrollTop || 0) / Math.max(1, el.scrollHeight - el.clientHeight) };
+      if (this.pending) return;
+      this.pending = true;
+      requestAnimationFrame(() => { this.pending = false; this.setState(this.lastS); });
+    };
+    this.mPending = false;
+    this.onMove = (e) => {
+      if (this.reduce) return;
+      const b = e.currentTarget.getBoundingClientRect();
+      this.lastM = { mx: ((e.clientX - b.left) / b.width - 0.5) * 2, my: ((e.clientY - b.top) / b.height - 0.5) * 2 };
+      if (this.mPending) return;
+      this.mPending = true;
+      requestAnimationFrame(() => { this.mPending = false; this.setState(this.lastM); });
+    };
+    this.onLeave = () => this.setState({ mx: 0, my: 0 });
+  }
+  rng(seed) {
+    let a = seed >>> 0;
+    return function () { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  }
+  // t = scroll phase: each harmonic drifts at its own speed and swells/settles, so the outline keeps morphing
+  blob(seed, cx, cy, rx, ry, wob, n, t) {
+    t = t || 0;
+    const r = this.rng(seed), harm = [];
+    for (let k = 2; k <= 5; k++) {
+      const a = (r() * 2 - 1) * wob / (k * 0.7), p = r() * 6.283, sp = (r() * 2 - 1) * (0.5 + r() * 0.6), q = r() * 6.283;
+      harm.push({ k: k, a: a * (0.7 + 0.45 * Math.sin(t * 0.8 + q)), p: p + t * sp });
+    }
+    const pts = [];
+    for (let i = 0; i < n; i++) {
+      const th = (i / n) * 6.283; let f = 1;
+      harm.forEach((h) => { f += h.a * Math.sin(h.k * th + h.p); });
+      pts.push([cx + Math.cos(th) * rx * f, cy + Math.sin(th) * ry * f]);
+    }
+    let d = 'M' + pts[0][0].toFixed(1) + ' ' + pts[0][1].toFixed(1);
+    for (let i = 0; i < n; i++) {
+      const p0 = pts[(i - 1 + n) % n], p1 = pts[i], p2 = pts[(i + 1) % n], p3 = pts[(i + 2) % n];
+      d += ' C' + (p1[0] + (p2[0] - p0[0]) / 6).toFixed(1) + ' ' + (p1[1] + (p2[1] - p0[1]) / 6).toFixed(1) + ' ' + (p2[0] - (p3[0] - p1[0]) / 6).toFixed(1) + ' ' + (p2[1] - (p3[1] - p1[1]) / 6).toFixed(1) + ' ' + p2[0].toFixed(1) + ' ' + p2[1].toFixed(1);
+    }
+    return d + ' Z';
+  }
+  mix(h1, h2, t) {
+    const a = parseInt(h1.slice(1), 16), b = parseInt(h2.slice(1), 16);
+    const c = (sh) => Math.round(((a >> sh) & 255) * (1 - t) + ((b >> sh) & 255) * t);
+    return 'rgb(' + c(16) + ',' + c(8) + ',' + c(0) + ')';
+  }
+  // hex <-> hsl helpers for thumbnail palettes
+  hsl(hex) {
+    const n = parseInt(hex.slice(1), 16), r = (n >> 16 & 255) / 255, g = (n >> 8 & 255) / 255, b = (n & 255) / 255;
+    const mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, d = mx - mn;
+    let h = 0, s = 0;
+    if (d) { s = d / (1 - Math.abs(2 * l - 1)); h = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h *= 60; if (h < 0) h += 360; }
+    return [h, s, l];
+  }
+  hex(h, s, l) {
+    const c = (1 - Math.abs(2 * l - 1)) * s, x = c * (1 - Math.abs((h / 60) % 2 - 1)), m = l - c / 2;
+    const [r, g, b] = h < 60 ? [c, x, 0] : h < 120 ? [x, c, 0] : h < 180 ? [0, c, x] : h < 240 ? [0, x, c] : h < 300 ? [x, 0, c] : [c, 0, x];
+    const t = (v) => Math.round((v + m) * 255).toString(16).padStart(2, '0');
+    return '#' + t(r) + t(g) + t(b);
+  }
+  thumbPal(sw, seed) {
+    const r = this.rng(seed + 77), o = sw.slice();
+    for (let i = o.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); const t = o[i]; o[i] = o[j]; o[j] = t; }
+    // keep each swatch's hue, set lightness for its role, and lift dull swatches so the blob still glows
+    const role = (hx, L, Smin) => { const c = this.hsl(hx); return this.hex(c[0], Math.min(0.78, Math.max(c[1], Smin)), L); };
+    return [role(o[0], 0.80, 0.45), role(o[1 % o.length], 0.62, 0.5), role(o[2 % o.length], 0.40, 0.45), role(o[3 % o.length], 0.17, 0.4)];
+  }
+  // blob palettes (halo, accent, body, core) now match this campaign's menu thumbnail: the same swatches as the vizio menu item,
+  // run through the same thumbPal roles as the menu, shuffled four ways so the colour still drifts as you scroll
+  pal(i) {
+    const SW = ['#DF4A34', '#8F1406', '#ED8068', '#310B07', '#090604'];
+    return this.thumbPal(SW, 101 + (((i % 4) + 4) % 4) * 977);
+  }
+  // the single blob: pinned to the screen behind the page, it follows you down the page on its own random path,
+  // morphing shape and blending through a random run of palettes as you scroll
+  theBlob(seed, sp, t, side) {
+    const r = this.rng(seed);
+    // it now roams the whole page as you scroll: a random start anywhere across the width, then wide sweeps left and right
+    const x0 = 260 + r() * 920, y0 = 260 + r() * 300;
+    const ax = 380 + r() * 120, ay = 150 + r() * 80;
+    const fx = (0.6 + r() * 0.6) * (r() > 0.5 ? 1 : -1), fy = 0.7 + r() * 0.7, px = r() * 6.283, py = r() * 6.283;
+    const x = x0 + ax * (Math.sin(sp * fx * 6.283 + px) - Math.sin(px));
+    const y = y0 + ay * (Math.sin(sp * fy * 6.283 + py) - Math.sin(py));
+    const cx = Math.max(180, Math.min(1260, x)), cy = Math.max(180, Math.min(740, y));
+    // colour: a random run of 3 palettes, blended smoothly from top to bottom of the page
+    const order = [0, 1, 2, 3];
+    for (let i = 3; i > 0; i--) { const j = Math.floor(r() * (i + 1)); const tmp = order[i]; order[i] = order[j]; order[j] = tmp; }
+    const run = [this.pal(order[0]), this.pal(order[1]), this.pal(order[2])];
+    const u = Math.min(1.999, sp * 2), k = Math.floor(u), f = u - k, ease = f * f * (3 - 2 * f);
+    const col = (j) => this.mix(run[k][j], run[k + 1][j], ease);
+    const sd = Math.floor(r() * 9000) + 11, ph = r() * 6.283;
+    const sc = 0.58 + r() * 0.08;
+    const ax2 = cx - (55 + r() * 35) + Math.sin(t * 0.7 + ph) * 18, ay2 = cy + (r() - 0.5) * 80 + Math.cos(t * 0.55 + ph) * 14;
+    const kx = Math.sin(t * 0.5 + ph * 1.7) * 10, ky = Math.cos(t * 0.65 + ph) * 7;
+    return {
+      halo: this.blob(sd, cx, cy, 300 * sc, 205 * sc, 0.3, 9, t),
+      accent: this.blob(sd + 1, ax2, ay2, 145 * sc, 110 * sc, 0.35, 7, t * 1.2),
+      mid: this.blob(sd + 2, cx + 15, cy + 3, 200 * sc, 140 * sc, 0.32, 9, t * 0.9),
+      core: this.blob(sd + 3, cx + 50 + kx, cy + 9 + ky, 88 * sc, 64 * sc, 0.38, 8, t * 1.1),
+      cHalo: col(0), cAccent: col(1), cMid: col(2), cCore: col(3)
+    };
+  }
+  renderVals() {
+    const P = [
+      { id: 'vizio', brand: 'VIZIO', campaign: 'bring the cinema home', color: '#2B3550' }
+    ];
+    const pi = this.state.proj || 0, gOpen = !!this.state.openG;
+    const pr = P[pi];
+    const sp = this.state.sp || 0, t = (this.state.sy || 0) / 900;
+    const mx = this.state.mx || 0, my = this.state.my || 0;
+    const chip = (on) => ({ bg: on ? '#1E1E1C' : 'rgba(255,255,255,0.6)', ink: on ? '#F1F1EE' : '#1E1E1C', pressed: on ? 'true' : 'false' });
+    return {
+      // expanded prints: the three main prints in page order
+      ...(() => {
+        const M = [
+          ['./assets/2b5fc7c55ffb65c0db154b2b738d7322.jpg', 'Vizio print ad: a suburban house lit up as Sally’s Cinema'],
+          ['./assets/58b811eb3c6e95fe57c4f5ed7d5db7a1.jpg', 'Vizio print ad: a suburban house lit up as Johnny’s Theater'],
+          ['./assets/0d844676075fe0ab766524e5cc17bab8.jpg', 'Vizio print ad: a suburban house lit up as The Nelsons’ Megaplex']
+        ];
+        const Rn = [
+          ['./assets/2707017fe229d4e1b71afaa5d6e9e44b.jpg', 'Vizio print ad as it ran: Sally’s Cinema, now playing holiday classics'],
+          ['./assets/a8fdc4426215f1ed665fae65f2b0a45b.jpg', 'Vizio print ad as it ran: Johnny’s Theater, now playing holiday favorites'],
+          ['./assets/3c287c826a8004c60102e8c37756fa6e.jpg', 'Vizio print ad as it ran: The Nelsons’ Megaplex, now playing holiday movie marathon']
+        ];
+        const ran = this.state.xs === 'ran', X = ran ? Rn : M;
+        const xi = this.state.xi, n = X.length, o = {};
+        M.forEach((x, j) => { o['so' + j] = () => this.setState({ xs: 'main', xi: j }); });
+        Rn.forEach((x, j) => { o['ro' + j] = () => this.setState({ xs: 'ran', xi: j }); });
+        const cur = xi >= 0 ? X[xi] : X[0];
+        o.xOpen = xi >= 0;
+        o.xCur = { src: cur[0], alt: cur[1], cap: 'VIZIO /bring the cinema home · ' + (ran ? 'as it ran ' : 'print ') + String((xi >= 0 ? xi : 0) + 1).padStart(2, '0') };
+        o.xClose = () => this.setState({ xi: -1 });
+        o.xStop = (e) => { if (e && e.stopPropagation) e.stopPropagation(); };
+        o.xPrev = (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.setState({ xi: (this.state.xi + n - 1) % n }); };
+        o.xNext = (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.setState({ xi: (this.state.xi + 1) % n }); };
+        return o;
+      })(),
+      brand: pr.brand, campaign: pr.campaign, sep: ' /',
+      filmColor: pr.color,
+      b: this.theBlob(this.state.seed, sp, t),
+      lean: 'translate(' + (mx * 10).toFixed(1) + 'px,' + (my * 7).toFixed(1) + 'px)',
+      fabCls: this.state.fab ? 'on' : '', fabTab: '0',
+      openStrF: this.state.openF ? 'true' : 'false', openClsF: (this.state.openF ? 'open' : '') + (this.state.fab ? '' : ' row'), visF: this.state.openF ? 'visible' : 'hidden', tabF: this.state.openF ? '0' : '-1',
+      labelF: this.state.openF ? 'Close menu' : 'Open menu',
+      toggleF: () => this.setState({ openF: !this.state.openF }),
+      onScroll: this.onScroll, onMove: this.onMove, onLeave: this.onLeave,
+      openClsG: gOpen ? 'open' : '', openStrG: gOpen ? 'true' : 'false', drawerVisG: gOpen ? 'visible' : 'hidden', tabG: gOpen ? '0' : '-1',
+      icoLabelG: gOpen ? 'Close menu' : 'Open menu',
+      toggleG: () => this.setState({ openG: !this.state.openG }),
+    };
+  }
+}
+</script>
+</body>
+</html>

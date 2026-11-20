@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Link previews</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- how the site looks when someone shares a link: the share image (og:image, 1200 × 630), the title and description, and mock-ups of the preview in a few apps. -->
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'Dirtbag TM';src:url('/_blob/a15098c6e2313273da5b37f609489781') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+body{margin:0}
+.lbl{margin:0 0 12px;font-size:13px;line-height:20px;letter-spacing:-0.01em;color:#1E1E1C}
+.note{margin:0;font-size:13px;line-height:1.5;color:#55554F}
+.sys{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif}
+</style>
+</helmet>
+<div style="position: relative; min-height: 100vh; background: #F1F1EE; color: #1E1E1C; font-family: 'Inter', system-ui, sans-serif; padding: 48px 4vw 64px; box-sizing: border-box">
+<h1 style="margin: 0 0 6px; font-size: 22px; font-weight: 400; letter-spacing: -0.035em">link previews</h1>
+<p class="note" style="max-width: 640px; margin-bottom: 40px">what shows when someone shares the site in a text, Slack, LinkedIn or X. one share image for every page; each project page can later get its own title and description.</p>
+
+<div style="display: flex; gap: 64px; align-items: flex-start">
+<!-- left: the share image itself and its text -->
+<div style="flex: none; width: 640px">
+<p class="lbl">/share image · 1200 × 630</p>
+<svg viewBox="180 120 1200 630" width="640" height="336" preserveAspectRatio="xMidYMid slice" style="display: block; background: #EEEDF2" role="img" aria-label="Share image: the Bloblurb with BEN WEILLER">
+<defs>
+<filter id="grainBlurXL1" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="70" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="34" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="grainBlurL1" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="42" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="28" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="grainBlurM1" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="26" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="7" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="22" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="pageGrain1" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"></feTurbulence>
+<feColorMatrix type="matrix" values="0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0.12 0"></feColorMatrix>
+</filter>
+</defs>
+<g style="transform: translate(0.0px,0.0px) scale(1.000); transform-box: fill-box; transform-origin: 50% 50%; transition: transform 1400ms cubic-bezier(.2,.7,.2,1)">
+<g>
+<path d="M1109.0 484.7 C1101.7 567.2 1126.8 670.8 1079.3 719.4 C1031.8 768.0 917.4 753.8 823.8 776.3 C730.2 798.9 587.6 885.9 517.7 854.7 C447.8 823.6 417.7 671.7 404.4 589.5 C391.1 507.4 406.3 428.4 437.8 361.7 C469.3 295.0 524.1 232.6 593.3 189.2 C662.6 145.8 765.0 95.5 853.2 101.4 C941.5 107.3 1080.2 160.5 1122.8 224.4 C1165.5 288.3 1116.2 402.2 1109.0 484.7 Z" fill="hsl(258.0,66.0%,85.0%)" filter="url(#grainBlurXL1)" opacity="0.95"></path>
+<path d="M947.0 547.2 C920.2 566.2 887.1 576.3 849.9 568.8 C812.7 561.4 745.5 534.6 724.0 502.4 C702.4 470.1 710.1 408.9 720.6 375.2 C731.1 341.5 756.6 305.1 787.1 300.3 C817.6 295.6 866.2 320.8 903.5 346.5 C940.8 372.2 1003.6 421.1 1010.8 454.6 C1018.0 488.0 973.8 528.1 947.0 547.2 Z" fill="hsl(174.0,38.0%,64.0%)" filter="url(#grainBlurL1)" opacity="0.9"></path>
+</g>
+</g>
+<g style="transform: translate(0.0px,0.0px) scale(1.060); transform-box: fill-box; transform-origin: 50% 50%; transition: transform 1100ms cubic-bezier(.2,.7,.2,1)">
+<g>
+<path d="M1091.3 484.4 C1079.5 538.8 999.5 575.5 954.4 621.5 C909.4 667.6 873.4 752.2 821.0 760.7 C768.7 769.2 705.9 702.1 640.4 672.4 C574.9 642.7 446.4 628.7 428.1 582.3 C409.8 535.9 496.9 449.9 530.4 394.0 C563.8 338.1 580.2 271.7 628.8 246.8 C677.5 221.8 756.1 236.2 822.1 244.3 C888.1 252.3 980.0 255.1 1024.8 295.1 C1069.7 335.1 1103.0 429.9 1091.3 484.4 Z" fill="hsl(184.0,49.0%,34.0%)" filter="url(#grainBlurL1)"></path>
+<g style="transform: translate(0.0px,0.0px) scale(1.100); transform-box: fill-box; transform-origin: 50% 50%; transition: transform 900ms cubic-bezier(.2,.7,.2,1)">
+<path d="M944.5 416.4 C954.6 446.8 953.4 486.2 937.9 517.3 C922.4 548.4 885.7 589.8 851.4 603.0 C817.1 616.1 766.0 607.5 732.2 596.1 C698.3 584.7 661.3 562.8 648.1 534.8 C634.9 506.7 635.0 456.8 652.9 428.0 C670.8 399.3 717.9 377.9 755.3 362.4 C792.7 346.9 845.8 325.9 877.3 334.9 C908.8 343.9 934.4 386.0 944.5 416.4 Z" fill="hsl(189.0,63.0%,12.0%)" filter="url(#grainBlurM1)"></path>
+</g>
+</g>
+</g>
+<rect width="1440" height="900" filter="url(#pageGrain1)"></rect>
+<text x="701" y="576" font-family="Dirtbag TM, Inter, sans-serif" font-size="96" letter-spacing="2.9" fill="#FFFFFF">BEN WEILLER</text></svg>
+<div style="margin-top: 24px; display: grid; grid-template-columns: 96px 1fr; row-gap: 10px; font-size: 13px; line-height: 1.5">
+<span style="color: #55554F">title</span><span>Ben Weiller</span>
+<span style="color: #55554F">description</span><span>the portfolio of an advertising creative/copy/writer</span>
+<span style="color: #55554F">link</span><span>benweiller.com</span>
+<span style="color: #55554F">tab icon</span><span style="display: flex; align-items: center; gap: 8px"><span style="display: inline-flex; width: 20px; height: 20px; align-items: center; justify-content: center; background: #F1F1EE; box-shadow: inset 0 0 0 1px #D9D8D2; font-family: 'Dirtbag TM', 'Inter', sans-serif; font-size: 13px; line-height: 1; color: #1E1E1C">BW</span> the BW favicon, ink on the ground colour</span>
+</div>
+</div>
+
+<!-- right: how it appears in a few apps -->
+<div style="flex: 1; display: flex; flex-direction: column; gap: 36px">
+
+<div>
+<p class="lbl">/in a text (iMessage)</p>
+<div class="sys" style="width: 300px; border-radius: 18px; overflow: hidden; background: #E9E9EB">
+<svg viewBox="180 120 1200 630" width="300" height="158" preserveAspectRatio="xMidYMid slice" style="display: block; background: #EEEDF2" role="img" aria-label="Share image: the Bloblurb with BEN WEILLER">
+<defs>
+<filter id="grainBlurXL2" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="70" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="34" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="grainBlurL2" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="42" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="28" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="grainBlurM2" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="26" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="7" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="22" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="pageGrain2" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"></feTurbulence>
+<feColorMatrix type="matrix" values="0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0.12 0"></feColorMatrix>
+</filter>
+</defs>
+<g style="transform: translate(0.0px,0.0px) scale(1.000); transform-box: fill-box; transform-origin: 50% 50%; transition: transform 1400ms cubic-bezier(.2,.7,.2,1)">
+<g>
+<path d="M1109.0 484.7 C1101.7 567.2 1126.8 670.8 1079.3 719.4 C1031.8 768.0 917.4 753.8 823.8 776.3 C730.2 798.9 587.6 885.9 517.7 854.7 C447.8 823.6 417.7 671.7 404.4 589.5 C391.1 507.4 406.3 428.4 437.8 361.7 C469.3 295.0 524.1 232.6 593.3 189.2 C662.6 145.8 765.0 95.5 853.2 101.4 C941.5 107.3 1080.2 160.5 1122.8 224.4 C1165.5 288.3 1116.2 402.2 1109.0 484.7 Z" fill="hsl(258.0,66.0%,85.0%)" filter="url(#grainBlurXL2)" opacity="0.95"></path>
+<path d="M947.0 547.2 C920.2 566.2 887.1 576.3 849.9 568.8 C812.7 561.4 745.5 534.6 724.0 502.4 C702.4 470.1 710.1 408.9 720.6 375.2 C731.1 341.5 756.6 305.1 787.1 300.3 C817.6 295.6 866.2 320.8 903.5 346.5 C940.8 372.2 1003.6 421.1 1010.8 454.6 C1018.0 488.0 973.8 528.1 947.0 547.2 Z" fill="hsl(174.0,38.0%,64.0%)" filter="url(#grainBlurL2)" opacity="0.9"></path>
+</g>
+</g>
+<g style="transform: translate(0.0px,0.0px) scale(1.060); transform-box: fill-box; transform-origin: 50% 50%; transition: transform 1100ms cubic-bezier(.2,.7,.2,1)">
+<g>
+<path d="M1091.3 484.4 C1079.5 538.8 999.5 575.5 954.4 621.5 C909.4 667.6 873.4 752.2 821.0 760.7 C768.7 769.2 705.9 702.1 640.4 672.4 C574.9 642.7 446.4 628.7 428.1 582.3 C409.8 535.9 496.9 449.9 530.4 394.0 C563.8 338.1 580.2 271.7 628.8 246.8 C677.5 221.8 756.1 236.2 822.1 244.3 C888.1 252.3 980.0 255.1 1024.8 295.1 C1069.7 335.1 1103.0 429.9 1091.3 484.4 Z" fill="hsl(184.0,49.0%,34.0%)" filter="url(#grainBlurL2)"></path>
+<g style="transform: translate(0.0px,0.0px) scale(1.100); transform-box: fill-box; transform-origin: 50% 50%; transition: transform 900ms cubic-bezier(.2,.7,.2,1)">
+<path d="M944.5 416.4 C954.6 446.8 953.4 486.2 937.9 517.3 C922.4 548.4 885.7 589.8 851.4 603.0 C817.1 616.1 766.0 607.5 732.2 596.1 C698.3 584.7 661.3 562.8 648.1 534.8 C634.9 506.7 635.0 456.8 652.9 428.0 C670.8 399.3 717.9 377.9 755.3 362.4 C792.7 346.9 845.8 325.9 877.3 334.9 C908.8 343.9 934.4 386.0 944.5 416.4 Z" fill="hsl(189.0,63.0%,12.0%)" filter="url(#grainBlurM2)"></path>
+</g>
+</g>
+</g>
+<rect width="1440" height="900" filter="url(#pageGrain2)"></rect>
+<text x="701" y="576" font-family="Dirtbag TM, Inter, sans-serif" font-size="96" letter-spacing="2.9" fill="#FFFFFF">BEN WEILLER</text></svg>
+<div style="padding: 9px 12px 10px"><div style="font-size: 13px; font-weight: 600; color: #111">Ben Weiller</div><div style="font-size: 12px; color: #8A8A8E; margin-top: 2px">benweiller.com</div></div>
+</div>
+</div>
+
+<div>
+<p class="lbl">/in Slack</p>
+<div class="sys" style="display: flex; gap: 10px; max-width: 420px">
+<div style="width: 4px; border-radius: 2px; background: #DDDDDD; flex: none"></div>
+<div style="font-size: 13px; line-height: 1.45; color: #1D1C1D">
+<div style="display: flex; align-items: center; gap: 6px; font-weight: 600"><span style="display: inline-flex; width: 16px; height: 16px; align-items: center; justify-content: center; background: #F1F1EE; box-shadow: inset 0 0 0 1px #D9D8D2; font-family: 'Dirtbag TM', 'Inter', sans-serif; font-size: 10px; font-weight: 400; color: #1E1E1C">BW</span>benweiller.com</div>
+<div style="color: #1264A3; font-weight: 600; margin-top: 2px">Ben Weiller</div>
+<div style="margin: 2px 0 8px">the portfolio of an advertising creative/copy/writer</div>
+<div style="border-radius: 8px; overflow: hidden; width: 360px"><svg viewBox="180 120 1200 630" width="360" height="189" preserveAspectRatio="xMidYMid slice" style="display: block; background: #EEEDF2" role="img" aria-label="Share image: the Bloblurb with BEN WEILLER">
+<defs>
+<filter id="grainBlurXL3" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="70" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="34" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="grainBlurL3" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="42" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="28" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="grainBlurM3" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="26" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="7" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="22" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="pageGrain3" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"></feTurbulence>
+<feColorMatrix type="matrix" values="0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0.12 0"></feColorMatrix>
+</filter>
+</defs>
+<g style="transform: translate(0.0px,0.0px) scale(1.000); transform-box: fill-box; transform-origin: 50% 50%; transition: transform 1400ms cubic-bezier(.2,.7,.2,1)">
+<g>
+<path d="M1109.0 484.7 C1101.7 567.2 1126.8 670.8 1079.3 719.4 C1031.8 768.0 917.4 753.8 823.8 776.3 C730.2 798.9 587.6 885.9 517.7 854.7 C447.8 823.6 417.7 671.7 404.4 589.5 C391.1 507.4 406.3 428.4 437.8 361.7 C469.3 295.0 524.1 232.6 593.3 189.2 C662.6 145.8 765.0 95.5 853.2 101.4 C941.5 107.3 1080.2 160.5 1122.8 224.4 C1165.5 288.3 1116.2 402.2 1109.0 484.7 Z" fill="hsl(258.0,66.0%,85.0%)" filter="url(#grainBlurXL3)" opacity="0.95"></path>
+<path d="M947.0 547.2 C920.2 566.2 887.1 576.3 849.9 568.8 C812.7 561.4 745.5 534.6 724.0 502.4 C702.4 470.1 710.1 408.9 720.6 375.2 C731.1 341.5 756.6 305.1 787.1 300.3 C817.6 295.6 866.2 320.8 903.5 346.5 C940.8 372.2 1003.6 421.1 1010.8 454.6 C1018.0 488.0 973.8 528.1 947.0 547.2 Z" fill="hsl(174.0,38.0%,64.0%)" filter="url(#grainBlurL3)" opacity="0.9"></path>
+</g>
+</g>
+<g style="transform: translate(0.0px,0.0px) scale(1.060); transform-box: fill-box; transform-origin: 50% 50%; transition: transform 1100ms cubic-bezier(.2,.7,.2,1)">
+<g>
+<path d="M1091.3 484.4 C1079.5 538.8 999.5 575.5 954.4 621.5 C909.4 667.6 873.4 752.2 821.0 760.7 C768.7 769.2 705.9 702.1 640.4 672.4 C574.9 642.7 446.4 628.7 428.1 582.3 C409.8 535.9 496.9 449.9 530.4 394.0 C563.8 338.1 580.2 271.7 628.8 246.8 C677.5 221.8 756.1 236.2 822.1 244.3 C888.1 252.3 980.0 255.1 1024.8 295.1 C1069.7 335.1 1103.0 429.9 1091.3 484.4 Z" fill="hsl(184.0,49.0%,34.0%)" filter="url(#grainBlurL3)"></path>
+<g style="transform: translate(0.0px,0.0px) scale(1.100); transform-box: fill-box; transform-origin: 50% 50%; transition: transform 900ms cubic-bezier(.2,.7,.2,1)">
+<path d="M944.5 416.4 C954.6 446.8 953.4 486.2 937.9 517.3 C922.4 548.4 885.7 589.8 851.4 603.0 C817.1 616.1 766.0 607.5 732.2 596.1 C698.3 584.7 661.3 562.8 648.1 534.8 C634.9 506.7 635.0 456.8 652.9 428.0 C670.8 399.3 717.9 377.9 755.3 362.4 C792.7 346.9 845.8 325.9 877.3 334.9 C908.8 343.9 934.4 386.0 944.5 416.4 Z" fill="hsl(189.0,63.0%,12.0%)" filter="url(#grainBlurM3)"></path>
+</g>
+</g>
+</g>
+<rect width="1440" height="900" filter="url(#pageGrain3)"></rect>
+<text x="701" y="576" font-family="Dirtbag TM, Inter, sans-serif" font-size="96" letter-spacing="2.9" fill="#FFFFFF">BEN WEILLER</text></svg></div>
+</div>
+</div>
+</div>
+
+<div>
+<p class="lbl">/on LinkedIn or X</p>
+<div class="sys" style="width: 420px; border: 1px solid #D9D8D2; border-radius: 12px; overflow: hidden; background: #FFFFFF">
+<svg viewBox="180 120 1200 630" width="420" height="220" preserveAspectRatio="xMidYMid slice" style="display: block; background: #EEEDF2" role="img" aria-label="Share image: the Bloblurb with BEN WEILLER">
+<defs>
+<filter id="grainBlurXL4" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="70" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="34" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="grainBlurL4" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="42" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="28" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="grainBlurM4" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="26" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="7" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="22" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="pageGrain4" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"></feTurbulence>
+<feColorMatrix type="matrix" values="0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0.12 0"></feColorMatrix>
+</filter>
+</defs>
+<g style="transform: translate(0.0px,0.0px) scale(1.000); transform-box: fill-box; transform-origin: 50% 50%; transition: transform 1400ms cubic-bezier(.2,.7,.2,1)">
+<g>
+<path d="M1109.0 484.7 C1101.7 567.2 1126.8 670.8 1079.3 719.4 C1031.8 768.0 917.4 753.8 823.8 776.3 C730.2 798.9 587.6 885.9 517.7 854.7 C447.8 823.6 417.7 671.7 404.4 589.5 C391.1 507.4 406.3 428.4 437.8 361.7 C469.3 295.0 524.1 232.6 593.3 189.2 C662.6 145.8 765.0 95.5 853.2 101.4 C941.5 107.3 1080.2 160.5 1122.8 224.4 C1165.5 288.3 1116.2 402.2 1109.0 484.7 Z" fill="hsl(258.0,66.0%,85.0%)" filter="url(#grainBlurXL4)" opacity="0.95"></path>
+<path d="M947.0 547.2 C920.2 566.2 887.1 576.3 849.9 568.8 C812.7 561.4 745.5 534.6 724.0 502.4 C702.4 470.1 710.1 408.9 720.6 375.2 C731.1 341.5 756.6 305.1 787.1 300.3 C817.6 295.6 866.2 320.8 903.5 346.5 C940.8 372.2 1003.6 421.1 1010.8 454.6 C1018.0 488.0 973.8 528.1 947.0 547.2 Z" fill="hsl(174.0,38.0%,64.0%)" filter="url(#grainBlurL4)" opacity="0.9"></path>
+</g>
+</g>
+<g style="transform: translate(0.0px,0.0px) scale(1.060); transform-box: fill-box; transform-origin: 50% 50%; transition: transform 1100ms cubic-bezier(.2,.7,.2,1)">
+<g>
+<path d="M1091.3 484.4 C1079.5 538.8 999.5 575.5 954.4 621.5 C909.4 667.6 873.4 752.2 821.0 760.7 C768.7 769.2 705.9 702.1 640.4 672.4 C574.9 642.7 446.4 628.7 428.1 582.3 C409.8 535.9 496.9 449.9 530.4 394.0 C563.8 338.1 580.2 271.7 628.8 246.8 C677.5 221.8 756.1 236.2 822.1 244.3 C888.1 252.3 980.0 255.1 1024.8 295.1 C1069.7 335.1 1103.0 429.9 1091.3 484.4 Z" fill="hsl(184.0,49.0%,34.0%)" filter="url(#grainBlurL4)"></path>
+<g style="transform: translate(0.0px,0.0px) scale(1.100); transform-box: fill-box; transform-origin: 50% 50%; transition: transform 900ms cubic-bezier(.2,.7,.2,1)">
+<path d="M944.5 416.4 C954.6 446.8 953.4 486.2 937.9 517.3 C922.4 548.4 885.7 589.8 851.4 603.0 C817.1 616.1 766.0 607.5 732.2 596.1 C698.3 584.7 661.3 562.8 648.1 534.8 C634.9 506.7 635.0 456.8 652.9 428.0 C670.8 399.3 717.9 377.9 755.3 362.4 C792.7 346.9 845.8 325.9 877.3 334.9 C908.8 343.9 934.4 386.0 944.5 416.4 Z" fill="hsl(189.0,63.0%,12.0%)" filter="url(#grainBlurM4)"></path>
+</g>
+</g>
+</g>
+<rect width="1440" height="900" filter="url(#pageGrain4)"></rect>
+<text x="701" y="576" font-family="Dirtbag TM, Inter, sans-serif" font-size="96" letter-spacing="2.9" fill="#FFFFFF">BEN WEILLER</text></svg>
+<div style="padding: 10px 14px 12px"><div style="font-size: 14px; font-weight: 600; color: #111">Ben Weiller</div><div style="font-size: 12px; color: #6B6B6B; margin-top: 3px">benweiller.com</div></div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

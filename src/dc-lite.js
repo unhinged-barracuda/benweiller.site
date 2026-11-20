@@ -1,0 +1,256 @@
+// dc-lite — runs a Claude Design board (.dc.html) as a live page.
+// The board's <x-dc> markup is kept verbatim inside a <template>; this file turns it into
+// React elements on every render, and its `class Component extends DCLogic` drives it.
+// Keeping the board source unchanged is the point: a tweak made on the design canvas comes
+// to the site by copying the board file across (see README).
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+
+// ---------- holes ----------
+const HOLE = /\{\{\s*([^}]+?)\s*\}\}/g;
+const WHOLE = /^\s*\{\{\s*([^}]+?)\s*\}\}\s*$/;
+
+function lookup(path, scope) {
+  if (path === 'true') return true;
+  if (path === 'false') return false;
+  if (path === 'null') return null;
+  if (/^-?\d+(\.\d+)?$/.test(path)) return Number(path);
+  if (/^(['"]).*\1$/.test(path)) return path.slice(1, -1);
+  const parts = path.split('.');
+  let v;
+  for (let s = scope; s; s = s.__parent) {
+    if (Object.prototype.hasOwnProperty.call(s, parts[0])) { v = s[parts[0]]; break; }
+  }
+  for (let i = 1; i < parts.length && v != null; i++) v = v[parts[i]];
+  return v;
+}
+function interp(str, scope) {
+  return str.replace(HOLE, (_, p) => { const v = lookup(p, scope); return v == null || v === false ? '' : String(v); });
+}
+
+// ---------- attribute names (the HTML parser lowercases them; React wants camelCase) ----------
+const EVENTS = ['Click','DoubleClick','ContextMenu','MouseDown','MouseUp','MouseMove','MouseEnter','MouseLeave','MouseOver','MouseOut',
+  'PointerDown','PointerUp','PointerMove','PointerEnter','PointerLeave','PointerCancel','Wheel','TouchStart','TouchMove','TouchEnd','TouchCancel',
+  'KeyDown','KeyUp','KeyPress','Focus','Blur','Change','Input','Submit','Scroll','Load','Error','Ended','Play','Pause','Playing','TimeUpdate',
+  'LoadedMetadata','LoadedData','CanPlay','Seeked','Waiting','TransitionEnd','AnimationEnd','AnimationIteration','DragStart','Drop','DragOver'];
+const ATTR = { class: 'className', for: 'htmlFor', tabindex: 'tabIndex', readonly: 'readOnly', maxlength: 'maxLength', colspan: 'colSpan',
+  rowspan: 'rowSpan', crossorigin: 'crossOrigin', srcset: 'srcSet', playsinline: 'playsInline', autoplay: 'autoPlay', contenteditable: 'contentEditable',
+  spellcheck: 'spellCheck', allowfullscreen: 'allowFullScreen', autocomplete: 'autoComplete', enterkeyhint: 'enterKeyHint', inputmode: 'inputMode',
+  referrerpolicy: 'referrerPolicy', fetchpriority: 'fetchPriority', 'xlink:href': 'xlinkHref', 'xml:space': 'xmlSpace', datetime: 'dateTime',
+  accesskey: 'accessKey', novalidate: 'noValidate', formnovalidate: 'formNoValidate', usemap: 'useMap', frameborder: 'frameBorder',
+  defaultvalue: 'defaultValue', defaultchecked: 'defaultChecked', disablepictureinpicture: 'disablePictureInPicture', controlslist: 'controlsList' };
+EVENTS.forEach((e) => { ATTR['on' + e.toLowerCase()] = 'on' + e; });
+const BOOL = new Set(['muted','loop','autoPlay','playsInline','controls','disabled','hidden','checked','selected','readOnly','required','multiple',
+  'allowFullScreen','noValidate','open','defer','async','disablePictureInPicture','inert']);
+
+function attrName(n, svg) {
+  if (ATTR[n]) return ATTR[n];
+  if (n.startsWith('data-') || n.startsWith('aria-')) return n;
+  if (svg && n.includes('-')) return n.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+  return n;
+}
+
+// "a: b; --c: d" -> {a:'b','--c':'d'}
+function parseStyle(s) {
+  const o = {};
+  let depth = 0, cur = '';
+  const parts = [];
+  for (const ch of s) {
+    if (ch === '(') depth++;
+    if (ch === ')') depth--;
+    if (ch === ';' && depth === 0) { parts.push(cur); cur = ''; } else cur += ch;
+  }
+  parts.push(cur);
+  for (const p of parts) {
+    const i = p.indexOf(':');
+    if (i < 0) continue;
+    const k = p.slice(0, i).trim();
+    const v = p.slice(i + 1).trim();
+    if (!k || v === '') continue;
+    const key = k.startsWith('--') ? k : k.toLowerCase().replace(/^-(webkit|moz|ms)-/, (m, pre) => pre[0].toUpperCase() + pre.slice(1) + '-').replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+    o[key] = v.replace(/\s*!important\s*$/, '');
+  }
+  return o;
+}
+
+// ---------- template -> render function ----------
+function compileChildren(parent, svg) {
+  const out = [];
+  parent.childNodes.forEach((n) => { const c = compileNode(n, svg); if (c) out.push(c); });
+  return out;
+}
+
+function compileNode(node, svgParent) {
+  if (node.nodeType === 3) {
+    const t = node.nodeValue;
+    if (svgParent && !t.trim()) return null;
+    const m = t.match(WHOLE);
+    if (m) return (scope) => { const v = lookup(m[1], scope); return v == null || v === false ? null : v; };
+    if (!t.includes('{{')) return () => t;
+    return (scope) => interp(t, scope);
+  }
+  if (node.nodeType !== 1) return null;
+  const tag = node.localName;
+  if (tag === 'helmet' || tag === 'script') return null;
+
+  if (tag === 'sc-for') {
+    const list = node.getAttribute('list') || '';
+    const as = node.getAttribute('as') || 'item';
+    const kids = compileChildren(node.content || node, svgParent);
+    const lm = list.match(WHOLE);
+    return (scope) => {
+      const arr = lm ? lookup(lm[1], scope) : null;
+      if (!arr || !arr.length) return null;
+      return arr.map((it, i) => {
+        const s = { [as]: it, $index: i, __parent: scope };
+        return React.createElement(React.Fragment, { key: (it && it.key != null) ? it.key : i }, ...kids.map((k) => k(s)));
+      });
+    };
+  }
+  if (tag === 'sc-if') {
+    const val = node.getAttribute('value') || '';
+    const kids = compileChildren(node, svgParent);
+    const vm = val.match(WHOLE);
+    return (scope) => {
+      const v = vm ? lookup(vm[1], scope) : val;
+      if (!v) return null;
+      return React.createElement(React.Fragment, null, ...kids.map((k) => k(scope)));
+    };
+  }
+
+  const svg = svgParent || tag === 'svg';
+  const inForeign = tag === 'foreignObject';
+  const statics = {};
+  const dyn = [];
+  for (const a of Array.from(node.attributes)) {
+    if (a.name.startsWith('hint-')) continue;
+    const name = attrName(a.name, svg && !inForeign);
+    const v = a.value;
+    if (name === 'style') {
+      if (v.includes('{{')) dyn.push([name, (s) => parseStyle(interp(v, s))]);
+      else statics.style = parseStyle(v);
+      continue;
+    }
+    const m = v.match(WHOLE);
+    if (m) dyn.push([name, (s) => lookup(m[1], s)]);
+    else if (v.includes('{{')) dyn.push([name, (s) => interp(v, s)]);
+    else if (BOOL.has(name)) statics[name] = v === '' || v === name.toLowerCase() || v === 'true';
+    else statics[name] = v;
+  }
+  if (tag === 'video' && statics.muted) statics.defaultMuted = true;
+  const src = tag === 'template' ? node.content : node;
+  const kids = compileChildren(src, svg && !inForeign);
+  const elTag = tag === 'template' ? React.Fragment : node.localName;
+  return (scope) => {
+    const props = Object.assign({}, statics);
+    for (const [k, f] of dyn) {
+      const val = f(scope);
+      if (val === undefined || val === null || (val === false && !k.startsWith('aria-'))) continue;
+      if (k === 'className' && typeof val !== 'string') { props[k] = String(val); continue; }
+      props[k] = val;
+    }
+    const ch = kids.map((k) => k(scope));
+    return React.createElement(elTag, props, ...ch);
+  };
+}
+
+// ---------- the base class boards extend ----------
+export class DCLogic extends React.Component {
+  renderVals() { return {}; }
+  render() {
+    const vals = this.renderVals() || {};
+    const tree = this.__tpl.map((f) => f(vals));
+    return React.createElement(React.Fragment, null, ...tree);
+  }
+}
+
+function applyHelmet(frag) {
+  const h = frag.querySelector('helmet');
+  if (!h) return;
+  Array.from(h.children).forEach((el) => {
+    const c = el.cloneNode(true);
+    // a <style> or <link> cloned from a template is inert; recreate it so the browser applies it
+    const fresh = document.createElement(c.localName);
+    Array.from(c.attributes).forEach((a) => fresh.setAttribute(a.name, a.value));
+    fresh.textContent = c.textContent;
+    document.head.appendChild(fresh);
+  });
+}
+
+export function mount(tplEl, scriptEl, mountEl) {
+  const frag = tplEl.content;
+  applyHelmet(frag);
+  const xdc = frag.querySelector('x-dc') || frag;
+  const tpl = compileChildren(xdc, false);
+  let props = {};
+  try {
+    const dp = JSON.parse(scriptEl.getAttribute('data-props') || '{}');
+    for (const k in dp) if (k[0] !== '$' && dp[k] && 'default' in dp[k]) props[k] = dp[k].default;
+  } catch (e) { /* ignore */ }
+  // eslint-disable-next-line no-new-func
+  const Component = new Function('DCLogic', 'React', scriptEl.textContent + '\n;return Component;')(DCLogic, React);
+  Component.prototype.__tpl = tpl;
+  createRoot(mountEl).render(React.createElement(Component, props));
+}
+
+// ---------- films: the boards show a cover + glass play button; on the live site a click loads the Vimeo player in place ----------
+// (nothing loads from Vimeo until someone presses play; the film id comes from that film's "watch on vimeo" link)
+function vimeoFor(card) {
+  for (let el = card; el && el !== document.body; el = el.parentElement) {
+    const links = el.querySelectorAll('a[href*="vimeo.com/"]');
+    if (links.length) {
+      // the link that belongs to this film is the first one after it in the page
+      for (const a of links) if (card.compareDocumentPosition(a) & Node.DOCUMENT_POSITION_FOLLOWING) {
+        const m = a.getAttribute('href').match(/vimeo\.com\/(?:video\/)?(\d+)(?:\/([0-9a-f]+))?/);
+        if (m) return m;
+      }
+    }
+  }
+  return null;
+}
+document.addEventListener('click', (e) => {
+  const card = e.target.closest && e.target.closest('a.card');
+  if (!card || card.getAttribute('href') !== '#') return;
+  e.preventDefault();
+  if (card.querySelector('iframe.vplayer')) return;
+  const m = vimeoFor(card);
+  if (!m) return;
+  const q = 'autoplay=1&dnt=1&playsinline=1&title=0&byline=0&portrait=0&loop=0' + (m[2] ? '&h=' + m[2] : '');
+  const f = document.createElement('iframe');
+  f.className = 'vplayer';
+  f.src = 'https://player.vimeo.com/video/' + m[1] + '?' + q;
+  f.allow = 'autoplay; fullscreen; picture-in-picture';
+  f.allowFullscreen = true;
+  f.title = card.getAttribute('aria-label') || 'film';
+  f.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0;z-index:5;background:#000';
+  // keep the flip on the glass button visible for a beat, then the player takes over
+  setTimeout(() => { card.appendChild(f); card.removeAttribute('href'); card.style.cursor = 'default'; }, 450);
+}, false);
+
+// ---------- page boot: pick the desktop or the mobile board ----------
+function pick() {
+  const cfg = window.__DC_PAGE__ || {};
+  const w = window.innerWidth;
+  const coarse = window.matchMedia('(pointer: coarse)').matches;
+  // phones always get the mobile boards; tablets get them only for the pages that say so (homepage, menu)
+  let mobile = w < 768;
+  if (!mobile && cfg.tabletMobile && coarse && Math.min(w, window.innerHeight) < 1100) mobile = true;
+  const want = mobile ? 'mobile' : 'desktop';
+  const tpl = document.getElementById('dc-' + want) || document.getElementById('dc-desktop') || document.getElementById('dc-mobile');
+  return tpl;
+}
+
+function boot() {
+  const tpl = pick();
+  if (!tpl) return;
+  const script = document.getElementById(tpl.id + '-logic');
+  const root = document.getElementById('dc-root');
+  document.documentElement.dataset.board = tpl.id.replace('dc-', '');
+  mount(tpl, script, root);
+  // crossing the phone breakpoint (rotate, resize) swaps boards: simplest is a reload
+  const was = tpl.id;
+  let t;
+  window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => { const n = pick(); if (n && n.id !== was) location.reload(); }, 250); });
+}
+
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();

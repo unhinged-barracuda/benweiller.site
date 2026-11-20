@@ -1,0 +1,15 @@
+{
+  "name": "benweiller-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "serve": "node tools/serve.mjs"
+  },
+  "engines": { "node": ">=20" },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  }
+}

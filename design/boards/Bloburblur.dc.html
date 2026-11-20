@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ben Weiller — bloburblur homepage</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&amp;family=Inter+Tight:wght@400&amp;display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'Dirtbag TM';src:url('./assets/a15098c6e2313273da5b37f609489781.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+body{margin:0}
+a{color:#1E1E1C}a:hover{color:#000000}
+.breathe{transform-box:fill-box;transform-origin:50% 50%;animation:breathe 9s ease-in-out infinite}
+.drift{transform-box:fill-box;transform-origin:50% 50%;animation:drift 13s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.035) rotate(1.5deg)}}
+@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(18px,-12px)}}
+@media (prefers-reduced-motion: reduce){.breathe,.drift{animation:none}}
+.drawer a{opacity:0;transform:translateX(10px);transition:opacity 300ms ease,transform 400ms cubic-bezier(.3,.7,.2,1)}
+.drawer.open a{opacity:1;transform:none}
+.drawer.open a:nth-child(2){transition-delay:50ms}.drawer.open a:nth-child(3){transition-delay:100ms}
+.burger line{transition:transform 350ms cubic-bezier(.3,.7,.2,1),opacity 200ms ease;transform-box:fill-box;transform-origin:50% 50%}
+.ico[aria-expanded="true"] .burger .l1{transform:translateX(7px) rotate(24deg)}
+.ico[aria-expanded="true"] .burger .l2{opacity:0}
+.ico[aria-expanded="true"] .burger .l3{transform:translateX(-7px) rotate(-66deg)}
+@media (prefers-reduced-motion: reduce){.burger line,.drawer a{transition:none}}
+.nb{color:#55554F;text-decoration:none;white-space:nowrap;transition:color 200ms ease}
+.nb:hover,.nb:focus-visible{color:#1E1E1C}
+.nb:focus-visible,.ico:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:4px}
+/* keyboard focus on text (links, menu words, wordmark): no box. a soft glass rectangle leaning at the lean angle sits behind the word */
+.nb:focus-visible,.tlk:focus-visible,.lnk:focus-visible{outline:none;position:relative;z-index:0}
+.nb:focus-visible::before,.tlk:focus-visible::before,.lnk:focus-visible::before{content:"";position:absolute;left:-9px;right:-9px;top:-5px;bottom:-5px;z-index:-1;transform:skewX(-16.7deg);background:linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.36));backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 1px rgba(255,255,255,0.85),0 1px 10px rgba(30,30,28,0.12)}
+/* FOCUS (approved, site-wide): keyboard only, no outlines anywhere.
+   text, words and small controls: a soft glass rectangle leaning at the lean angle behind them.
+   media and glass buttons: no frame, a soft shadow that lifts them off the page */
+*:focus-visible{outline:none!important}
+.nb:focus-visible:not([style*="position: absolute"]),.tlk:focus-visible:not([style*="position: absolute"]),.lnk:focus-visible:not([style*="position: absolute"]),.ctl:focus-visible:not([style*="position: absolute"]),.tl:focus-visible:not([style*="position: absolute"]),.ic:focus-visible:not([style*="position: absolute"]),.hereBtn:focus-visible:not([style*="position: absolute"]),.ico:focus-visible:not([style*="position: absolute"]),.item:focus-visible:not([style*="position: absolute"]),a:not(.card):not(.xp):not(.band):focus-visible:not([style*="position: absolute"]),button:not(.gb):not(.xp):not(.pp):focus-visible:not([style*="position: absolute"]){position:relative;z-index:0}
+.nb:focus-visible::before,.tlk:focus-visible::before,.lnk:focus-visible::before,.ctl:focus-visible::before,.tl:focus-visible::before,.ic:focus-visible::before,.hereBtn:focus-visible::before,.ico:focus-visible::before,.item:focus-visible::before,a:not(.card):not(.xp):not(.band):focus-visible::before,button:not(.gb):not(.xp):not(.pp):focus-visible::before{content:"";position:absolute;left:-9px;right:-9px;top:-5px;bottom:-5px;z-index:-1;transform:skewX(-16.7deg);background:linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.36));backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 1px rgba(255,255,255,0.85),0 1px 10px rgba(30,30,28,0.12)}
+.card:focus-visible::after,.xp:focus-visible::after,.band:focus-visible::after,.gbw:has(.gb:focus-visible)::after{content:none!important}
+.card:focus-visible,.xp:focus-visible,.band:focus-visible,[tabindex]:not(a):not(button):focus-visible,.gbw:has(.gb:focus-visible),.gfocus{box-shadow:0 14px 34px -8px rgba(30,30,28,0.38),0 2px 8px rgba(30,30,28,0.12)}
+.gbw:has(.gb:focus-visible),.gfocus.round{border-radius:50%}
+/* the blurb: closed under its title; a tap on the title folds it open and the arrow turns to point down */
+.lead{display:inline-flex;align-items:baseline;margin:0;padding:0;border:0;background:none;font:inherit;font-weight:500;color:inherit;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.lead .arw{display:inline-block;margin-left:6px;font-weight:400;transition:transform 280ms cubic-bezier(.3,.7,.2,1)}
+.bfold{display:grid;transition:grid-template-rows 450ms cubic-bezier(.3,.7,.2,1)}
+.bfold>div{min-height:0;overflow:hidden;transition:opacity 300ms ease,visibility 0s linear 0s}
+.bfold.shut>div{opacity:0;visibility:hidden;transition:opacity 220ms ease,visibility 0s linear 450ms}
+@media (prefers-reduced-motion: reduce){.lead .arw,.bfold,.bfold>div{transition:none}}
+</style>
+</helmet>
+<div onMouseMove="{{onMove}}" onMouseLeave="{{onLeave}}" onClick="{{onClick}}" onWheel="{{onWheel}}" onTouchStart="{{onTouchStart}}" onTouchEnd="{{onTouchEnd}}" style="position: relative; height: 100vh; min-height: 560px; overflow: hidden; cursor: pointer; background: {{ground}}; font-family: 'Inter', system-ui, sans-serif; color: #1E1E1C">
+<!-- footer: a small copyright line in the bottom-left corner (this page doesn't scroll) -->
+<p class="copyr" style="position: absolute; left: 4vw; bottom: 20px; margin: 0; z-index: 4; font-size: 11px; line-height: 1; letter-spacing: 0.04em; color: #55554F; pointer-events: none">© Ben Weiller 2026</p>
+
+<!-- a click anywhere, scrolling down (wheel, swipe up, or ↓ / page down / space) opens the menu page immediately -->
+<a data-next="menu" href="Menu-Blob-Bold.dc.html" tabindex="-1" aria-hidden="true" style="display: none">menu</a>
+<!-- header menu only (the big BEN WEILLER on the page is the wordmark here, so none in the top left) -->
+<div style="position: absolute; top: 28px; right: 4vw; height: 48px; display: flex; align-items: center; gap: 26px; z-index: 5; cursor: default">
+<nav id="hdrMenuG" aria-label="Main" class="drawer {{openClsG}}" style="display: flex; gap: 28px; align-items: center; font-family: 'Inter', system-ui, sans-serif; font-size: 13px; line-height: 1; visibility: {{drawerVisG}}">
+<a class="nb" href="Menu-Blob-Bold.dc.html" tabindex="{{tabG}}">/work</a>
+<a class="nb" href="https://www.instagram.com/un_finished_lines/" target="_blank" rel="noopener" tabindex="{{tabG}}">/@un_finished_lines</a>
+<a class="nb" href="About-A.dc.html" tabindex="{{tabG}}">/who, me?</a>
+<a class="nb" href="Contact-A.dc.html" tabindex="{{tabG}}">/contact</a>
+</nav>
+<button class="ico" type="button" onClick="{{toggleG}}" aria-expanded="{{openStrG}}" aria-controls="hdrMenuG" aria-label="{{icoLabelG}}" style="width: 48px; height: 48px; margin-right: -7px; padding: 0; border: 0; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<svg class="burger" width="33" height="27" viewBox="0 0 22 18" overflow="visible" aria-hidden="true"><line class="l1" x1="1" y1="17" x2="7.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l2" x1="8" y1="17" x2="14.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l3" x1="15" y1="17" x2="21.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line></svg>
+</button>
+</div>
+<div style="position: absolute; inset: 0">
+<svg aria-hidden="true" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" style="position: absolute; inset: 0; display: block">
+<defs>
+<filter id="grainBlurXL" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="70" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="{{seed}}" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="34" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="grainBlurL" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="42" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="{{seed}}" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="28" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="grainBlurM" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur stdDeviation="26" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="{{seed}}" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="22" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+</filter>
+<filter id="pageGrain" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"></feTurbulence>
+<feColorMatrix type="matrix" values="0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0.12 0"></feColorMatrix>
+</filter>
+</defs>
+<g style="transform: {{haloT}}; transform-box: fill-box; transform-origin: 50% 50%; transition: transform 1400ms cubic-bezier(.2,.7,.2,1)">
+<g class="drift">
+<path d="{{haloPath}}" fill="{{halo}}" filter="url(#grainBlurXL)" opacity="0.95"></path>
+<path d="{{accentPath}}" fill="{{accent}}" filter="url(#grainBlurL)" opacity="0.9"></path>
+</g>
+</g>
+<g style="transform: {{bodyT}}; transform-box: fill-box; transform-origin: 50% 50%; transition: transform 1100ms cubic-bezier(.2,.7,.2,1)">
+<g class="breathe">
+<path d="{{midPath}}" fill="{{mid}}" filter="url(#grainBlurL)"></path>
+<g style="transform: {{coreT}}; transform-box: fill-box; transform-origin: 50% 50%; transition: transform 900ms cubic-bezier(.2,.7,.2,1)">
+<path d="{{corePath}}" fill="{{core}}" filter="url(#grainBlurM)"></path>
+</g>
+</g>
+</g>
+<rect width="1440" height="900" filter="url(#pageGrain)"></rect>
+</svg>
+
+<!-- wordmark with the descriptor line running beneath it; both move together with the blob -->
+<div style="position: absolute; left: {{nameX}}%; top: {{nameY}}%; margin: 0; transform: {{textT}}; transition: transform 1100ms cubic-bezier(.2,.7,.2,1); z-index: 2">
+<a href="Bloburblur.dc.html" aria-label="Ben Weiller — home" style="display: block; font-family: 'Dirtbag TM', 'Inter', sans-serif; font-weight: 400; font-size: 44px; letter-spacing: 0.03em; line-height: 1; color: #FFFFFF; text-decoration: none">BEN WEILLER</a>
+<p style="margin: 3px 0 0; font-family: 'Inter', system-ui, sans-serif; font-size: 16px; line-height: 1; letter-spacing: 0.01em; color: #FFFFFF; white-space: nowrap; transform: translateX(-14px) skewX(-16.7deg); transform-origin: 0 100%">copy/creative/writer</p>
+</div>
+<div style="position: absolute; left: {{paraX}}%; top: {{paraY}}%; width: min(350px, 80vw); z-index: 2; color: #1E1E1C; font-size: 13px; line-height: 1.5">
+<!-- the title sits at the right end of the (hidden) paragraph's width, so it rests on the blob's edge where the paragraph used to meet it -->
+<div style="display: inline-block">
+<div style="text-align: right"><button class="lead" type="button" onClick="{{toggleBlurb}}" aria-expanded="{{blurbStr}}" aria-controls="blurb">a blurb about the blob.<span class="arw" aria-hidden="true" style="transform: rotate({{arwRot}}deg)">→</span></button></div>
+<div class="bfold {{blurbCls}}" style="grid-template-rows: {{blurbRows}}"><div>
+<p id="blurb" style="margin: 0; padding-top: 8px; white-space: nowrap">the colorful shapeshifting entity on<br>this page is named “Bloblurb.” you can<br>play with it by moving your cursor<br>around the screen. or click to see<br>some ideas I’ve been playing with.</p>
+</div></div>
+</div>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { mx: 0, my: 0, travel: 0, blurb: false };
+    this.acc = 0; this.ty = null; this.root = null;
+    this.last = null;
+    this.pending = null;
+    this.raf = null;
+    this.ph = [];
+    for (let i = 0; i < 400; i++) this.ph.push(Math.random() * Math.PI * 2);
+  }
+  componentWillUnmount() { if (this.raf) cancelAnimationFrame(this.raf); if (this.onKey) window.removeEventListener('keydown', this.onKey); }
+  componentDidMount() {
+    this.onKey = (e) => { if (e.target && e.target.closest && e.target.closest('button, a')) return; if (['ArrowDown', 'PageDown', ' ', 'Spacebar'].indexOf(e.key) >= 0) { e.preventDefault(); this.go(); } };
+    window.addEventListener('keydown', this.onKey);
+  }
+  // scroll down into the menu: the homepage lifts and fades, then the menu page opens and plays its entrance
+  go(el) {
+    // open the menu straight away; the homepage stays exactly as it is until the menu page replaces it
+    const now = Date.now();
+    if (this.lastGo && now - this.lastGo < 800) return;
+    this.lastGo = now; this.acc = 0;
+    if (el) this.root = el;
+    const a = (this.root || document).querySelector('a[data-next="menu"]');
+    if (a) a.click();
+  }
+  // smooth, non-repeating wander in roughly [-1, 1], zero at t = 0
+  n(key, t) {
+    const f = [0.37, 0.71, 1.13, 1.79];
+    const w = [1, 0.6, 0.35, 0.2];
+    let v = 0, v0 = 0;
+    for (let j = 0; j < 4; j++) {
+      const p = this.ph[(key * 4 + j) % this.ph.length];
+      v += w[j] * Math.sin(t * f[j] * (1 + 0.13 * key % 0.5) + p);
+      v0 += w[j] * Math.sin(p);
+    }
+    return (v - v0) / 2.15;
+  }
+  rng(seed) {
+    let a = seed >>> 0;
+    return function () {
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  blob(r, key, cx, cy, rx, ry, rot, wobble, n, t) {
+    const pts = [];
+    const harm = [];
+    for (let k = 2; k <= 6; k++) {
+      const extra = k === 6;
+      const a0 = extra ? 0 : (r() * 2 - 1) * wobble / (k * 0.7), p0 = extra ? 0 : r() * Math.PI * 2;
+      const kk = key * 10 + k;
+      harm.push({
+        k: k,
+        a: (extra ? 0 : a0 * (1 + 0.45 * Math.sin(k * 1.7)) + 0.06 * Math.sin(k) / k) * (1 + 0.7 * this.n(kk, t)) + (0.16 / k) * this.n(kk + 50, t * 1.3),
+        p: p0 + 2.6 * this.n(kk + 100, t * 0.8)
+      });
+    }
+    for (let i = 0; i < n; i++) {
+      const th = (i / n) * Math.PI * 2;
+      let f = 1;
+      harm.forEach((h) => { f += h.a * Math.sin(h.k * th + h.p); });
+      f = Math.max(0.35, f);
+      const x = Math.cos(th) * rx * f, y = Math.sin(th) * ry * f;
+      const c = Math.cos(rot), s = Math.sin(rot);
+      pts.push([cx + x * c - y * s, cy + x * s + y * c]);
+    }
+    let d = 'M' + pts[0][0].toFixed(1) + ' ' + pts[0][1].toFixed(1);
+    for (let i = 0; i < n; i++) {
+      const p0 = pts[(i - 1 + n) % n], p1 = pts[i], p2 = pts[(i + 1) % n], p3 = pts[(i + 2) % n];
+      const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+      const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+      d += ' C' + c1[0].toFixed(1) + ' ' + c1[1].toFixed(1) + ' ' + c2[0].toFixed(1) + ' ' + c2[1].toFixed(1) + ' ' + p2[0].toFixed(1) + ' ' + p2[1].toFixed(1);
+    }
+    return d + ' Z';
+  }
+  hsl(h, s, l) {
+    h = ((h % 360) + 360) % 360;
+    s = Math.max(0, Math.min(100, s)); l = Math.max(0, Math.min(100, l));
+    return 'hsl(' + h.toFixed(1) + ',' + s.toFixed(1) + '%,' + l.toFixed(1) + '%)';
+  }
+  move(e, cx, cy) {
+    const b = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX, y = e.clientY;
+    let d = 0;
+    if (this.last) d = Math.hypot(x - this.last[0], y - this.last[1]);
+    this.last = [x, y];
+    const cxp = b.left + b.width * (cx / 1440), cyp = b.top + b.height * (cy / 900);
+    this.pending = {
+      mx: Math.max(-1, Math.min(1, (x - cxp) / (b.width * 0.5))),
+      my: Math.max(-1, Math.min(1, (y - cyp) / (b.height * 0.5))),
+      add: Math.min(d, 80) + (this.pending ? this.pending.add : 0)
+    };
+    if (!this.raf) {
+      this.raf = requestAnimationFrame(() => {
+        this.raf = null;
+        const p = this.pending; this.pending = null;
+        if (p) this.setState({ mx: p.mx, my: p.my, travel: this.state.travel + p.add });
+      });
+    }
+  }
+  renderVals() {
+    const travel = this.state.travel;
+    const tc = travel / 700;   // colour time
+    const ts = travel / 420;   // shape time
+    // colour: starts exactly on deep teal / lilac, then wanders endlessly
+    const H = 186 + 170 * this.n(1, tc);
+    const accH = H - 12 + 140 * this.n(2, tc * 1.1);
+    const haloH = H + 72 + 150 * this.n(3, tc * 0.9);
+    const core = this.hsl(H + 3 + 20 * this.n(4, tc), 63 + 15 * this.n(5, tc), 12 + 5 * this.n(6, tc));
+    const mid = this.hsl(H - 2 + 25 * this.n(7, tc), 49 + 22 * this.n(8, tc), 34 + 10 * this.n(9, tc));
+    const accent = this.hsl(accH, 38 + 25 * this.n(10, tc), 64 + 10 * this.n(11, tc));
+    const halo = this.hsl(haloH, 66 + 20 * this.n(12, tc), 85 + 5 * this.n(13, tc));
+    const ground = this.hsl(haloH, 10 + 6 * this.n(14, tc), 94.5);
+    // shape: same starting bloburb, then endlessly varying
+    const r = this.rng(7 * 9973 + 11);
+    const cx = 780 + (r() - 0.5) * 120 + 60 * this.n(20, ts * 0.5), cy = 440 + (r() - 0.5) * 80 + 40 * this.n(21, ts * 0.5);
+    const rot = (r() - 0.5) * 1.4 + 0.7 * this.n(22, ts * 0.6);
+    const rx = (230 + r() * 70) * (1 + 0.2 * this.n(23, ts * 0.7)), ry = (200 + r() * 70) * 1.07 * (1 + 0.2 * this.n(24, ts * 0.7));
+    const ax = cx + (r() - 0.5) * 260 + 230 * this.n(25, ts * 0.6), ay = cy + (r() - 0.5) * 200 + 50 + 170 * this.n(26, ts * 0.6);
+    const leftSide = r() > 0.5;
+    const mx = this.state.mx, my = this.state.my;
+    const near = Math.max(0, 1 - Math.hypot(mx, my));
+    const bodyT = 'translate(' + (mx * 46).toFixed(1) + 'px,' + (my * 34).toFixed(1) + 'px) scale(' + (1 + 0.06 * near).toFixed(3) + ')';
+    const coreT = 'translate(' + (mx * 30).toFixed(1) + 'px,' + (my * 24).toFixed(1) + 'px) scale(' + (1 + 0.1 * near).toFixed(3) + ')';
+    const haloT = 'translate(' + (-mx * 28).toFixed(1) + 'px,' + (-my * 20).toFixed(1) + 'px) scale(' + (1 + 0.04 * (1 - near)).toFixed(3) + ')';
+    const haloPath = this.blob(r, 1, cx, cy, rx * 1.35, ry * 1.35, rot, 0.28, 9, ts);
+    const accentPath = this.blob(r, 2, ax, ay, rx * (0.55 + 0.2 * this.n(27, ts)), ry * (0.45 + 0.2 * this.n(28, ts)), rot + 0.8, 0.35, 7, ts * 1.3);
+    const midPath = this.blob(r, 3, cx, cy, rx, ry, rot, 0.32, 9, ts);
+    const ox = (r() - 0.5) * 60, oy = (r() - 0.5) * 50;
+    const corePath = this.blob(r, 4, cx + ox + 70 * this.n(29, ts * 0.8), cy + oy + 50 * this.n(30, ts * 0.8), rx * (0.55 + 0.12 * this.n(31, ts)), ry * (0.5 + 0.12 * this.n(32, ts)), rot - 0.4, 0.38, 8, ts * 1.15);
+    const r2 = this.rng(7 * 9973 + 11);
+    const bx = 780 + (r2() - 0.5) * 120, by = 440 + (r2() - 0.5) * 80;
+    return {
+      seed: 7,
+      bodyT: bodyT, coreT: coreT, haloT: haloT,
+      textT: 'translate(' + (mx * 3.2).toFixed(2) + 'vw,' + (my * 3.8).toFixed(2) + 'vh)',
+      onMove: (e) => this.move(e, bx, by),
+      onWheel: (e) => { if (e.deltaY > 0) { this.acc += e.deltaY; if (this.acc > 120) this.go(e.currentTarget); } else this.acc = 0; },
+      // a click anywhere (except the wordmark link) continues to the menu, same as scrolling down
+      onClick: (e) => { if (e.target && e.target.closest && e.target.closest('a, button, nav')) return; this.go(e.currentTarget); },
+      // header menu ("///" → /work /@un_finished_lines /who, me? /contact); opening it doesn't trigger the click-to-continue
+      openClsG: this.state.openG ? 'open' : '', openStrG: this.state.openG ? 'true' : 'false', drawerVisG: this.state.openG ? 'visible' : 'hidden', tabG: this.state.openG ? '0' : '-1',
+      icoLabelG: this.state.openG ? 'Close menu' : 'Open menu',
+      toggleG: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.setState({ openG: !this.state.openG }); },
+      onTouchStart: (e) => { this.ty = e.touches && e.touches[0] ? e.touches[0].clientY : null; },
+      onTouchEnd: (e) => { const t = e.changedTouches && e.changedTouches[0]; if (this.ty !== null && t && this.ty - t.clientY > 50) this.go(e.currentTarget); this.ty = null; },
+      onLeave: () => { this.last = null; this.setState({ mx: 0, my: 0 }); },
+      // the blurb's title opens and closes the paragraph (it never counts as a click-to-continue)
+      blurbStr: this.state.blurb ? 'true' : 'false', blurbCls: this.state.blurb ? '' : 'shut', blurbRows: this.state.blurb ? '1fr' : '0fr', arwRot: this.state.blurb ? 90 : 0,
+      toggleBlurb: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.setState({ blurb: !this.state.blurb }); },
+      ground: ground, halo: halo, accent: accent, mid: mid, core: core,
+      haloPath: haloPath, accentPath: accentPath, midPath: midPath, corePath: corePath,
+      nameX: (((bx - 70) / 1440) * 100).toFixed(1), nameY: (((by + 20) / 900) * 100).toFixed(1),
+      paraX: leftSide ? 14 : 66, paraY: leftSide ? 62 : 70
+    };
+  }
+}
+</script>
+</body>
+</html>
