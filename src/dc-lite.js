@@ -5,6 +5,7 @@
 // to the site by copying the board file across (see README).
 import React from 'react';
 import { createRoot } from 'react-dom/client';
+import { startFastBlob } from './fastblob.js';
 
 // ---------- holes ----------
 const HOLE = /\{\{\s*([^}]+?)\s*\}\}/g;
@@ -205,6 +206,7 @@ export function mount(tplEl, scriptEl, mountEl) {
   const Component = new Function('DCLogic', 'React', scriptEl.textContent + '\n;return Component;')(DCLogic, React);
   Component.prototype.__tpl = tpl;
   createRoot(mountEl).render(React.createElement(Component, props));
+  requestAnimationFrame(() => startFastBlob(mountEl));
 }
 
 // ---------- films: the boards show a cover + glass play button; on the live site a click loads the Vimeo player in place ----------
