@@ -149,9 +149,23 @@ function compileNode(node, svgParent) {
       if (k === 'className' && typeof val !== 'string') { props[k] = String(val); continue; }
       props[k] = val;
     }
+    if (tag === 'img') sizeImg(props);
     const ch = kids.map((k) => k(scope));
     return React.createElement(elTag, props, ...ch);
   };
+}
+
+// ---------- images: load as they come near the screen, and let phones pick a smaller copy ----------
+const IMGRE = /\/assets\/([0-9a-f]{32})\.webp$/;
+function sizeImg(props) {
+  if (props.loading === undefined) props.loading = 'lazy';
+  if (props.decoding === undefined) props.decoding = 'async';
+  const m = typeof props.src === 'string' && props.src.match(IMGRE);
+  const info = m && window.__IMG__ && window.__IMG__[m[1]];
+  if (!info || props.srcSet) return;
+  props.srcSet = info.v.map((w, i) => `/assets/${m[1]}-${[800, 1600][i]}.webp ${w}w`).concat(`${props.src} ${info.w}w`).join(', ');
+  // the column is 900px wide on desktop and full width on phones; full-screen views ask for more
+  if (!props.sizes) props.sizes = '(max-width: 767px) 100vw, (max-width: 1100px) 88vw, 900px';
 }
 
 // ---------- the base class boards extend ----------
@@ -247,6 +261,16 @@ function boot() {
   const root = document.getElementById('dc-root');
   document.documentElement.dataset.board = tpl.id.replace('dc-', '');
   mount(tpl, script, root);
+  // pages whose images appear on hover (the menu's thumbnail card) warm them up once the page has settled
+  if ((window.__DC_PAGE__ || {}).preload) {
+    const warm = () => {
+      const urls = new Set((script.textContent.match(/\/assets\/[0-9a-f]{32}\.(?:webp|jpg|jpeg|png)/g) || []));
+      let i = 0; const list = [...urls];
+      const next = () => { if (i >= list.length) return; const im = new Image(); im.onload = im.onerror = next; im.src = list[i++]; };
+      next(); next();
+    };
+    if (document.readyState === 'complete') setTimeout(warm, 600); else window.addEventListener('load', () => setTimeout(warm, 600));
+  }
   // crossing the phone breakpoint (rotate, resize) swaps boards: simplest is a reload
   const was = tpl.id;
   let t;

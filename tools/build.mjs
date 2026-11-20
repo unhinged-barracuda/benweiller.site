@@ -16,13 +16,23 @@ fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
 
 // ---- assets: /_blob/<id> -> /assets/<id>.<ext> ----
+// design/web/ holds lighter copies made by tools/optimize-assets.mjs (WebP at 800 / 1600 / full width,
+// and the font as WOFF); where one exists it is served in place of the original.
+const WEB = path.join(ROOT, 'design/web');
+const IMG = fs.existsSync(path.join(WEB, 'manifest.json')) ? JSON.parse(fs.readFileSync(path.join(WEB, 'manifest.json'), 'utf8')) : {};
 const assetFile = {};
 if (fs.existsSync(ASSETS)) {
   fs.mkdirSync(path.join(OUT, 'assets'), { recursive: true });
   for (const f of fs.readdirSync(ASSETS)) {
     const id = f.split('.')[0];
-    assetFile[id] = f;
-    fs.copyFileSync(path.join(ASSETS, f), path.join(OUT, 'assets', f));
+    const web = fs.existsSync(WEB) ? fs.readdirSync(WEB).filter((w) => w.startsWith(id)) : [];
+    if (web.length) {
+      for (const w of web) fs.copyFileSync(path.join(WEB, w), path.join(OUT, 'assets', w));
+      assetFile[id] = web.find((w) => !w.includes('-')) || f;
+    } else {
+      assetFile[id] = f;
+      fs.copyFileSync(path.join(ASSETS, f), path.join(OUT, 'assets', f));
+    }
   }
 }
 const missing = new Set();
@@ -32,7 +42,7 @@ function rewriteAssets(s) {
   return s.replace(/\/_blob\/([0-9a-f]{32})/g, (m, id) => {
     if (!assetFile[id]) { missing.add(id); return m; }
     return '/assets/' + assetFile[id];
-  });
+  }).replace(/(url\(['"]?\/assets\/[0-9a-f]{32}\.woff['"]?\)\s*format\(['"])opentype(['"]\))/g, '$1woff$2');
 }
 
 // ---- board links: Foo.dc.html -> its route ----
@@ -89,6 +99,8 @@ function page(r) {
     if (/<\/script/i.test(logic)) throw new Error('</script> inside logic of ' + name);
     parts.push(`<template id="dc-${kind}" data-board="${name}">${xdc}</template>\n<script type="text/x-dc" id="dc-${kind}-logic" data-props='${b.props}'>${logic}</script>`);
   }
+  const used = {};
+  for (const m of parts.join('').matchAll(/\/assets\/([0-9a-f]{32})\.webp/g)) if (IMG[m[1]] && IMG[m[1]].v.length) used[m[1]] = IMG[m[1]];
   const title = r.title ? `${r.title} — ${SITE.name}` : SITE.name;
   const url = SITE.origin + (r.path === '/404' ? '/' : r.path);
   return `<!doctype html>
@@ -115,9 +127,9 @@ function page(r) {
 <link rel="manifest" href="/site.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" href="/assets/${assetFile['a15098c6e2313273da5b37f609489781'] || ''}" as="font" crossorigin>
+<link rel="preload" href="/assets/${assetFile['a15098c6e2313273da5b37f609489781'] || ''}" as="font" type="font/woff" crossorigin>
 <style>html,body{margin:0;background:#F1F1EE}#dc-root{min-height:100vh}</style>
-<script>window.__DC_PAGE__=${JSON.stringify({ tabletMobile: !!r.tabletMobile })}</script>
+<script>window.__DC_PAGE__=${JSON.stringify({ tabletMobile: !!r.tabletMobile, preload: !!r.preload })};window.__IMG__=${JSON.stringify(used)}</script>
 <script src="/dc-lite.js?v=${SITE.build}" defer></script>
 </head>
 <body>
