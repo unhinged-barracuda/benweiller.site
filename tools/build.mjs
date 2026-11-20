@@ -101,7 +101,8 @@ function page(r) {
   }
   const used = {};
   for (const m of parts.join('').matchAll(/\/assets\/([0-9a-f]{32})\.webp/g)) if (IMG[m[1]] && IMG[m[1]].v.length) used[m[1]] = IMG[m[1]];
-  const title = r.title ? `${r.title} — ${SITE.name}` : SITE.name;
+  // the browser-tab title is the desktop board's own <title> (e.g. "Ben Weiller \\ Kia K5 GT")
+  const title = (readBoard(r.desktop).title || SITE.name).trim();
   const url = SITE.origin + (r.path === '/404' ? '/' : r.path);
   return `<!doctype html>
 <html lang="en">
@@ -112,7 +113,7 @@ function page(r) {
 <meta name="description" content="${esc(r.description || SITE.description)}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="${esc(SITE.name)}">
-<meta property="og:title" content="${esc(r.title ? title : SITE.name)}">
+<meta property="og:title" content="${esc(SITE.name)}">
 <meta property="og:description" content="${esc(r.description || SITE.description)}">
 <meta property="og:url" content="${url}">
 <meta property="og:image" content="${SITE.origin}/og.jpg">
@@ -128,7 +129,7 @@ function page(r) {
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" href="/assets/${assetFile['a15098c6e2313273da5b37f609489781'] || ''}" as="font" type="font/woff" crossorigin>
-<style>html,body{margin:0;background:#F1F1EE}#dc-root{min-height:100vh}</style>
+<style>html,body{margin:0;background:#F1F1EE;overscroll-behavior:none}#dc-root{min-height:100vh}</style>
 <script>window.__DC_PAGE__=${JSON.stringify({ tabletMobile: !!r.tabletMobile, preload: !!r.preload })};window.__IMG__=${JSON.stringify(used)}</script>
 <script src="/dc-lite.js?v=${SITE.build}" defer></script>
 </head>

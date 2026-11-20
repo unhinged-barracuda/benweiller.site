@@ -2,9 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Ben Weiller — bloburblur homepage</title>
-<script src="./vendor/react.js"></script>
-<script src="./vendor/react-dom.js"></script>
+<title>Ben Weiller</title>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -12,7 +10,7 @@
 <helmet>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&amp;family=Inter+Tight:wght@400&amp;display=swap" rel="stylesheet">
 <style>
-@font-face{font-family:'Dirtbag TM';src:url('./assets/a15098c6e2313273da5b37f609489781.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Dirtbag TM';src:url('/_blob/a15098c6e2313273da5b37f609489781') format('opentype');font-weight:400;font-style:normal;font-display:swap}
 body{margin:0}
 a{color:#1E1E1C}a:hover{color:#000000}
 .breathe{transform-box:fill-box;transform-origin:50% 50%;animation:breathe 9s ease-in-out infinite}
@@ -53,8 +51,6 @@ a{color:#1E1E1C}a:hover{color:#000000}
 </style>
 </helmet>
 <div onMouseMove="{{onMove}}" onMouseLeave="{{onLeave}}" onClick="{{onClick}}" onWheel="{{onWheel}}" onTouchStart="{{onTouchStart}}" onTouchEnd="{{onTouchEnd}}" style="position: relative; height: 100vh; min-height: 560px; overflow: hidden; cursor: pointer; background: {{ground}}; font-family: 'Inter', system-ui, sans-serif; color: #1E1E1C">
-<!-- footer: a small copyright line in the bottom-left corner (this page doesn't scroll) -->
-<p class="copyr" style="position: absolute; left: 4vw; bottom: 20px; margin: 0; z-index: 4; font-size: 11px; line-height: 1; letter-spacing: 0.04em; color: #55554F; pointer-events: none">© Ben Weiller 2026</p>
 
 <!-- a click anywhere, scrolling down (wheel, swipe up, or ↓ / page down / space) opens the menu page immediately -->
 <a data-next="menu" href="Menu-Blob-Bold.dc.html" tabindex="-1" aria-hidden="true" style="display: none">menu</a>
@@ -110,10 +106,9 @@ a{color:#1E1E1C}a:hover{color:#000000}
 <rect width="1440" height="900" filter="url(#pageGrain)"></rect>
 </svg>
 
-<!-- wordmark with the descriptor line running beneath it; both move together with the blob -->
+<!-- wordmark: stays fixed in place while the blob moves around it -->
 <div style="position: absolute; left: {{nameX}}%; top: {{nameY}}%; margin: 0; transform: {{textT}}; transition: transform 1100ms cubic-bezier(.2,.7,.2,1); z-index: 2">
 <a href="Bloburblur.dc.html" aria-label="Ben Weiller — home" style="display: block; font-family: 'Dirtbag TM', 'Inter', sans-serif; font-weight: 400; font-size: 44px; letter-spacing: 0.03em; line-height: 1; color: #FFFFFF; text-decoration: none">BEN WEILLER</a>
-<p style="margin: 3px 0 0; font-family: 'Inter', system-ui, sans-serif; font-size: 16px; line-height: 1; letter-spacing: 0.01em; color: #FFFFFF; white-space: nowrap; transform: translateX(-14px) skewX(-16.7deg); transform-origin: 0 100%">copy/creative/writer</p>
 </div>
 <div style="position: absolute; left: {{paraX}}%; top: {{paraY}}%; width: min(350px, 80vw); z-index: 2; color: #1E1E1C; font-size: 13px; line-height: 1.5">
 <!-- the title sits at the right end of the (hidden) paragraph's width, so it rests on the blob's edge where the paragraph used to meet it -->
@@ -267,7 +262,7 @@ class Component extends DCLogic {
     return {
       seed: 7,
       bodyT: bodyT, coreT: coreT, haloT: haloT,
-      textT: 'translate(' + (mx * 3.2).toFixed(2) + 'vw,' + (my * 3.8).toFixed(2) + 'vh)',
+      textT: 'none', // the name stays put; the blob moves around it
       onMove: (e) => this.move(e, bx, by),
       onWheel: (e) => { if (e.deltaY > 0) { this.acc += e.deltaY; if (this.acc > 120) this.go(e.currentTarget); } else this.acc = 0; },
       // a click anywhere (except the wordmark link) continues to the menu, same as scrolling down

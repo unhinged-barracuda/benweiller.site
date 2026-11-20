@@ -38,7 +38,7 @@ function parseCssMatrix(s) {
 
 // the transform an element applies to its children, as the browser computes it right now (CSS transitions and
 // keyframe animations included)
-function localMatrix(el) {
+function localMatrix(el, knownBox) {
   const cs = getComputedStyle(el);
   let m = parseCssMatrix(cs.transform);
   if (!m) {
@@ -49,7 +49,9 @@ function localMatrix(el) {
   const o = (cs.transformOrigin || '0 0').split(' ').map(parseFloat);
   let ox = o[0] || 0, oy = o[1] || 0;
   if (cs.transformBox === 'fill-box') {
-    try { const bb = el.getBBox(); ox += bb.x; oy += bb.y; } catch (e) { /* not rendered */ }
+    // the browser resolves % origins against the fill-box; it reports them in px from the box's corner
+    let bb = null; try { bb = el.getBBox(); } catch (e) { /* not rendered */ }
+    if (bb) { ox += bb.x; oy += bb.y; }
   }
   return mul(mul(tr(ox, oy), m), tr(-ox, -oy));
 }
@@ -72,6 +74,32 @@ function viewboxMatrix(svg, W, H) {
     tx += (W - vb.width * sx) * fx; ty += (H - vb.height * sy) * fy;
   }
   return [sx, 0, 0, sy, tx, ty];
+}
+
+// bounding box of a path from its numbers (absolute M/C/L/Z paths, as the boards write them) — no layout needed
+const boxCache = new Map();
+function pathBox(d) {
+  if (!d) return null;
+  if (boxCache.has(d)) return boxCache.get(d);
+  const n = d.match(/-?\d*\.?\d+(?:e-?\d+)?/g);
+  if (!n || n.length < 2) return null;
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  for (let i = 0; i + 1 < n.length; i += 2) { const x = +n[i], y = +n[i + 1]; if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+  const b = { x: x0, y: y0, width: x1 - x0, height: y1 - y0 };
+  if (boxCache.size > 500) boxCache.clear();
+  boxCache.set(d, b); return b;
+}
+// a group's fill-box: the union of its painted children's boxes, through their own transforms
+function groupBox(el) {
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  for (const c of el.children) {
+    let b = null;
+    if (c.localName === 'path') b = pathBox(c.getAttribute('d'));
+    else if (c.localName === 'g') { b = groupBox(c); if (b) { const m = localMatrix(c, b); const p = [apply(m, b.x, b.y), apply(m, b.x + b.width, b.y), apply(m, b.x, b.y + b.height), apply(m, b.x + b.width, b.y + b.height)]; b = { x: Math.min(...p.map((q) => q[0])), y: Math.min(...p.map((q) => q[1])), width: 0, height: 0, x1: Math.max(...p.map((q) => q[0])), y1: Math.max(...p.map((q) => q[1])) }; b.width = b.x1 - b.x; b.height = b.y1 - b.y; } }
+    if (!b) continue;
+    x0 = Math.min(x0, b.x); y0 = Math.min(y0, b.y); x1 = Math.max(x1, b.x + b.width); y1 = Math.max(y1, b.y + b.height);
+  }
+  return x0 === Infinity ? null : { x: x0, y: y0, width: x1 - x0, height: y1 - y0 };
 }
 
 // ---------- what can be accelerated ----------
@@ -345,11 +373,12 @@ class Stage {
   }
   drawBlob(L, M, op, W, H, root) {
     const { gl } = this; const S = BUF;
-    let bb; try { bb = L.el.getBBox(); } catch (e) { return; }
+    const bb = pathBox(L.el.getAttribute('d'));
+    if (!bb) return;
     if (!bb.width || !bb.height) return;
     const scaleU = Math.sqrt(Math.abs(M[0] * M[3] - M[1] * M[2])); // device px per user unit
     // browsers approximate big SVG blurs with three box blurs, which reads a little tighter than a true Gaussian
-    const sigmaPx = L.f.sigma * scaleU * 0.85, dispPx = L.f.disp * scaleU;
+    const sigmaPx = L.f.sigma * scaleU, dispPx = L.f.disp * scaleU;
     const pad = sigmaPx * 3 + dispPx;
     const c = [apply(M, bb.x, bb.y), apply(M, bb.x + bb.width, bb.y), apply(M, bb.x, bb.y + bb.height), apply(M, bb.x + bb.width, bb.y + bb.height)];
     const rx0 = Math.min(...c.map((p) => p[0])) - pad, ry0 = Math.min(...c.map((p) => p[1])) - pad;
@@ -422,7 +451,9 @@ export function startFastBlob(root) {
     .observe(root, { childList: true, subtree: true });
   scan();
   const loop = () => {
+    const t0 = performance.now();
     for (const st of stages.values()) { try { st.draw(); } catch (e) { /* skip a frame */ } }
+    if (window.__PERF__) window.__PERF__.blob += performance.now() - t0;
     requestAnimationFrame(loop);
   };
   requestAnimationFrame(loop);

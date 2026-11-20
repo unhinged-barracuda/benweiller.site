@@ -2,9 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Project — kia x-line · elevated by the dark</title>
-<script src="./vendor/react.js"></script>
-<script src="./vendor/react-dom.js"></script>
+<title>Ben Weiller \ Kia X-Line</title>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -12,7 +10,7 @@
 <helmet>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&amp;display=swap" rel="stylesheet">
 <style>
-@font-face{font-family:'Dirtbag TM';src:url('./assets/a15098c6e2313273da5b37f609489781.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Dirtbag TM';src:url('/_blob/a15098c6e2313273da5b37f609489781') format('opentype');font-weight:400;font-style:normal;font-display:swap}
 body{margin:0}
 a{color:#1E1E1C}a:hover{color:#000000}
 .page{scrollbar-width:none}.page::-webkit-scrollbar{display:none}
@@ -208,7 +206,7 @@ header .ico,header #hdrMenuG{visibility:hidden!important}
 <section class="cardIn" aria-label="Film" style="animation-delay: 150ms">
 <a class="card" href="#" aria-label="Play film: elevated by the dark" style="position: relative; display: block; width: 100%; aspect-ratio: 16 / 9; background: #06141F; text-decoration: none">
 <!-- cover frame (clean frame from the video, sent by the user; the film's letterbox bars kept) -->
-<img src="./assets/f9cdf60a5b5d801fb37741296e9eef46.jpg" alt="" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+<img src="/_blob/f9cdf60a5b5d801fb37741296e9eef46" alt="" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
 <span class="gbw">
 <svg class="gbs" viewBox="0 0 160 160" aria-hidden="true" style="opacity: 0.45"><ellipse cx="80" cy="112" rx="44" ry="13" fill="#1E1E1C" fill-opacity="0.11" filter="url(#grit)"></ellipse></svg>
 <span class="gbb">
@@ -260,10 +258,10 @@ header .ico,header #hdrMenuG{visibility:hidden!important}
 <!-- stills: four 1:1 frames as a 2 × 2 sheet on the column; even 16px gaps, no borders, none expand -->
 <section aria-label="Stills" style="padding-top: 96px">
 <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
-<img src="./assets/f7896392a4cccbe6db1e65c60f5208c2.jpg" alt="Sportage X-Line dashboard at night: A glorious display of just how glorious a display can be." style="display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover">
-<img src="./assets/8b1a3ad6f947ab48cca7fd220baec83c.jpg" alt="Sportage X-Line cargo area with the seats folded: More nooks in every cranny." style="display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover">
-<img src="./assets/1062e598015934097a5dc0e4d66b0fcb.jpg" alt="Sorento X-Line rear seats at night: All rows lead to comfort." style="display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover">
-<img src="./assets/acaaa1b6dc963307265214a00c20d0e8.jpg" alt="Telluride X-Line outside a columned building at night: Elegance with an edge." style="display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover">
+<img src="/_blob/f7896392a4cccbe6db1e65c60f5208c2" alt="Sportage X-Line dashboard at night: A glorious display of just how glorious a display can be." style="display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover">
+<img src="/_blob/8b1a3ad6f947ab48cca7fd220baec83c" alt="Sportage X-Line cargo area with the seats folded: More nooks in every cranny." style="display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover">
+<img src="/_blob/1062e598015934097a5dc0e4d66b0fcb" alt="Sorento X-Line rear seats at night: All rows lead to comfort." style="display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover">
+<img src="/_blob/acaaa1b6dc963307265214a00c20d0e8" alt="Telluride X-Line outside a columned building at night: Elegance with an edge." style="display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover">
 </div>
 </section>
 
@@ -354,7 +352,7 @@ class Component extends DCLogic {
   // the real 60s radio spot: plays once and stops at the end; the waveform fills as it plays
   aud() {
     if (this.a || typeof Audio === 'undefined') return this.a;
-    this.a = new Audio('./assets/6ccb039195e631b1332f6c13df13149a.mp4');
+    this.a = new Audio('/_blob/6ccb039195e631b1332f6c13df13149a');
     this.a.preload = 'metadata';
     this.a.addEventListener('timeupdate', () => this.setState({ pos: this.a.currentTime }));
     this.a.addEventListener('ended', () => this.setState({ playing: false, pos: this.DUR }));

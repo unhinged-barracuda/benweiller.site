@@ -169,12 +169,37 @@ function sizeImg(props) {
   if (!props.sizes) props.sizes = '(max-width: 767px) 100vw, (max-width: 1100px) 88vw, 900px';
 }
 
+// ---------- ?perf: a small readout of where each frame's time goes (for checking speed on a real device) ----------
+export const PERF = /[?&]perf\b/.test(location.search) ? { render: 0, renders: 0, blob: 0, frames: 0, worst: 0, last: 0, gaps: [] } : null;
+if (PERF) {
+  window.__PERF__ = PERF;
+  const box = document.createElement('div');
+  box.style.cssText = 'position:fixed;right:8px;bottom:8px;z-index:99999;font:11px/1.4 ui-monospace,Menlo,monospace;background:rgba(0,0,0,.78);color:#fff;padding:8px 10px;border-radius:6px;pointer-events:none;white-space:pre';
+  const tick = (t) => {
+    if (PERF.last) { const g = t - PERF.last; PERF.gaps.push(g); if (g > PERF.worst) PERF.worst = g; }
+    PERF.last = t; PERF.frames++;
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+  setInterval(() => {
+    const n = Math.max(1, PERF.gaps.length), avg = PERF.gaps.reduce((a, b) => a + b, 0) / n;
+    const slow = PERF.gaps.filter((g) => g > 50).length;
+    box.textContent = 'fps      ' + Math.round(1000 / (avg || 16.7)) + '\nworst    ' + Math.round(PERF.worst) + ' ms\nslow>50  ' + slow +
+      '\nrender   ' + (PERF.render / n).toFixed(1) + ' ms/frame (' + PERF.renders + ')\nblob     ' + (PERF.blob / n).toFixed(1) + ' ms/frame' +
+      '\nwebgl    ' + (document.querySelector('canvas.fastblob') ? 'on' : 'OFF') + '\n' + navigator.userAgent.replace(/^.*\) /, '').slice(0, 40);
+    PERF.gaps = []; PERF.worst = 0; PERF.render = 0; PERF.renders = 0; PERF.blob = 0;
+    if (!box.isConnected) document.body.appendChild(box);
+  }, 1000);
+}
+
 // ---------- the base class boards extend ----------
 export class DCLogic extends React.Component {
   renderVals() { return {}; }
   render() {
+    const t0 = PERF ? performance.now() : 0;
     const vals = this.renderVals() || {};
     const tree = this.__tpl.map((f) => f(vals));
+    if (PERF) { PERF.render += performance.now() - t0; PERF.renders++; }
     return React.createElement(React.Fragment, null, ...tree);
   }
 }

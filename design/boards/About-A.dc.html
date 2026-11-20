@@ -2,9 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>About — who, me?</title>
-<script src="./vendor/react.js"></script>
-<script src="./vendor/react-dom.js"></script>
+<title>Ben Weiller \ who, me?</title>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -12,7 +10,7 @@
 <helmet>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&amp;display=swap" rel="stylesheet">
 <style>
-@font-face{font-family:'Dirtbag TM';src:url('./assets/a15098c6e2313273da5b37f609489781.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Dirtbag TM';src:url('/_blob/a15098c6e2313273da5b37f609489781') format('opentype');font-weight:400;font-style:normal;font-display:swap}
 body{margin:0}
 a{color:#1E1E1C}a:hover{color:#000000}
 .page{scrollbar-width:none}.page::-webkit-scrollbar{display:none}
@@ -76,6 +74,8 @@ a{color:#1E1E1C}a:hover{color:#000000}
 </style>
 </helmet>
 <div onMouseMove="{{onMove}}" onMouseLeave="{{onLeave}}" style="position: relative; height: 100vh; min-height: 560px; overflow: hidden; background: #F1F1EE; color: #1E1E1C; font-family: 'Inter', system-ui, sans-serif">
+<!-- footer: the small copyright line, bottom-left corner -->
+<p class="copyr" style="position: absolute; left: 4vw; bottom: 20px; margin: 0; z-index: 4; font-size: 11px; line-height: 1; letter-spacing: 0.04em; color: #55554F; pointer-events: none">© Ben Weiller 2026</p>
 <svg aria-hidden="true" width="100%" height="100%" style="position: absolute; inset: 0; pointer-events: none"><filter id="aGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"></feTurbulence><feColorMatrix type="matrix" values="0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0.10 0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#aGrain)"></rect></svg>
 <svg aria-hidden="true" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" style="position: absolute; inset: 0; pointer-events: none">
 <defs>
@@ -132,7 +132,7 @@ a{color:#1E1E1C}a:hover{color:#000000}
 <main style="width: min(1120px, 90vw); margin: 0 auto; padding: 16vh 0 12vh; display: flex; gap: 9vw; align-items: flex-start">
 <!-- portrait: a card on the page with the same hovering shadow as the menu card; the blob peeks out from behind it -->
 <figure style="margin: 0; flex: none; width: min(22vw, 300px)">
-<img src="./assets/0843f9d7ff57f2bd39f4b271f856d46c.jpg" alt="Ben Weiller sitting under the trees in a slouchy knit hat" style="display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; filter: saturate(0.92) contrast(1.02)">
+<img src="/_blob/0843f9d7ff57f2bd39f4b271f856d46c" alt="Ben Weiller sitting under the trees in a slouchy knit hat" style="display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; filter: saturate(0.92) contrast(1.02)">
 </figure>
 <!-- the piece: set like a poem, narrow column, generous leading; placeholder until Ben's text arrives -->
 <section aria-label="About" style="max-width: 400px; padding-top: 4vh">

@@ -2,9 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Contact — option A (ASK AHEAD + stamp cluster)</title>
-<script src="./vendor/react.js"></script>
-<script src="./vendor/react-dom.js"></script>
+<title>Ben Weiller \ contact</title>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -20,7 +18,7 @@ body{margin:0}
 .ctl:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:3px}
 @media (prefers-reduced-motion: reduce){.breathe{animation:none}.mph,.fl{transition:none}}
 
-@font-face{font-family:'Dirtbag TM';src:url('./assets/a15098c6e2313273da5b37f609489781.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Dirtbag TM';src:url('/_blob/a15098c6e2313273da5b37f609489781') format('opentype');font-weight:400;font-style:normal;font-display:swap}
 body{margin:0}
 a{color:#1E1E1C}a:hover{color:#000000}
 .page{scrollbar-width:none}.page::-webkit-scrollbar{display:none}
@@ -97,20 +95,17 @@ a{color:#1E1E1C}a:hover{color:#000000}
 <filter id="worn" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="4" result="n1"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n1" scale="5" xChannelSelector="R" yChannelSelector="G" result="w"></feDisplacementMap><feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="11" result="sp"></feTurbulence><feColorMatrix in="sp" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -18 0 0 0 12.4" result="spA"></feColorMatrix><feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="1" seed="21" result="pa"></feTurbulence><feColorMatrix in="pa" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -12 0 0 0 11.2" result="paA"></feColorMatrix><feComposite in="spA" in2="paA" operator="in" result="keep"></feComposite><feComposite in="w" in2="keep" operator="in"></feComposite></filter>
 <filter id="softEdge" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="5"></feGaussianBlur></filter>
 <filter id="pGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"></feTurbulence><feColorMatrix type="matrix" values="0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0.10 0"></feColorMatrix></filter>
-<!-- inversion masks: the blob's body (same shape, same movement) decides where the illustration flips -->
-<mask id="inBlob" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="900"><g class="fl" style="transform: {{b.t}}"><path class="mph" d="{{b.mid}}" fill="#fff" filter="url(#softEdge)"></path></g></mask>
-<mask id="outBlob" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="900"><rect width="1440" height="900" fill="#fff"></rect><g class="fl" style="transform: {{b.t}}"><path class="mph" d="{{b.mid}}" fill="#000" filter="url(#softEdge)"></path></g></mask>
+<!-- masks kept so the illustration still renders: with no blob, nothing is inside, everything prints in ink -->
+<mask id="inBlob" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="900"></mask>
+<mask id="outBlob" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="900"><rect width="1440" height="900" fill="#fff"></rect></mask>
 </defs>
 
-<!-- the blob (same three-layer, cursor-following blob as the contact page) -->
-<g class="fl" style="transform: {{b.t}}">
-<g class="breathe">
-<path class="mph" d="{{b.halo}}" fill="{{b.cHalo}}" filter="url(#iXL)" opacity="0.92"></path>
-<path class="mph" d="{{b.mid}}" fill="{{b.cMid}}" filter="url(#iL)" opacity="0.9"></path>
-<path class="mph" d="{{b.core}}" fill="{{b.cCore}}" filter="url(#iM)" opacity="0.85"></path>
+<!-- no moving blob on this page (removed Nov 20, user's call): the stamps print in ink only. a small static blob accent sits behind the right ends of the ask ahead copy, subtle -->
+<g aria-hidden="true">
+<path d="{{acc.halo}}" fill="{{acc.cHalo}}" filter="url(#iXL)" opacity="0.6"></path>
+<path d="{{acc.mid}}" fill="{{acc.cMid}}" filter="url(#iL)" opacity="0.5"></path>
+<path d="{{acc.core}}" fill="{{acc.cCore}}" filter="url(#iM)" opacity="0.42"></path>
 </g>
-</g>
-
 <!-- the illustration, drawn twice: in ink outside the blob, in the ground colour inside it (the inverse) -->
 <sc-for list="{{passes}}" as="ps" hint-placeholder-count="2">
 <g mask="url(#{{ps.mask}})" filter="url(#{{ps.filter}})">
@@ -199,6 +194,15 @@ class Component extends DCLogic {
       mid: this.sblob(sd + 3, cx, cy, rx, ry, rot, 0.34, 10, t * 1.1),
       core: this.sblob(sd + 4, cx - 30, cy + 8, rx * 0.55, ry * 0.5, rot - 0.4, 0.38, 9, t * 1.2),
       cHalo: hsl(H2, 62 + r() * 22, 82 + r() * 7), cMid: hsl(H, 40 + r() * 30, 42 + r() * 14), cCore: hsl(H3, 48 + r() * 24, 26 + r() * 10)
+    };
+    // static accent (Nov 20): a small, subtle blob tucked behind the right ends of the ask ahead lines, so the copy sits on its pale edge. colours and shape set once per visit; it never moves or follows the cursor
+    const ra = this.rng(sd + 77), aH = ra() * 360, aH2 = aH + (ra() < 0.5 ? 1 : -1) * (60 + ra() * 100), arot = (ra() - 0.5) * 1.4, arx = 112 + ra() * 18, ary = 92 + ra() * 16, acx = 1270, acy = 590;
+    const acc = {
+      halo: this.sblob(sd + 71, acx, acy, arx * 1.35, ary * 1.35, arot, 0.28, 10, 0),
+      mid: this.sblob(sd + 73, acx, acy, arx, ary, arot, 0.34, 10, 0),
+      core: this.sblob(sd + 74, acx + 24, acy + 6, arx * 0.55, ary * 0.5, arot - 0.4, 0.38, 9, 0),
+      // fixed moss / chartreuse (user's pick, Nov 20): acid-lime halo, moss body, deep olive core
+      cHalo: '#E2F08C', cMid: '#7E9A4A', cCore: '#3F5226'
     };
     const reduce = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const on = this.state.mx !== null, K = 0.75;
@@ -318,8 +322,8 @@ class Component extends DCLogic {
     // the saved cluster from the contact page, plus the place-setting bubble: seven ink-silhouette bubbles grouped around the blob
     if (key === 'cluster' || stamp) {
       const POS = stamp
-        // stamps: the five around the stars sit evenly on an ellipse (every 72°, clockwise from the top: fish, place setting, bike, eyes, trees)
-        ? [null, [390, 380, -6, 1.1], [195, 332, -8, 0.92], null, [272, 520, 4, 0.85], [390, 210, 5, 0.98], [508, 520, -4, 0.9], [585, 332, 4, 0.92]]
+        // stamps (Nov 20, no longer a ring): a loose, uneven scatter that drifts from the upper left down toward the ask ahead copy — fish, trees, place setting, eyes, bike — with irregular gaps, tilts and sizes
+        ? [null, [390, 380, -6, 1.1], [345, 318, 5, 0.9], null, [470, 548, 3, 0.84], [150, 222, -8, 0.98], [640, 660, -5, 0.92], [205, 452, -3, 0.88]]
         : [null, [720, 470, -6, 1.12], [500, 380, -8, 0.98], [870, 380, -3, 1.0], [535, 600, 4, 0.9], [680, 285, 5, 1.08], [745, 655, -4, 0.95], [935, 560, 4, 1.02]];
       const turn = (this.state.travel || 0) / 38;
       (stamp ? SN : CL).forEach((parts, i) => {
@@ -371,7 +375,7 @@ class Component extends DCLogic {
     };
     const chip = (o) => ({ bg: o ? '#1E1E1C' : 'rgba(255,255,255,0.6)', ink: o ? '#F1F1EE' : '#1E1E1C', pressed: o ? 'true' : 'false' });
     return {
-      b: b, roughness: st.rough,
+      b: b, acc: acc, roughness: st.rough,
       openClsG: this.state.openG ? 'open' : '', openStrG: this.state.openG ? 'true' : 'false', drawerVisG: this.state.openG ? 'visible' : 'hidden', tabG: this.state.openG ? '0' : '-1',
       icoLabelG: this.state.openG ? 'Close menu' : 'Open menu',
       toggleG: () => this.setState({ openG: !this.state.openG }),

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Ben Weiller — homepage · mobile</title>
+<title>Ben Weiller</title>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -51,8 +51,6 @@ a{color:#1E1E1C}a:hover{color:#000000}
 </style>
 </helmet>
 <div onMouseMove="{{onMove}}" onMouseLeave="{{onLeave}}" onClick="{{onClick}}" onWheel="{{onWheel}}" onTouchStart="{{onTouchStart}}" onTouchMove="{{onTouchMove}}" onTouchEnd="{{onTouchEnd}}" style="position: relative; height: 100vh; height: 100svh; min-height: 600px; touch-action: none; overflow: hidden; cursor: pointer; background: {{ground}}; font-family: 'Inter', system-ui, sans-serif; color: #1E1E1C">
-<!-- footer: a small copyright line in the bottom-left corner (this page doesn't scroll) -->
-<p class="copyr" style="position: absolute; left: 16px; bottom: calc(16px + env(safe-area-inset-bottom)); margin: 0; z-index: 4; font-size: 11px; line-height: 1; letter-spacing: 0.04em; color: #55554F; pointer-events: none">© Ben Weiller 2026</p>
 
 <!-- a click anywhere, scrolling down (wheel, swipe up, or ↓ / page down / space) opens the menu page immediately -->
 <a data-next="menu" href="Mobile-Menu-List.dc.html" tabindex="-1" aria-hidden="true" style="display: none">menu</a>
@@ -110,10 +108,9 @@ a{color:#1E1E1C}a:hover{color:#000000}
 <rect width="390" height="844" filter="url(#pageGrain)"></rect>
 </svg>
 
-<!-- wordmark with the descriptor line running beneath it; both move together with the blob -->
+<!-- wordmark: stays fixed in place while the blob moves around it -->
 <div style="position: absolute; left: {{nameX}}px; top: {{nameY}}px; margin: 0; transform: {{textT}}; transition: transform 1100ms cubic-bezier(.2,.7,.2,1); z-index: 2">
 <a href="Mobile-Home.dc.html" aria-label="Ben Weiller — home" style="display: block; font-family: 'Dirtbag TM', 'Inter', sans-serif; font-weight: 400; font-size: 44px; letter-spacing: 0.03em; line-height: 1; color: #FFFFFF; text-decoration: none">BEN WEILLER</a>
-<p style="margin: 3px 0 0; font-family: 'Inter', system-ui, sans-serif; font-size: 16px; line-height: 1; letter-spacing: 0.01em; color: #FFFFFF; white-space: nowrap; transform: translateX(-14px) skewX(-16.7deg); transform-origin: 0 100%">copy/creative/writer</p>
 </div>
 <div style="position: absolute; left: 24px; bottom: calc(56px + env(safe-area-inset-bottom)); width: calc(100% - 48px); z-index: 2; color: #1E1E1C; font-size: 13px; line-height: 1.5">
 <!-- the title sits right-aligned to the paragraph's width, same as desktop -->
@@ -286,7 +283,7 @@ class Component extends DCLogic {
     return {
       seed: 7,
       bodyT: bodyT, coreT: coreT, haloT: haloT,
-      textT: 'translate(' + (mx * 3.2).toFixed(2) + 'vw,' + (my * 3.8).toFixed(2) + 'vh)',
+      textT: 'none', // the name stays put; the blob moves around it
       onMove: (e) => this.move(e, pbx, pby),
       // a finger dragged across the screen plays with the blob too (a drag never counts as a tap)
       onTouchMove: (e) => { const t = e.touches && e.touches[0]; if (t) { if (this.t0 && Math.hypot(t.clientX - this.t0[0], t.clientY - this.t0[1]) > 10) this.dragged = true; this.move(e, pbx, pby, t); } },
