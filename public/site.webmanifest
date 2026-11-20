@@ -1,0 +1,11 @@
+{
+  "name": "Ben Weiller",
+  "short_name": "Ben Weiller",
+  "icons": [
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "background_color": "#F1F1EE",
+  "theme_color": "#F1F1EE",
+  "display": "browser"
+}
