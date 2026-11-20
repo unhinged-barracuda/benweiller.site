@@ -60,6 +60,11 @@ a{color:#1E1E1C}a:hover{color:#000000}
 .card:focus-visible::after,.xp:focus-visible::after,.band:focus-visible::after,.gbw:has(.gb:focus-visible)::after{content:none!important}
 .card:focus-visible,.xp:focus-visible,.band:focus-visible,[tabindex]:not(a):not(button):focus-visible,.gbw:has(.gb:focus-visible),.gfocus{box-shadow:0 14px 34px -8px rgba(30,30,28,0.38),0 2px 8px rgba(30,30,28,0.12)}
 .gbw:has(.gb:focus-visible),.gfocus.round{border-radius:50%}
+/* header "///" + its words flip light / dark with what is behind them (difference blend), so they stay visible over the blob (Nov 20) */
+.hflip{mix-blend-mode:difference}
+.hflip .burger line,.hflip .hdrBack line{stroke:#FFFFFF!important}
+.hflip .nb{color:#A9A9B0!important}
+.hflip .nb:hover,.hflip .nb:focus-visible,.hflip .nb.on{color:#FFFFFF!important}
 </style>
 </helmet>
 <div style="position: relative; height: 100vh; min-height: 560px; overflow: hidden; background: #F1F1EE; font-family: 'Inter', system-ui, sans-serif; color: #1E1E1C">
@@ -111,9 +116,9 @@ a{color:#1E1E1C}a:hover{color:#000000}
 </svg>
 </sc-if>
 
-<header style="position: absolute; top: 28px; left: 4vw; right: 4vw; display: flex; justify-content: space-between; align-items: center; z-index: 3">
+<header style="position: absolute; top: 28px; left: 4vw; right: 4vw; display: flex; justify-content: space-between; align-items: center; z-index: auto">
 <a href="Bloburblur.dc.html" aria-label="Ben Weiller — home" style="font-family: 'Dirtbag TM', 'Inter', sans-serif; font-size: 44px; line-height: 1; letter-spacing: 0.03em; position: relative; top: 11px; text-decoration: none; color: #1E1E1C">BEN WEILLER</a>
-<div style="display: flex; align-items: center; gap: 26px">
+<div class="hflip" style="display: flex; align-items: center; gap: 26px">
 <nav id="hdrMenuG" aria-label="Main" class="drawer {{openClsG}}" style="display: flex; gap: 28px; align-items: center; font-size: 13px; line-height: 1; visibility: {{drawerVisG}}">
 <a class="nb on" href="Menu-Blob-Bold.dc.html" aria-current="page" tabindex="{{tabG}}">/work</a>
 <a class="nb" href="https://www.instagram.com/un_finished_lines/" target="_blank" rel="noopener" tabindex="{{tabG}}">/@un_finished_lines</a>

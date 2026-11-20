@@ -471,3 +471,4 @@ export function startFastBlob(root, now) {
   };
   requestAnimationFrame(loop);
 }
+export { localMatrix, mul, viewboxMatrix };

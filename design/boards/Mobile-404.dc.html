@@ -49,6 +49,11 @@ a{color:#1E1E1C}a:hover{color:#000000}
 .bfold>div{min-height:0;overflow:hidden;transition:opacity 300ms ease,visibility 0s linear 0s}
 .bfold.shut>div{opacity:0;visibility:hidden;transition:opacity 220ms ease,visibility 0s linear 450ms}
 @media (prefers-reduced-motion: reduce){.lead .arw,.bfold,.bfold>div{transition:none}}
+/* header "///" + its words flip light / dark with what is behind them (difference blend), so they stay visible over the blob (Nov 20) */
+.hflip{mix-blend-mode:difference}
+.hflip .burger line,.hflip .hdrBack line{stroke:#FFFFFF!important}
+.hflip .nb{color:#A9A9B0!important}
+.hflip .nb:hover,.hflip .nb:focus-visible,.hflip .nb.on{color:#FFFFFF!important}
 </style>
 </helmet>
 <div onMouseMove="{{onMove}}" onMouseLeave="{{onLeave}}" onTouchStart="{{onTouchStart}}" onTouchMove="{{onTouchMove}}" onTouchEnd="{{onTouchEnd}}" style="position: relative; height: 100vh; height: 100svh; min-height: 600px; touch-action: none; overflow: hidden; cursor: pointer; background: {{ground}}; font-family: 'Inter', system-ui, sans-serif; color: #1E1E1C">
@@ -58,7 +63,7 @@ a{color:#1E1E1C}a:hover{color:#000000}
 <!-- a click anywhere, scrolling down (wheel, swipe up, or ↓ / page down / space) opens the menu page immediately -->
 <!-- header: wordmark top left, "///" top right -->
 <a href="Mobile-Home.dc.html" aria-label="Ben Weiller — home" style="position: absolute; left: 16px; top: 16px; height: 48px; display: flex; align-items: center; z-index: 5; font-family: 'Dirtbag TM', 'Inter', sans-serif; font-size: 44px; line-height: 1; letter-spacing: 0.03em; text-decoration: none; color: #1E1E1C"><span style="position: relative; top: 6px">BEN WEILLER</span></a>
-<div style="position: absolute; top: 16px; right: 16px; height: 48px; display: flex; align-items: center; z-index: 5; cursor: default">
+<div class="hflip" style="position: absolute; top: 16px; right: 16px; height: 48px; display: flex; align-items: center; z-index: 5; cursor: default">
 <nav id="hdrMenuG" aria-label="Main" class="drawer {{openClsG}}" style="position: absolute; top: 52px; right: 0; display: flex; flex-direction: column; gap: 18px; align-items: flex-end; font-family: 'Inter', system-ui, sans-serif; font-size: 13px; line-height: 1; visibility: {{drawerVisG}}">
 <a class="nb" href="Mobile-Menu-List.dc.html" tabindex="{{tabG}}">/work</a>
 <a class="nb" href="https://www.instagram.com/un_finished_lines/" target="_blank" rel="noopener" tabindex="{{tabG}}">/@un_finished_lines</a>

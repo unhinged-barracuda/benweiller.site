@@ -73,6 +73,11 @@ a{color:#1E1E1C}a:hover{color:#000000}
 @keyframes spin360{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 @keyframes spin360b{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion: reduce){.arw.spin,.arw.spin2{animation:none}}
+/* header "///" + its words flip light / dark with what is behind them (difference blend), so they stay visible over the blob (Nov 20) */
+.hflip{mix-blend-mode:difference}
+.hflip .burger line,.hflip .hdrBack line{stroke:#FFFFFF!important}
+.hflip .nb{color:#A9A9B0!important}
+.hflip .nb:hover,.hflip .nb:focus-visible,.hflip .nb.on{color:#FFFFFF!important}
 </style>
 </helmet>
 <div style="position: relative; height: 100vh; height: 100svh; min-height: 760px; overflow: hidden; background: #F1F1EE; font-family: 'Inter', system-ui, sans-serif; color: #1E1E1C">
@@ -119,13 +124,13 @@ a{color:#1E1E1C}a:hover{color:#000000}
 </g></g>
 <rect width="390" height="844" filter="url(#pageGrain)"></rect>
 </svg>
-<header style="position: absolute; top: 16px; left: 16px; right: 16px; height: 48px; display: flex; justify-content: space-between; align-items: center; z-index: 5">
+<header style="position: absolute; top: 16px; left: 16px; right: 16px; height: 48px; display: flex; justify-content: space-between; align-items: center; z-index: auto">
 <a href="Mobile-Home.dc.html" aria-label="Ben Weiller — home" style="font-family: 'Dirtbag TM', 'Inter', sans-serif; font-size: 44px; line-height: 1; letter-spacing: 0.03em; position: relative; top: 6px; text-decoration: none; color: #1E1E1C">BEN WEILLER</a>
-<button class="ico" type="button" onClick="{{toggleG}}" aria-expanded="{{openStrG}}" aria-controls="hdrMenuG" aria-label="{{icoLabelG}}" style="width: 48px; height: 48px; margin-right: -7px; padding: 0; border: 0; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<button class="ico hflip" type="button" onClick="{{toggleG}}" aria-expanded="{{openStrG}}" aria-controls="hdrMenuG" aria-label="{{icoLabelG}}" style="width: 48px; height: 48px; margin-right: -7px; padding: 0; border: 0; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center">
 <svg class="burger" width="33" height="27" viewBox="0 0 22 18" overflow="visible" aria-hidden="true"><line class="l1" x1="1" y1="17" x2="7.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l2" x1="8" y1="17" x2="14.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l3" x1="15" y1="17" x2="21.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line></svg>
 </button>
 <!-- the four words drop down as a right-aligned stack under the icon (no room for a row on a phone) -->
-<nav id="hdrMenuG" aria-label="Main" class="drawer vert {{openClsG}}" style="position: absolute; top: 56px; right: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 18px; font-size: 14px; line-height: 1; visibility: {{drawerVisG}}">
+<nav id="hdrMenuG" aria-label="Main" class="drawer vert hflip {{openClsG}}" style="position: absolute; top: 56px; right: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 18px; font-size: 14px; line-height: 1; visibility: {{drawerVisG}}">
 <a class="nb on" href="Mobile-Menu-List.dc.html" aria-current="page" tabindex="{{tabG}}">/work</a>
 <a class="nb" href="https://www.instagram.com/un_finished_lines/" target="_blank" rel="noopener" tabindex="{{tabG}}">/@un_finished_lines</a>
 <a class="nb" href="Mobile-About.dc.html" tabindex="{{tabG}}">/who, me?</a>

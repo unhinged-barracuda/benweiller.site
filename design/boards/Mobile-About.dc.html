@@ -108,12 +108,45 @@ header .ico,header #hdrMenuG{visibility:hidden!important}
 .fabBtn[aria-expanded="true"] .burger .l2{opacity:0}
 .fabBtn[aria-expanded="true"] .burger .l3{transform:translateX(-7px) rotate(-66deg)}
 @media (prefers-reduced-motion: reduce){.fab,.fab.on,.fabNav a{transition:none}}
+/* glass button (dark glass, lean · etched · thin ring), from the ux/ui board */
+.gbw{position:relative;display:block;flex:none}
+.gbs{position:absolute;left:-30%;top:-10%;width:160%;height:160%;pointer-events:none;overflow:visible;transition:transform 400ms cubic-bezier(.3,.7,.2,1),opacity 400ms ease}
+.gbb{position:absolute;inset:0;display:block;transition:transform 600ms cubic-bezier(.3,.7,.2,1)}
+.gb{position:absolute;inset:0;display:block;box-sizing:border-box;padding:0;border:0;border-radius:50%;cursor:pointer;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,0.42),rgba(255,255,255,0.16));backdrop-filter:blur(24px) saturate(1.1);-webkit-backdrop-filter:blur(24px) saturate(1.1);box-shadow:inset 0 1px 3px rgba(255,255,255,0.32),inset 0 -2px 6px rgba(255,255,255,0.12);-webkit-mask-size:100% 100%;mask-size:100% 100%}
+.gb .fog{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0.5}
+.win{position:absolute;inset:0;display:block;border-radius:50%;pointer-events:none;background:rgba(255,255,255,0.05);backdrop-filter:blur(3px) saturate(1.35);-webkit-backdrop-filter:blur(3px) saturate(1.35);-webkit-mask-size:100% 100%;mask-size:100% 100%}
+.gbb .ico{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.gbw{cursor:pointer;perspective:160px}
+.gic{position:absolute;inset:0;display:block;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,0.5),rgba(255,255,255,0.2));backdrop-filter:blur(24px) saturate(1.1);-webkit-backdrop-filter:blur(24px) saturate(1.1);-webkit-mask-size:100% 100%;mask-size:100% 100%}
+.gbw:has(.gb:focus-visible){outline:1px solid #1E1E1C;outline-offset:5px;border-radius:50%}
+.gb:focus-visible{outline:none}
+@media (prefers-reduced-motion: reduce){.gbb,.gbs{transition:none}}
+.gbw:hover .gbb,.card:hover .gbb,.gbw:hover .gbs,.card:hover .gbs{transform:none}
+.gb,.gic,.win{transition:filter 160ms ease,background 260ms ease}
+.gbw:hover .gb,.card:hover .gb{filter:saturate(1.35) brightness(1.06);background:linear-gradient(180deg,rgba(255,255,255,0.26),rgba(255,255,255,0.06))}
+.gbw:hover .gic,.card:hover .gic{filter:saturate(1.3) brightness(1.08)}
+.gv-dark .gb{background:linear-gradient(180deg,rgba(30,30,28,0.95),rgba(30,30,28,0.78))!important;box-shadow:inset 0 1px 2px rgba(255,255,255,0.25)!important}
+.gv-dark .gic{background:linear-gradient(180deg,rgba(30,30,28,0.97),rgba(30,30,28,0.82))!important}
+.gv-dark .ico{opacity:0.35}
+.callBtn{text-decoration:none;color:inherit}
 </style>
 </helmet>
 <div onMouseMove="{{onMove}}" onMouseLeave="{{onLeave}}" onTouchStart="{{onTouchStart}}" onTouchMove="{{onTouchMove}}" style="position: relative; height: 100vh; height: 100svh; min-height: 600px; overflow: hidden; background: #F1F1EE; color: #1E1E1C; font-family: 'Inter', system-ui, sans-serif">
 <svg aria-hidden="true" width="100%" height="100%" style="position: absolute; inset: 0; pointer-events: none"><filter id="aGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"></feTurbulence><feColorMatrix type="matrix" values="0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0.10 0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#aGrain)"></rect></svg>
 <svg aria-hidden="true" viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" style="position: absolute; inset: 0; pointer-events: none">
 <defs>
+<filter id="imp-raise" filterUnits="userSpaceOnUse" x="-20" y="-20" width="260" height="140" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceAlpha" stdDeviation="0.7" result="h"></feGaussianBlur><feDiffuseLighting in="h" surfaceScale="1.3" diffuseConstant="1" lighting-color="#FFFFFF" result="dif"><feDistantLight azimuth="225" elevation="58"></feDistantLight></feDiffuseLighting><feMorphology in="SourceAlpha" operator="dilate" radius="0.9" result="dl"></feMorphology><feGaussianBlur in="dl" stdDeviation="0.4" result="zone"></feGaussianBlur><feColorMatrix in="dif" type="matrix" values="0 0 0 0 0.118  0 0 0 0 0.118  0 0 0 0 0.11  -0.45 0 0 0 0.383" result="shA"></feColorMatrix><feComposite in="shA" in2="zone" operator="in" result="sh"></feComposite><feColorMatrix in="dif" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  1.5 0 0 0 -1.275" result="liA"></feColorMatrix><feComposite in="liA" in2="zone" operator="in" result="hl"></feComposite><feFlood flood-color="#FFFFFF" flood-opacity="0.1"></feFlood><feComposite in2="SourceAlpha" operator="in" result="top"></feComposite><feOffset in="SourceAlpha" dx="0.5" dy="0.8"></feOffset><feGaussianBlur stdDeviation="1"></feGaussianBlur><feComposite in2="SourceAlpha" operator="out" result="castA"></feComposite><feFlood flood-color="#1E1E1C" flood-opacity="0.07"></feFlood><feComposite in2="castA" operator="in" result="cast"></feComposite><feMerge><feMergeNode in="cast"></feMergeNode><feMergeNode in="top"></feMergeNode><feMergeNode in="sh"></feMergeNode><feMergeNode in="hl"></feMergeNode></feMerge></filter>
+<filter id="imp-etch" filterUnits="userSpaceOnUse" x="-20" y="-20" width="260" height="140" color-interpolation-filters="sRGB"><feComponentTransfer in="SourceAlpha" result="inv"><feFuncA type="table" tableValues="1 0"></feFuncA></feComponentTransfer><feFlood flood-color="#FFFFFF" flood-opacity="0.34"></feFlood><feComposite in2="SourceAlpha" operator="in" result="floor"></feComposite><feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="1" seed="2" result="gn"></feTurbulence><feColorMatrix in="gn" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.9 -0.32" result="gA"></feColorMatrix><feComposite in="gA" in2="SourceAlpha" operator="in" result="grain"></feComposite><feOffset in="inv" dx="0.5" dy="0.7"></feOffset><feGaussianBlur stdDeviation="0.6"></feGaussianBlur><feComposite in2="SourceAlpha" operator="in" result="shA"></feComposite><feFlood flood-color="#1E1E1C" flood-opacity="0.16"></feFlood><feComposite in2="shA" operator="in" result="sh"></feComposite><feMerge><feMergeNode in="floor"></feMergeNode><feMergeNode in="grain"></feMergeNode><feMergeNode in="sh"></feMergeNode></feMerge></filter>
+<filter id="grit" x="-60%" y="-120%" width="220%" height="340%">
+<feGaussianBlur in="SourceGraphic" stdDeviation="13" result="b"></feGaussianBlur>
+<feTurbulence type="fractalNoise" baseFrequency="1.3" numOctaves="1" seed="4" result="n"></feTurbulence>
+<feDisplacementMap in="b" in2="n" scale="22" xChannelSelector="R" yChannelSelector="G" result="d"></feDisplacementMap>
+<feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="9" result="n2"></feTurbulence>
+<feColorMatrix in="n2" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1.7 -0.38" result="mask"></feColorMatrix>
+<feComposite in="d" in2="mask" operator="in"></feComposite>
+</filter>
+<filter id="gfog"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="5"></feTurbulence><feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.22 0"></feColorMatrix></filter>
+
 <filter id="cXL" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="54" result="b"></feGaussianBlur><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="n"></feTurbulence><feDisplacementMap in="b" in2="n" scale="30" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
 <filter id="cL" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="32" result="b"></feGaussianBlur><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="n"></feTurbulence><feDisplacementMap in="b" in2="n" scale="24" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
 <filter id="cM" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="20" result="b"></feGaussianBlur><feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="7" result="n"></feTurbulence><feDisplacementMap in="b" in2="n" scale="18" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
@@ -177,6 +210,17 @@ header .ico,header #hdrMenuG{visibility:hidden!important}
 <div style="font-size: 14px; line-height: 1.75; color: #1E1E1C">
 <p style="margin: 0 0 18px">as a kid you might find me binging Avatar: The Last Airbender on Nickelodeon, buried in a good book or coming up with siiiick new tricks on my old school Razor scooter. “The Illustrated Man” by Ray Bradbury along with a litany of other literature inspired me to pursue my passion for wordsmithing and storytelling. later, at the University of Denver, I was enthralled by the world of big ideas and entrepreneurship. before long my two interests merged and I found myself sitting in class at Denver Ad School.</p>
 <p style="margin: 0">I’m infinitely passionate about crafting new ideas and weaving syllables into sentences, which you’ll find me doing on the daily. you can also catch me writing poetry, short fiction, cycling, camping and traveling the world. group rides and group writes encouraged.</p>
+<!-- call button: dark glass ring with a lean phone; buzzes like a vibrating phone and then opens contact -->
+<div class="gv-dark" style="margin-top: 22px">
+<a class="gbw callBtn" href="Mobile-Contact.dc.html" aria-label="Contact Ben" onClick="{{callClick}}" style="width: 48px; height: 48px">
+<svg class="gbs" viewBox="0 0 160 160" aria-hidden="true" style="opacity: 0.45"><ellipse cx="80" cy="112" rx="44" ry="13" fill="#1E1E1C" fill-opacity="0.11" filter="url(#grit)"></ellipse></svg>
+<span class="gbb">
+<span class="gb" style="-webkit-mask-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cpath%20d%3D%22M50%203%20A47%2047%200%201%201%2049.99%203%20Z%22%20fill%3D%22none%22%20stroke%3D%22white%22%20stroke-width%3D%222.2%22%2F%3E%3C%2Fsvg%3E'); mask-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cpath%20d%3D%22M50%203%20A47%2047%200%201%201%2049.99%203%20Z%22%20fill%3D%22none%22%20stroke%3D%22white%22%20stroke-width%3D%222.2%22%2F%3E%3C%2Fsvg%3E')"><svg class="fog" aria-hidden="true"><rect width="100%" height="100%" filter="url(#gfog)"></rect></svg></span>
+<span class="gic" aria-hidden="true" style="-webkit-mask-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cpath%20transform%3D%22translate%2850%2050%29%20skewX%28-12%29%20translate%28-50%20-50%29%22%20d%3D%22M42%2027%20H58%20Q63%2027%2063%2032%20V68%20Q63%2073%2058%2073%20H42%20Q37%2073%2037%2068%20V32%20Q37%2027%2042%2027%20Z%20M41.5%2032%20V63.5%20H58.5%20V32%20Z%20M50%2066.6%20A2%202%200%201%200%2050%2070.6%20A2%202%200%201%200%2050%2066.6%20Z%22%20fill%3D%22black%22%20fill-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E'); mask-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cpath%20transform%3D%22translate%2850%2050%29%20skewX%28-12%29%20translate%28-50%20-50%29%22%20d%3D%22M42%2027%20H58%20Q63%2027%2063%2032%20V68%20Q63%2073%2058%2073%20H42%20Q37%2073%2037%2068%20V32%20Q37%2027%2042%2027%20Z%20M41.5%2032%20V63.5%20H58.5%20V32%20Z%20M50%2066.6%20A2%202%200%201%200%2050%2070.6%20A2%202%200%201%200%2050%2066.6%20Z%22%20fill%3D%22black%22%20fill-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E')"></span>
+<svg class="ico" viewBox="0 0 100 100" aria-hidden="true"><g filter="url(#imp-raise)"><path d="M50 3 A47 47 0 1 1 49.99 3 Z" fill="none" stroke="#000" stroke-width="2.2"></path></g><g filter="url(#imp-etch)"><path transform="translate(50 50) skewX(-12) translate(-50 -50)" d="M42 27 H58 Q63 27 63 32 V68 Q63 73 58 73 H42 Q37 73 37 68 V32 Q37 27 42 27 Z M41.5 32 V63.5 H58.5 V32 Z M50 66.6 A2 2 0 1 0 50 70.6 A2 2 0 1 0 50 66.6 Z" fill="#000" fill-rule="evenodd"></path></g></svg>
+</span>
+</a>
+</div>
 </div>
 </section>
 </main>
@@ -202,6 +246,19 @@ header .ico,header #hdrMenuG{visibility:hidden!important}
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
 class Component extends DCLogic {
+  // call button: buzzes left and right like a vibrating phone (0.52s), then the page opens
+  callFlip(e) {
+    if (this.callGo) return;
+    if (e && e.preventDefault) e.preventDefault();
+    const a = e && e.target && e.target.closest ? e.target.closest('a.callBtn') : null; if (!a) return;
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const go = () => { this.callGo = true; a.click(); this.callGo = false; };
+    const b = a.querySelector('.gbb'); if (reduce || !b || !b.animate) { go(); return; }
+    const K = [0, -9, 8, -9, 8, -7, 6, -5, 3, 0], o = { duration: 520, easing: 'linear' };
+    b.animate(K.map((d, i) => ({ offset: i / (K.length - 1), transform: 'translateX(' + (d / 3).toFixed(1) + 'px) rotate(' + d + 'deg)' })), o);
+    const s = a.querySelector('.gbs'); if (s) s.animate(K.map((d, i) => ({ offset: i / (K.length - 1), transform: 'translateX(' + (d / 3).toFixed(1) + 'px)' })), o);
+    setTimeout(go, 560);
+  }
   constructor(props) { super(props); this.state = { four: true, openG: false, seed: Math.floor(Math.random() * 1e6), mx: null, my: null, here: false }; this.pend = null; this.raf = null; this.ht = null; }
   componentDidMount() {
     this.onTilt = (e) => {
@@ -367,7 +424,7 @@ class Component extends DCLogic {
       });
       return { mask: inside ? 'inBlob' : 'outBlob', shapes: shapes };
     });
-    return {
+    return { callClick: (e) => this.callFlip(e),
       b: b, passes: [],
       fourLabel: this.state.four ? 'arc (tap for the cluster)' : 'cluster (tap for the arc)', toggleFour: () => this.setState({ four: !this.state.four }),
       onMove: (e) => {
