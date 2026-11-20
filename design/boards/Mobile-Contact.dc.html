@@ -366,7 +366,7 @@ class Component extends DCLogic {
     const FORK = 'M-35 -19 L-35 -9 M-31 -19 L-31 -9 M-27 -19 L-27 -9 M-35 -9 C-35 -4 -27 -4 -27 -9 M-31 -5 L-31 19', KNIFE = 'M29 -21 C36 -17 36 -6 33 -2 L29 -2 Z', KNIFEH = 'M31 -2 L31 19';
     const QM = 'M-4.6 -7.5 C-4.6 -13 4.6 -13 4.6 -7.5 C4.6 -3.5 0 -2.8 0 2.2';
     // fish motion (SVG rotate: angle, pivot x, pivot y in the fish's own drawing); off for reduced motion
-    const FLOP = reduce ? [] : [{ v: '-5 -4 2;5 -4 2;-5 -4 2', dur: '3.4s' }], WAG = reduce ? [] : [{ v: '-14 27 2;10 27 2;-14 27 2', dur: '1.3s' }];
+    const FLOP = [] ||  [{ v: '-5 -4 2;5 -4 2;-5 -4 2', dur: '3.4s' }], WAG = [] ||  [{ v: '-14 27 2;10 27 2;-14 27 2', dur: '1.3s' }];
     const SN = [
       null,
       null, // the sparkles in the centre of the cluster removed (user's call, Nov 20); the five stamps keep their ring around the empty centre
@@ -386,7 +386,7 @@ class Component extends DCLogic {
         // stamps: the five around the stars sit evenly on an ellipse (every 72°, clockwise from the top: fish, place setting, bike, eyes, trees)
         ? [null, [390, 380, -6, 1.1], [195, 332, -8, 0.92], null, [272, 520, 4, 0.85], [390, 210, 5, 0.98], [508, 520, -4, 0.9], [585, 332, 4, 0.92]]
         : [null, [720, 470, -6, 1.12], [500, 380, -8, 0.98], [870, 380, -3, 1.0], [535, 600, 4, 0.9], [680, 285, 5, 1.08], [745, 655, -4, 0.95], [935, 560, 4, 1.02]];
-      const turn = (this.state.travel || 0) / 38;
+      const turn = 0; // icons static (Nov 20)
       (stamp ? SN : CL).forEach((parts, i) => {
         const pp = POS[i]; if (!pp) return;
         const tf = 'translate(' + pp[0] + ' ' + pp[1] + ') rotate(' + pp[2] + ') scale(' + pp[3] + ')';
@@ -394,7 +394,7 @@ class Component extends DCLogic {
         parts.forEach((pt) => {
           if (pt.skip) return;
           const t2 = tf + (pt.sub ? ' ' + pt.sub : '');
-          if (pt.k === 'glance') { const on = this.state.mx !== null; const an = on ? Math.atan2(this.state.my - pp[1], this.state.mx - pp[0]) - pp[2] * Math.PI / 180 : 0.3; const ox = Math.cos(an) * pt.reach, oy = Math.sin(an) * pt.reach; items.push({ k: 'mfill', d: pt.eyes.map((ex) => C(+(ex + ox).toFixed(2), +oy.toFixed(2), pt.r)).join(' '), tf: tf, frame: 0 }); }
+          if (pt.k === 'glance') { const on = false; const an = on ? Math.atan2(this.state.my - pp[1], this.state.mx - pp[0]) - pp[2] * Math.PI / 180 : 0.3; const ox = Math.cos(an) * pt.reach, oy = Math.sin(an) * pt.reach; items.push({ k: 'mfill', d: pt.eyes.map((ex) => C(+(ex + ox).toFixed(2), +oy.toFixed(2), pt.r)).join(' '), tf: tf, frame: 0 }); }
           else if (pt.k === 'pupil') items.push({ k: 'mfill', d: pt.eyes.map((ex) => C(ex + 3, -0.5, 5.2)).join(' '), tf: tf, frame: 0 });
           else if (pt.k === 'spokes') items.push({ k: pt.ink ? 'inkline' : 'cut', w: pt.w || 1.3, frame: 0, tf: t2, d: pt.wheels.map((w) => { let o = ''; for (let q = 0; q < 3; q++) { const an = turn * w[2] + q * Math.PI / 3, dx = Math.cos(an) * 12, dy = Math.sin(an) * 12; o += 'M' + (w[0] - dx).toFixed(1) + ' ' + (w[1] - dy).toFixed(1) + ' L' + (w[0] + dx).toFixed(1) + ' ' + (w[1] + dy).toFixed(1) + ' '; } return o; }).join('') });
           else if (pt.k === 'mainfill') items.push({ k: 'mfill', d: pt.d, tf: t2, frame: 0, anims: pt.anims });
