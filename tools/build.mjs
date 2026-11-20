@@ -105,7 +105,7 @@ function page(r) {
   const used = {};
   for (const m of parts.join('').matchAll(/\/assets\/([0-9a-f]{32})\.webp/g)) if (IMG[m[1]] && IMG[m[1]].v.length) used[m[1]] = IMG[m[1]];
   // the browser-tab title is the desktop board's own <title> (e.g. "Ben Weiller \\ Kia K5 GT")
-  const title = (readBoard(r.desktop).title || SITE.name).trim();
+  const title = (readBoard(r.desktop).title || SITE.name).trim().replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'"); // board titles are HTML-escaped; esc() below escapes once
   const url = SITE.origin + (r.path === '/404' ? '/' : r.path);
   return `<!doctype html>
 <html lang="en">

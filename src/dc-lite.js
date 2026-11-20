@@ -375,8 +375,10 @@ function sameSite(a) {
 function swapIn(html) {
   const doc = new DOMParser().parseFromString(html, 'text/html');
   document.title = doc.title;
-  const cfg = doc.querySelector('head script:not([src])');
-  if (cfg) { try { (0, eval)(cfg.textContent); } catch (e) { /* keep the old config */ } }
+  // the page's own settings (window.__DC_PAGE__); other inline head scripts are skipped
+  const cfg = [...doc.querySelectorAll('head script:not([src])')].find((sc) => sc.textContent.includes('__DC_PAGE__'));
+  window.__DC_PAGE__ = {};
+  if (cfg) { try { (0, eval)(cfg.textContent); } catch (e) { /* no settings */ } }
   document.querySelectorAll('body > template[id^="dc-"], body > script[type="text/x-dc"]').forEach((n) => n.remove());
   doc.querySelectorAll('body > template[id^="dc-"], body > script[type="text/x-dc"]').forEach((n) => document.body.appendChild(document.importNode(n, true)));
   const canon = doc.querySelector('link[rel="canonical"]'), mine = document.querySelector('link[rel="canonical"]');
