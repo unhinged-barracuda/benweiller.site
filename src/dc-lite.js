@@ -401,6 +401,15 @@ function swapIn(html) {
   const canon = doc.querySelector('link[rel="canonical"]'), mine = document.querySelector('link[rel="canonical"]');
   if (canon && mine) mine.href = canon.href;
 }
+// hold the dissolve until what's on screen is actually drawn: the blob's first frame and the images in view.
+// Without this the new page arrives as text only and the pictures pop in a moment later (the "blink").
+async function settle(cap) {
+  await new Promise((r) => setTimeout(r, 0)); // (animation frames are paused while a view transition is updating)
+  const root = document.getElementById('dc-root'), vh = window.innerHeight;
+  const imgs = [...root.querySelectorAll('img')].filter((i) => { const b = i.getBoundingClientRect(); return b.width > 0 && b.top < vh && b.bottom > 0; });
+  imgs.forEach((i) => { if (i.loading === 'lazy') i.loading = 'eager'; });
+  await Promise.race([Promise.all(imgs.map((i) => (i.decode ? i.decode() : Promise.resolve()).catch(() => {}))), new Promise((r) => setTimeout(r, cap))]);
+}
 let navigating = false, queued = null, renderedPath = location.pathname;
 async function go(url, push) {
   if (navigating) { queued = [url, push]; return; }
@@ -408,12 +417,13 @@ async function go(url, push) {
   try {
     const html = await fetchPage(url);
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const swap = () => {
+    const swap = async () => {
       swapIn(html);
       if (push) history.pushState({ dc: 1 }, '', url.pathname + url.search + url.hash);
       window.scrollTo(0, 0);
       renderedPath = url.pathname;
       start(true);
+      await settle(500);
     };
     if (!reduce && document.startViewTransition) {
       const vt = document.startViewTransition(swap);
@@ -422,7 +432,7 @@ async function go(url, push) {
       const root = document.getElementById('dc-root');
       root.style.transition = 'opacity 260ms ease'; root.style.opacity = '0';
       await new Promise((r) => setTimeout(r, 260));
-      swap();
+      await swap();
       requestAnimationFrame(() => { root.style.transition = 'opacity 420ms ease'; root.style.opacity = '1'; });
     } else swap();
   } catch (e) {
