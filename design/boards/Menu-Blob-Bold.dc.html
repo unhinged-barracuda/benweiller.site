@@ -132,8 +132,10 @@ a{color:#1E1E1C}a:hover{color:#000000}
 </header>
 
 <sc-if value="{{shown}}" hint-placeholder-val="{{ true }}">
-<div aria-hidden="true" style="position: absolute; left: 38.5vw; top: 50%; width: min(50vw, 118vh); aspect-ratio: 8 / 5; transform: translateY(-50%); perspective: 1600px; z-index: 1">
-<div class="flipper" style="position: absolute; inset: 0; transform-style: {{tstyle}}; transform: {{flipT}}">
+<div style="position: absolute; left: 38.5vw; top: 50%; width: min(50vw, 118vh); aspect-ratio: 8 / 5; transform: translateY(-50%); perspective: 1600px; z-index: 1">
+<!-- the card opens the campaign it shows (Nov 20); skipped by Tab, the list links are the keyboard path -->
+<a href="{{cardHref}}" tabindex="-1" aria-label="{{cardLabel}}" style="position: absolute; inset: 0; z-index: 3; display: {{cardLink}}; cursor: pointer"></a>
+<div class="flipper" aria-hidden="true" style="position: absolute; inset: 0; transform-style: {{tstyle}}; transform: {{flipT}}">
 <span class="face" style="position: absolute; inset: 0; background: {{frontBg}}; z-index: {{frontZ}}; opacity: {{frontO}}; transition: {{frontTr}}"><video src="/_blob/e6adc1d7cf3e59ed12ed2a98da301b10" poster="/_blob/1eda541d56b069a9878a66f2fae6e086" autoplay="" muted="" loop="" playsinline="" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: {{frontVid}}"></video></span>
 <span class="face" style="position: absolute; inset: 0; background: {{backBg}}; transform: {{backT}}; z-index: {{backZ}}; opacity: {{backO}}; transition: {{backTr}}"><video src="/_blob/e6adc1d7cf3e59ed12ed2a98da301b10" poster="/_blob/1eda541d56b069a9878a66f2fae6e086" autoplay="" muted="" loop="" playsinline="" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: {{backVid}}"></video></span>
 </div>
@@ -170,10 +172,15 @@ a{color:#1E1E1C}a:hover{color:#000000}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { seed: Math.floor(Math.random() * 1e6), hover: null, shownId: 'w0', front: 'w0', back: 'w0', top: 'front', fade: true, kia: false, shown: true, listOpen: false, moreOpen: false, openG: false };
+    this.state = { seed: Math.floor(Math.random() * 1e6), hover: null, shownId: 'none', front: 'none', back: 'none', top: 'front', fade: true, kia: false, shown: true, listOpen: false, moreOpen: false, openG: false };
     this.t = null; this.lt = null; this.kt = null; this.raf = null;
   }
   componentWillUnmount() { clearTimeout(this.t); clearTimeout(this.lt); clearTimeout(this.kt); cancelAnimationFrame(this.raf); }
+  hrefOf(x) {
+    if (!x || x.id === 'none') return '#';
+    const m = { 'san diego zoo': 'Project-San-Diego-Zoo.dc.html', 'heelys': 'Project-Heelys.dc.html', 'vizio': 'Project-Vizio.dc.html', 'dropbox': 'Project-Dropbox.dc.html', 'jollibee': 'Project-Jollibee.dc.html', 'speak your vote': 'Project-Speak-Your-Vote.dc.html', 'motel 6': 'Project-Motel-6.dc.html', 'bmw': 'Project-BMW.dc.html', 'vicks vaporub': 'Project-Vicks.dc.html', 'kia': 'Project-Kia-v2.dc.html', 'K5 GT': 'Project-Kia-v2.dc.html', 'X-LINE': 'Project-Kia-XLine.dc.html', 'EV6/EV9': 'Project-Kia-EV.dc.html' };
+    return m[x.label] || '#';
+  }
   kiaOpen() { clearTimeout(this.kt); if (!this.state.kia) this.setState({ kia: true }); }
   kiaClose() { clearTimeout(this.kt); this.kt = setTimeout(() => this.setState({ kia: false }), 450); }
   rng(seed) {
@@ -281,11 +288,13 @@ class Component extends DCLogic {
     const all = [];
     works.forEach((w, i) => { all.push({ id: 'w' + i, label: w[0], color: w[1], img: w[2], sw: w[3], vid: w[4], kia: w[0] === 'kia', mono: w[0] === 'speak your vote' ? true : w[0] === 'vicks vaporub' ? 'tan' : w[0] === 'heelys' ? 'ink' : false }); if (w[0] === 'kia') subs.forEach((s, j) => all.push({ id: 'k' + j, label: s[0], color: s[1], img: s[2], sw: s[3], vid: s[4], sub: true })); });
     const byId = {}; all.forEach((x) => { byId[x.id] = x; });
+    // the card opens empty and see-through (Nov 20): 'none' is that empty card; the first hover fills it
+    byId.none = { id: 'none', label: '', color: 'transparent', img: null, sw: null };
     const list = all.filter((x) => !x.sub);
     const subList = all.filter((x) => x.sub);
     const hv = this.state.hover;
     const si = all.findIndex((x) => x.id === this.state.shownId);
-    const hc = byId[this.state.shownId].color;
+    const hc0 = byId[this.state.shownId].color;
     // each campaign gets its own spot around the card; the golden-angle step keeps neighbouring items far apart
     const ang = si * 2.39996, rad = si <= 0 ? 0 : 150 + 40 * Math.sin(si * 1.7);
     // moves only rightward/up/down from its home so it never drifts toward the menu text
@@ -297,6 +306,7 @@ class Component extends DCLogic {
     // and set to the four roles (light halo, bright accent, deeper body, dark core); the rest keep the homepage palettes
     const shownSw = byId[this.state.shownId].sw;
     const pal = shownSw ? this.thumbPal(shownSw, sd, byId[this.state.shownId].mono) : PALS[(Math.max(0, si) + this.state.seed) % PALS.length];
+    const hc = this.state.shownId === 'none' ? pal[2] : hc0; // empty card: plain homepage palette, no tint
     const ar = this.rng(sd + 5);
     const acx = 20 + ar() * 220, acy = (ar() - 0.5) * 300, kx = (ar() - 0.5) * 200, ky = (ar() - 0.5) * 140;
     // a card with a transparent colour shows its image whole (contain) so the blob shows through around it; every other card fills its frame (cover)
@@ -332,7 +342,7 @@ class Component extends DCLogic {
       core: this.mix(pal[3], pal[2], 0.55),
       chevRot: this.state.kia ? 90 : 0,
       navEnter: () => clearTimeout(this.kt),
-      navLeave: () => this.kiaClose(),
+      navLeave: () => {}, // kia's flyout stays open until another title is hovered or kia is clicked (Nov 20)
       kiaOpen: this.state.kia,
       listOpenStr: this.state.listOpen ? 'true' : 'false', listChevRot: this.state.listOpen ? 90 : 0,
       listRows: this.state.listOpen ? '1fr' : '0fr', foldCls: this.state.listOpen ? '' : 'shut', listO: this.state.listOpen ? 1 : 0, listVis: this.state.listOpen ? 'visible' : 'hidden',
@@ -357,6 +367,9 @@ class Component extends DCLogic {
         leave: () => this.off(),
         click: () => {}
       })),
+      cardHref: this.hrefOf(byId[this.state.shownId]),
+      cardLabel: 'Open ' + (byId[this.state.shownId].kia ? 'K5 GT' : byId[this.state.shownId].label),
+      cardLink: this.state.shownId === 'none' ? 'none' : 'block',
       items: list.map((it, i) => ({
         label: it.label,
         href: it.kia ? '#' : ({ 'san diego zoo': 'Project-San-Diego-Zoo.dc.html', 'heelys': 'Project-Heelys.dc.html', 'vizio': 'Project-Vizio.dc.html', 'dropbox': 'Project-Dropbox.dc.html', 'jollibee': 'Project-Jollibee.dc.html', 'speak your vote': 'Project-Speak-Your-Vote.dc.html', 'motel 6': 'Project-Motel-6.dc.html', 'bmw': 'Project-BMW.dc.html', 'vicks vaporub': 'Project-Vicks.dc.html' }[it.label] || '#'),

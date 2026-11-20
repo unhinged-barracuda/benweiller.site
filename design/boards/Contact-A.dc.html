@@ -536,7 +536,7 @@ class Component extends DCLogic {
       icoLabelG: this.state.openG ? 'Close menu' : 'Open menu',
       toggleG: () => this.setState({ openG: !this.state.openG }),
       subjects: SUB.map((x, i) => Object.assign({ label: x, pick: () => this.setState({ subject: i }) }, chip(i === su))),
-      passes: [pass(false), pass(true)],
+      passes: [], // stamps hidden for now (Nov 20); was [pass(false), pass(true)]
       styles: ST.map((x, i) => Object.assign({ label: x.label, pick: () => this.setState({ style: i }) }, chip(i === si))),
       onMove: (e) => {
         const r0 = e.currentTarget.getBoundingClientRect();
