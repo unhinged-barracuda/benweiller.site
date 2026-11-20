@@ -65,6 +65,9 @@ a{color:#1E1E1C}a:hover{color:#000000}
 .hflip .burger line,.hflip .hdrBack line{stroke:#FFFFFF!important}
 .hflip .nb{color:#A9A9B0!important}
 .hflip .nb:hover,.hflip .nb:focus-visible,.hflip .nb.on{color:#FFFFFF!important}
+/* hover bridge (Nov 20): only the titles catch the pointer, so the strip under the list reaches right up to them */
+nav[aria-label="Selected works"]{pointer-events:none}
+nav[aria-label="Selected works"] a{pointer-events:auto}
 </style>
 </helmet>
 <div style="position: relative; height: 100vh; min-height: 560px; overflow: hidden; background: #F1F1EE; font-family: 'Inter', system-ui, sans-serif; color: #1E1E1C">
@@ -132,15 +135,17 @@ a{color:#1E1E1C}a:hover{color:#000000}
 </header>
 
 <sc-if value="{{shown}}" hint-placeholder-val="{{ true }}">
-<div style="position: absolute; left: 38.5vw; top: 50%; width: min(50vw, 118vh); aspect-ratio: 8 / 5; transform: translateY(-50%); perspective: 1600px; z-index: 1">
+<div style="opacity: {{cardO}}; transition: opacity 220ms ease; position: absolute; left: 38.5vw; top: 50%; width: min(50vw, 118vh); aspect-ratio: 8 / 5; transform: translateY(-50%); perspective: 1600px; z-index: 1">
 <!-- the card opens the campaign it shows (Nov 20); skipped by Tab, the list links are the keyboard path -->
-<a href="{{cardHref}}" tabindex="-1" aria-label="{{cardLabel}}" style="position: absolute; inset: 0; z-index: 3; display: {{cardLink}}; cursor: pointer"></a>
+<a href="{{cardHref}}" tabindex="-1" aria-label="{{cardLabel}}" onMouseEnter="{{cardHold}}" onMouseLeave="{{cardOff}}" style="position: absolute; inset: 0; z-index: 3; display: {{cardLink}}; cursor: pointer"></a>
 <div class="flipper" aria-hidden="true" style="position: absolute; inset: 0; transform-style: {{tstyle}}; transform: {{flipT}}">
 <span class="face" style="position: absolute; inset: 0; background: {{frontBg}}; z-index: {{frontZ}}; opacity: {{frontO}}; transition: {{frontTr}}"><video src="/_blob/e6adc1d7cf3e59ed12ed2a98da301b10" poster="/_blob/1eda541d56b069a9878a66f2fae6e086" autoplay="" muted="" loop="" playsinline="" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: {{frontVid}}"></video></span>
 <span class="face" style="position: absolute; inset: 0; background: {{backBg}}; transform: {{backT}}; z-index: {{backZ}}; opacity: {{backO}}; transition: {{backTr}}"><video src="/_blob/e6adc1d7cf3e59ed12ed2a98da301b10" poster="/_blob/1eda541d56b069a9878a66f2fae6e086" autoplay="" muted="" loop="" playsinline="" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: {{backVid}}"></video></span>
 </div>
 </div>
 
+<!-- hover bridge (Nov 20): holds the thumbnail while the pointer travels from a title to the card; inactive while the card is empty -->
+<div aria-hidden="true" onMouseEnter="{{cardHold}}" onMouseLeave="{{cardOff}}" style="position: absolute; left: 14vw; width: 24.5vw; top: 50%; height: calc(min(50vw, 118vh) * 5 / 8); transform: translateY(-50%); z-index: 1; pointer-events: {{bridgeEvents}}"></div>
 <nav aria-label="Selected works" onMouseEnter="{{navEnter}}" onMouseLeave="{{navLeave}}" style="position: absolute; left: 14vw; top: 50%; transform: translateY(-50%); z-index: 2; width: 200px">
 <p style="margin: 0 0 12px; height: 20px; font-size: 13px; line-height: 20px; font-weight: 400; letter-spacing: -0.01em">/selected works</p>
 <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column">
@@ -172,7 +177,7 @@ a{color:#1E1E1C}a:hover{color:#000000}
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { seed: Math.floor(Math.random() * 1e6), hover: null, shownId: 'none', front: 'none', back: 'none', top: 'front', fade: true, kia: false, shown: true, listOpen: false, moreOpen: false, openG: false };
+    this.state = { seed: Math.floor(Math.random() * 1e6), hover: null, shownId: 'none', front: 'none', back: 'none', cardOn: false, top: 'front', fade: true, kia: false, shown: true, listOpen: false, moreOpen: false, openG: false };
     this.t = null; this.lt = null; this.kt = null; this.raf = null;
   }
   // a click anywhere outside the list closes kia's flyout (Nov 20)
@@ -239,7 +244,9 @@ class Component extends DCLogic {
   show(id) {
     clearTimeout(this.lt);
     const s = this.state;
-    if (id === s.shownId) { this.setState({ hover: id }); return; }
+    if (id === s.shownId) { this.setState({ hover: id, cardOn: true }); return; }
+    // hover-only thumbnails (Nov 20): from a cleared card, the campaign goes straight in and the card fades up
+    if (!s.cardOn) { this.setState({ hover: id, shownId: id, front: id, back: id, top: 'front', fade: true, cardOn: true }); return; }
     // the card stays: the new campaign is laid on top of the old one and fades in, so the card is never empty
     const top = s.top === 'front' ? 'back' : 'front';
     const patch = { hover: id, shownId: id, top: top, fade: false };
@@ -248,7 +255,8 @@ class Component extends DCLogic {
     cancelAnimationFrame(this.raf);
     this.raf = requestAnimationFrame(() => { this.raf = requestAnimationFrame(() => this.setState({ fade: true })); });
   }
-  off() { clearTimeout(this.lt); this.lt = setTimeout(() => this.setState({ hover: null }), 120); }
+  off() { clearTimeout(this.lt); this.lt = setTimeout(() => this.setState({ hover: null, shownId: 'none', cardOn: false }), 100); }
+  hold() { clearTimeout(this.lt); }
   // hex <-> hsl helpers for thumbnail palettes
   hsl(hex) {
     const n = parseInt(hex.slice(1), 16), r = (n >> 16 & 255) / 255, g = (n >> 8 & 255) / 255, b = (n & 255) / 255;
@@ -375,9 +383,13 @@ class Component extends DCLogic {
       cardHref: this.hrefOf(byId[this.state.shownId]),
       cardLabel: 'Open ' + (byId[this.state.shownId].kia ? 'K5 GT' : byId[this.state.shownId].label),
       cardLink: this.state.shownId === 'none' ? 'none' : 'block',
+      cardO: this.state.cardOn ? 1 : 0,
+      cardHold: () => this.hold(),
+      cardOff: () => this.off(),
+      bridgeEvents: this.state.cardOn ? 'auto' : 'none',
       items: list.map((it, i) => ({
         label: it.label,
-        href: it.kia ? '#' : ({ 'san diego zoo': 'Project-San-Diego-Zoo.dc.html', 'heelys': 'Project-Heelys.dc.html', 'vizio': 'Project-Vizio.dc.html', 'dropbox': 'Project-Dropbox.dc.html', 'jollibee': 'Project-Jollibee.dc.html', 'speak your vote': 'Project-Speak-Your-Vote.dc.html', 'motel 6': 'Project-Motel-6.dc.html', 'bmw': 'Project-BMW.dc.html', 'vicks vaporub': 'Project-Vicks.dc.html' }[it.label] || '#'),
+        href: it.kia ? 'Project-Kia-v2.dc.html' : ({ 'san diego zoo': 'Project-San-Diego-Zoo.dc.html', 'heelys': 'Project-Heelys.dc.html', 'vizio': 'Project-Vizio.dc.html', 'dropbox': 'Project-Dropbox.dc.html', 'jollibee': 'Project-Jollibee.dc.html', 'speak your vote': 'Project-Speak-Your-Vote.dc.html', 'motel 6': 'Project-Motel-6.dc.html', 'bmw': 'Project-BMW.dc.html', 'vicks vaporub': 'Project-Vicks.dc.html' }[it.label] || '#'),
         kia: !!it.kia,
         popup: it.kia ? 'true' : null,
         delay: 150 + i * 60,
@@ -386,7 +398,7 @@ class Component extends DCLogic {
         groupEnter: it.kia ? () => this.kiaOpen() : () => {},
         enter: () => { if (it.kia) this.kiaOpen(); else if (this.state.kia) { clearTimeout(this.kt); this.setState({ kia: false }); } this.show(it.id); },
         leave: () => this.off(),
-        click: (e) => { if (it.kia) { e.preventDefault(); clearTimeout(this.kt); this.setState({ kia: !this.state.kia }); } }
+        click: () => {} // kia now opens K5 GT; hovering it still opens the flyout (Nov 20)
       })),
       // replay only restarts the blob's settle (swapping between two identical animations), so nothing is re-drawn and the page never blanks
       settleCls: (this.state.replays || 0) % 2 ? 'settleB' : 'settle',
