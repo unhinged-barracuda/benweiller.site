@@ -175,7 +175,12 @@ class Component extends DCLogic {
     this.state = { seed: Math.floor(Math.random() * 1e6), hover: null, shownId: 'none', front: 'none', back: 'none', top: 'front', fade: true, kia: false, shown: true, listOpen: false, moreOpen: false, openG: false };
     this.t = null; this.lt = null; this.kt = null; this.raf = null;
   }
-  componentWillUnmount() { clearTimeout(this.t); clearTimeout(this.lt); clearTimeout(this.kt); cancelAnimationFrame(this.raf); }
+  // a click anywhere outside the list closes kia's flyout (Nov 20)
+  componentDidMount() {
+    this.away = (e) => { if (this.state.kia && !(e.target.closest && e.target.closest('nav[aria-label="Selected works"]'))) { clearTimeout(this.kt); this.setState({ kia: false }); } };
+    document.addEventListener('click', this.away);
+  }
+  componentWillUnmount() { document.removeEventListener('click', this.away); clearTimeout(this.t); clearTimeout(this.lt); clearTimeout(this.kt); cancelAnimationFrame(this.raf); }
   hrefOf(x) {
     if (!x || x.id === 'none') return '#';
     const m = { 'san diego zoo': 'Project-San-Diego-Zoo.dc.html', 'heelys': 'Project-Heelys.dc.html', 'vizio': 'Project-Vizio.dc.html', 'dropbox': 'Project-Dropbox.dc.html', 'jollibee': 'Project-Jollibee.dc.html', 'speak your vote': 'Project-Speak-Your-Vote.dc.html', 'motel 6': 'Project-Motel-6.dc.html', 'bmw': 'Project-BMW.dc.html', 'vicks vaporub': 'Project-Vicks.dc.html', 'kia': 'Project-Kia-v2.dc.html', 'K5 GT': 'Project-Kia-v2.dc.html', 'X-LINE': 'Project-Kia-XLine.dc.html', 'EV6/EV9': 'Project-Kia-EV.dc.html' };
