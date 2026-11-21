@@ -1,3 +1,4 @@
+import crypto from 'node:crypto';
 // Builds the static site in dist/ from the design boards in design/boards/ and the assets in design/assets/.
 //   node tools/build.mjs
 // Each page holds its desktop board and its mobile board (as inert <template>s); dc-lite.js picks one on load.
@@ -61,6 +62,16 @@ function rewriteLinks(s) {
   });
 }
 
+// ---- fonts: Inter 400 / 500 / 600 and Dirtbag TM (the name), self-hosted WOFF2 subsets made once into design/fonts ----
+const FONT_DIR = path.join(ROOT, 'design/fonts');
+const FONTS = {};
+for (const f of fs.readdirSync(FONT_DIR).filter((f) => f.endsWith('.woff2'))) {
+  const h = crypto.createHash('sha256').update(fs.readFileSync(path.join(FONT_DIR, f))).digest('hex').slice(0, 10);
+  FONTS[f.replace('.woff2', '')] = `/assets/${f.replace('.woff2', '')}.${h}.woff2`;
+}
+const fontFace = (fam, file, w) => `@font-face{font-family:'${fam}';src:url(${FONTS[file]}) format('woff2');font-weight:${w};font-style:normal;font-display:swap}`;
+const FONT_CSS = fontFace('Inter', 'inter-400', 400) + fontFace('Inter', 'inter-500', 500) + fontFace('Inter', 'inter-600', 600) + fontFace('Dirtbag TM', 'dirtbag', 400);
+
 // ---- read one board ----
 function readBoard(name) {
   const file = path.join(BOARDS, name + '.dc.html');
@@ -68,7 +79,10 @@ function readBoard(name) {
   const x0 = src.indexOf('<x-dc>');
   const x1 = src.lastIndexOf('</x-dc>');
   if (x0 < 0 || x1 < 0) throw new Error('no <x-dc> in ' + name);
-  const xdc = src.slice(x0, x1 + 7);
+  // fonts belong to the site shell (one self-hosted set, see FONTS); the canvas's own font links / @font-face are left out, like "Mockup only" controls
+  const xdc = src.slice(x0, x1 + 7)
+    .replace(/<link[^>]*fonts\.googleapis\.com[^>]*>/g, '')
+    .replace(/@font-face\s*\{[^}]*Dirtbag[^}]*\}/g, '');
   const sm = src.match(/<script type="text\/x-dc"([^>]*)>([\s\S]*?)<\/script>/);
   if (!sm) throw new Error('no logic script in ' + name);
   const pm = sm[1].match(/data-props='([^']*)'/);
@@ -131,10 +145,9 @@ function page(r) {
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" href="/assets/${assetFile['a15098c6e2313273da5b37f609489781'] || ''}" as="font" type="font/woff" crossorigin>
-<style>html,body{margin:0;background:#F1F1EE;overscroll-behavior:none}#dc-root>[style*="100svh"]{min-height:0!important}html:has(#dc-root>[style*="100svh"]),html:has(#dc-root>[style*="100svh"]) body{overflow:hidden;height:100%}#dc-root>[style*="100svh"] canvas.fastblob{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 64px,#000 calc(100% - 72px),transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 64px,#000 calc(100% - 72px),transparent 100%)}.page{overscroll-behavior:none}#dc-root{min-height:100vh}</style><style>
+<link rel="preload" href="${FONTS['inter-400']}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="${FONTS['dirtbag']}" as="font" type="font/woff2" crossorigin>
+<style>${FONT_CSS}html,body{margin:0;background:#F1F1EE;overscroll-behavior:none}#dc-root>[style*="100svh"]{min-height:0!important}html:has(#dc-root>[style*="100svh"]),html:has(#dc-root>[style*="100svh"]) body{overflow:hidden;height:100%}#dc-root>[style*="100svh"] canvas.fastblob{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 64px,#000 calc(100% - 72px),transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 64px,#000 calc(100% - 72px),transparent 100%)}.page{overscroll-behavior:none}#dc-root{min-height:100vh}</style><style>
 ::view-transition-old(root),::view-transition-new(root){animation-duration:.65s;animation-timing-function:cubic-bezier(.3,.7,.2,1)}
 @media (prefers-reduced-motion: reduce){::view-transition-old(root),::view-transition-new(root){animation:none}}</style>
 <script>window.__DC_PAGE__=${JSON.stringify({ tabletMobile: !!r.tabletMobile, preload: !!r.preload, up: r.up || null, down: r.down || null })};window.__IMG__=${JSON.stringify(used)}</script>
@@ -167,6 +180,8 @@ await build({
 // ---- static files (favicons, fonts, og image, headers, redirects) ----
 const PUB = path.join(ROOT, 'public');
 if (fs.existsSync(PUB)) fs.cpSync(PUB, OUT, { recursive: true });
+fs.mkdirSync(path.join(OUT, 'assets'), { recursive: true });
+for (const [name, url] of Object.entries(FONTS)) fs.copyFileSync(path.join(FONT_DIR, name + '.woff2'), path.join(OUT, url));
 
 if (missing.size) console.warn('MISSING ASSETS (' + missing.size + '):', [...missing].join(' '));
 if (unknownLinks.size) console.warn('UNMAPPED BOARD LINKS → /:', [...unknownLinks].join(' '));
