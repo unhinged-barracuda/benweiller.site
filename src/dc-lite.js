@@ -347,32 +347,59 @@ function start(sync) {
   document.documentElement.dataset.board = tpl.id.replace('dc-', '');
   currentTpl = tpl.id;
   mount(tpl, script, root, sync);
-  setBackUp((window.__DC_PAGE__ || {}).backUp);
+  setPaging(window.__DC_PAGE__);
   // pages whose images appear on hover (the menu's thumbnail card) warm them up once the page has settled
   if ((window.__DC_PAGE__ || {}).preload) {
     if (document.readyState === 'complete') setTimeout(() => warmImages(script), 600); else window.addEventListener('load', () => setTimeout(() => warmImages(script), 600), { once: true });
   }
 }
 
-// ---------- scrolling up on a page that says so (the menu) goes back to the homepage, like scrolling down on the homepage opens the menu ----------
-let backUp = null;
-function setBackUp(path) {
-  if (backUp) { backUp.off(); backUp = null; }
-  if (!path) return;
+// ---------- scroll paging: home ⇄ menu ⇄ about ⇄ contact ----------
+// The homepage opens the menu on its own (its board). Every other page in the chain says in its settings which page is
+// "up" and which is "down": wheel / trackpad (~120px), a swipe (60px; swipe down = up, swipe up = down) or the keys
+// (↑ / page up, ↓ / page down / space) open it with the usual dissolve. A page that scrolls inside itself (its scroller is
+// marked data-pscroll) only hands off from its top / bottom edge, and only on a new gesture that starts there, so a fling
+// that reaches the end never carries on into the next page.
+let paging = null;
+function setPaging(cfg) {
+  if (paging) { paging.off(); paging = null; }
+  const up = cfg && cfg.up, down = cfg && cfg.down;
+  if (!up && !down) return;
   const t0 = Date.now();
-  let acc = 0, wt = 0, ty = null;
-  const fire = () => { if (Date.now() - t0 < 800) return; go(new URL(path, location.href), true); };
+  const sc = () => document.querySelector('#dc-root [data-pscroll]');
+  const fits = () => { const s = sc(); return !s || s.scrollHeight <= s.clientHeight + 2; };
+  const atEdge = (d) => { const s = sc(); if (!s) return true; return d ? s.scrollTop + s.clientHeight >= s.scrollHeight - 2 : s.scrollTop <= 1; };
+  const fire = (d) => { const to = d ? down : up; if (!to || Date.now() - t0 < 800) return; go(new URL(to, location.href), true); };
+  // last = now: a scroll that is still going (a trackpad fling's momentum) when this page appears counts as the old gesture,
+  // so it can't carry straight on into the next page; only a new gesture (after a 250ms pause) can hand off
+  let acc = 0, wt = 0, last = Date.now(), fresh = false, startEdge = false, dir = null, ty = null, tEdge = null;
   const wheel = (e) => {
-    if (e.deltaY < 0) { acc -= e.deltaY; clearTimeout(wt); wt = setTimeout(() => { acc = 0; }, 400); if (acc > 120) { acc = 0; fire(); } } else acc = 0;
+    if (e.ctrlKey || Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
+    const d = e.deltaY > 0, now = Date.now();
+    if (now - last > 250) { fresh = true; startEdge = atEdge(d); acc = 0; dir = d; } // a new gesture
+    else if (d !== dir) { startEdge = atEdge(d); acc = 0; dir = d; }
+    last = now;
+    if (!fresh || !(d ? down : up) || !atEdge(d) || !(fits() || startEdge)) { acc = 0; return; }
+    acc += Math.abs(e.deltaY); clearTimeout(wt); wt = setTimeout(() => { acc = 0; }, 400);
+    if (acc > 120) { acc = 0; fire(d); }
   };
-  const ts = (e) => { const t = e.touches && e.touches[0]; ty = t ? [t.clientX, t.clientY] : null; };
-  const te = (e) => { const t = e.changedTouches && e.changedTouches[0]; if (ty && t) { const dx = t.clientX - ty[0], dy = t.clientY - ty[1]; if (dy > 60 && Math.abs(dy) > Math.abs(dx) * 1.5) fire(); } ty = null; };
-  const key = (e) => { if (e.target && e.target.closest && e.target.closest('input, textarea, [contenteditable]')) return; if (e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); fire(); } };
+  const ts = (e) => { const t = e.touches && e.touches[0]; ty = t ? [t.clientX, t.clientY] : null; tEdge = [atEdge(false), atEdge(true)]; };
+  const te = (e) => {
+    const t = e.changedTouches && e.changedTouches[0];
+    if (ty && t) { const dx = t.clientX - ty[0], dy = t.clientY - ty[1]; if (Math.abs(dy) > 60 && Math.abs(dy) > Math.abs(dx) * 1.5) { const d = dy < 0; if (tEdge[d ? 1 : 0] && atEdge(d)) fire(d); } }
+    ty = null;
+  };
+  const key = (e) => {
+    if (e.target && e.target.closest && e.target.closest('a, button, input, textarea, [contenteditable]')) return;
+    const d = ['ArrowDown', 'PageDown', ' ', 'Spacebar'].includes(e.key) ? true : ['ArrowUp', 'PageUp'].includes(e.key) ? false : null;
+    if (d === null || !(d ? down : up) || !atEdge(d)) return;
+    e.preventDefault(); fire(d);
+  };
   window.addEventListener('wheel', wheel, { passive: true });
   window.addEventListener('touchstart', ts, { passive: true });
   window.addEventListener('touchend', te, { passive: true });
   window.addEventListener('keydown', key);
-  backUp = { off: () => { clearTimeout(wt); window.removeEventListener('wheel', wheel); window.removeEventListener('touchstart', ts); window.removeEventListener('touchend', te); window.removeEventListener('keydown', key); } };
+  paging = { off: () => { clearTimeout(wt); window.removeEventListener('wheel', wheel); window.removeEventListener('touchstart', ts); window.removeEventListener('touchend', te); window.removeEventListener('keydown', key); } };
 }
 
 // ---------- moving between pages without reloading: the next page is fetched, swapped in and cross-dissolved ----------

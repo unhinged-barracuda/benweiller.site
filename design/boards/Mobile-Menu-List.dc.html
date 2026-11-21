@@ -124,6 +124,9 @@ a{color:#1E1E1C}a:hover{color:#000000}
 </g></g>
 <rect width="390" height="844" filter="url(#pageGrain)"></rect>
 </svg>
+<!-- scroll paging hand-off links (hidden): previous / next page in the home → menu → about → contact chain -->
+<a data-next="prev" href="Mobile-Home.dc.html" tabindex="-1" aria-hidden="true" style="display: none">previous</a>
+<a data-next="next" href="Mobile-About.dc.html" tabindex="-1" aria-hidden="true" style="display: none">next</a>
 <header style="position: absolute; top: 16px; left: 16px; right: 16px; height: 48px; display: flex; justify-content: space-between; align-items: center; z-index: auto">
 <a href="Mobile-Home.dc.html" aria-label="Ben Weiller — home" style="font-family: 'Dirtbag TM', 'Inter', sans-serif; font-size: 44px; line-height: 1; letter-spacing: 0.03em; position: relative; top: 6px; text-decoration: none; color: #1E1E1C">BEN WEILLER</a>
 <button class="ico hflip" type="button" onClick="{{toggleG}}" aria-expanded="{{openStrG}}" aria-controls="hdrMenuG" aria-label="{{icoLabelG}}" style="width: 48px; height: 48px; margin-right: -7px; padding: 0; border: 0; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center">
@@ -163,12 +166,64 @@ a{color:#1E1E1C}a:hover{color:#000000}
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
 class Component extends DCLogic {
+  // scroll paging (Nov 21), the same hand-off as homepage → menu: scrolling on past the end of this page opens the next one
+  // (menu → about → contact) and scrolling back past the top opens the previous one (contact → about → menu → home).
+  // wheel / trackpad, a swipe, or the keys (↓ / page down / space, ↑ / page up). On a page that scrolls it only hands off once
+  // you are at its top or bottom edge and scroll again after a pause, so a fling that reaches the end doesn't carry on into the next page.
+  psMount() {
+    const sc = () => document.querySelector('[data-pscroll]');
+    const scrolls = () => { const s = sc(); return !!s && s.scrollHeight > s.clientHeight + 2; };
+    const atTop = () => { const s = sc(); return !s || s.scrollTop <= 1; };
+    const atBot = () => { const s = sc(); return !s || s.scrollTop + s.clientHeight >= s.scrollHeight - 2; };
+    const go = (dir) => {
+      const now = Date.now(); if (this.psLast && now - this.psLast < 800) return;
+      const a = document.querySelector('a[data-next="' + dir + '"]'); if (!a) return;
+      this.psLast = now; this.psAcc = 0; a.click();
+    };
+    this.psAcc = 0; this.psEdge = 0; this.psDir = null; this.psArmed = false; this.psT = 0;
+    this.psWheel = (e) => {
+      if (e.ctrlKey || Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
+      const down = e.deltaY > 0, edge = down ? atBot() : atTop(), now = Date.now(), gap = now - (this.psT || 0);
+      this.psT = now;
+      if (!edge) { this.psAcc = 0; this.psEdge = 0; this.psArmed = false; return; }
+      // a page that fits: hand off straight away. A page that scrolls: only after a pause at its edge (a new scroll), never on the same fling
+      if (!scrolls()) this.psArmed = true;
+      else if (!this.psEdge) { this.psEdge = now; this.psArmed = false; }
+      else if (gap > 250) this.psArmed = true;
+      if (!this.psArmed) return;
+      if (this.psDir !== down) { this.psAcc = 0; this.psDir = down; }
+      this.psAcc += Math.abs(e.deltaY);
+      if (this.psAcc > 120) go(down ? 'next' : 'prev');
+    };
+    this.psTs = (e) => { const t = e.touches && e.touches[0]; if (!t) return; this.psY = t.clientY; this.psX = t.clientX; this.psTop = atTop(); this.psBot = atBot(); };
+    this.psTe = (e) => {
+      const t = e.changedTouches && e.changedTouches[0]; if (!t || this.psY == null) return;
+      const dy = this.psY - t.clientY, dx = this.psX - t.clientX; this.psY = null;
+      if (Math.abs(dy) < 60 || Math.abs(dx) > Math.abs(dy)) return;
+      if (dy > 0 && this.psBot && atBot()) go('next');
+      else if (dy < 0 && this.psTop && atTop()) go('prev');
+    };
+    this.psKey = (e) => {
+      if (e.target && e.target.closest && e.target.closest('a, button, input, textarea')) return;
+      if (['ArrowDown', 'PageDown', ' ', 'Spacebar'].indexOf(e.key) >= 0 && atBot() && document.querySelector('a[data-next="next"]')) { e.preventDefault(); go('next'); }
+      else if (['ArrowUp', 'PageUp'].indexOf(e.key) >= 0 && atTop() && document.querySelector('a[data-next="prev"]')) { e.preventDefault(); go('prev'); }
+    };
+    window.addEventListener('wheel', this.psWheel, { passive: true });
+    window.addEventListener('touchstart', this.psTs, { passive: true });
+    window.addEventListener('touchend', this.psTe, { passive: true });
+    window.addEventListener('keydown', this.psKey);
+  }
+  psUnmount() {
+    window.removeEventListener('wheel', this.psWheel); window.removeEventListener('touchstart', this.psTs);
+    window.removeEventListener('touchend', this.psTe); window.removeEventListener('keydown', this.psKey);
+  }
   constructor(props) {
     super(props);
     this.state = { seed: Math.floor(Math.random() * 1e6), shownId: 'w0', front: 'w0', back: 'w0', top: 'front', fade: true, kia: false, sel: null, openG: false };
     this.t = null; this.lt = null; this.kt = null; this.raf = null;
   }
   componentDidMount() {
+    this.psMount();
     // the blob moves, reshapes and recolours on its own: every 2.6s it steps to the next campaign's colours and spot (no touch needed)
     const still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (still) return;
@@ -177,7 +232,7 @@ class Component extends DCLogic {
     // its own wander, not tied to the campaigns: every 2.6s a new spot somewhere on the page, a new shape and a fresh colour mix
     this.auto = setInterval(() => { this.setState({ step: (this.state.step || 0) + 1 }); }, 2600);
   }
-  componentWillUnmount() { clearTimeout(this.t); clearTimeout(this.lt); clearTimeout(this.kt); clearTimeout(this.spinT); clearInterval(this.auto); cancelAnimationFrame(this.raf); }
+  componentWillUnmount() { this.psUnmount(); clearTimeout(this.t); clearTimeout(this.lt); clearTimeout(this.kt); clearTimeout(this.spinT); clearInterval(this.auto); cancelAnimationFrame(this.raf); }
   // a tap: spin that arrow a full turn, then open the link (kia: open / close its three)
   spinGo(key, e, isKia) {
     if (this.passing) return;
@@ -300,7 +355,7 @@ class Component extends DCLogic {
   renderVals() {
     const works = [
       ['san diego zoo', '#5A4636', '/_blob/c2ccfc4b9f4ed3520ff76036b9164e0a', ['#4E3526', '#644920', '#7A5C2A', '#897B76', '#1F150D']],
-      ['vizio', '#0B0907', '/_blob/6bd05efdbc461905da28bfba28676a32', ['#E9D2AC', '#A1825C', '#E8C84A', '#3E7FD8', '#0B0907']],
+      ['vizio', '#120A0A', '/_blob/35ff5379fdfa0b0085ae882f0de50595', ['#F1E6D3', '#EE3A52', '#E060B8', '#5AA6EE', '#120A0A']],
       ['dropbox', '#6FB0D2', '/_blob/1eda541d56b069a9878a66f2fae6e086', ['#6FB0D2', '#B26DC3', '#9CF3C4', '#6063A2', '#1D2053'], '/_blob/e6adc1d7cf3e59ed12ed2a98da301b10'],
       ['kia', '#1C2A33', '/_blob/967f26f849529d9b0b7316d58fc67c97', ['#3A515A', '#213242', '#8E9CA3', '#D9783A', '#0F1A21']],
       ['motel 6', '#2C7A80', '/_blob/cd99d364db92c70c76d15ab364eb2a9e', ['#B12231', '#6B2E42', '#9E5041', '#A39BA7', '#251B1B']],

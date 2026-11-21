@@ -154,7 +154,10 @@ a{color:#1E1E1C}a:hover{color:#000000}
 </g>
 </sc-for>
 </svg>
-<div style="position: absolute; inset: 0; z-index: auto; overflow-y: auto">
+<div data-pscroll="1" style="position: absolute; inset: 0; z-index: auto; overflow-y: auto">
+<!-- scroll paging hand-off links (hidden): previous / next page in the home → menu → about → contact chain -->
+<a data-next="prev" href="Menu-Blob-Bold.dc.html" tabindex="-1" aria-hidden="true" style="display: none">previous</a>
+<a data-next="next" href="Contact-A.dc.html" tabindex="-1" aria-hidden="true" style="display: none">next</a>
 <header style="height: 11vh; min-height: 72px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; padding: 0 4vw">
 <a class="lnk" href="Bloburblur.dc.html" aria-label="Ben Weiller — home" style="display: inline-block; font-family: 'Dirtbag TM', 'Inter', sans-serif; font-size: 44px; line-height: 1; letter-spacing: 0.03em; position: relative; top: 9px; text-decoration: none; color: #1E1E1C">BEN WEILLER</a>
 <div class="hflip" style="display: flex; align-items: center; gap: 26px">
@@ -201,6 +204,57 @@ a{color:#1E1E1C}a:hover{color:#000000}
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
 class Component extends DCLogic {
+  // scroll paging (Nov 21), the same hand-off as homepage → menu: scrolling on past the end of this page opens the next one
+  // (menu → about → contact) and scrolling back past the top opens the previous one (contact → about → menu → home).
+  // wheel / trackpad, a swipe, or the keys (↓ / page down / space, ↑ / page up). On a page that scrolls it only hands off once
+  // you are at its top or bottom edge and scroll again after a pause, so a fling that reaches the end doesn't carry on into the next page.
+  psMount() {
+    const sc = () => document.querySelector('[data-pscroll]');
+    const scrolls = () => { const s = sc(); return !!s && s.scrollHeight > s.clientHeight + 2; };
+    const atTop = () => { const s = sc(); return !s || s.scrollTop <= 1; };
+    const atBot = () => { const s = sc(); return !s || s.scrollTop + s.clientHeight >= s.scrollHeight - 2; };
+    const go = (dir) => {
+      const now = Date.now(); if (this.psLast && now - this.psLast < 800) return;
+      const a = document.querySelector('a[data-next="' + dir + '"]'); if (!a) return;
+      this.psLast = now; this.psAcc = 0; a.click();
+    };
+    this.psAcc = 0; this.psEdge = 0; this.psDir = null; this.psArmed = false; this.psT = 0;
+    this.psWheel = (e) => {
+      if (e.ctrlKey || Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
+      const down = e.deltaY > 0, edge = down ? atBot() : atTop(), now = Date.now(), gap = now - (this.psT || 0);
+      this.psT = now;
+      if (!edge) { this.psAcc = 0; this.psEdge = 0; this.psArmed = false; return; }
+      // a page that fits: hand off straight away. A page that scrolls: only after a pause at its edge (a new scroll), never on the same fling
+      if (!scrolls()) this.psArmed = true;
+      else if (!this.psEdge) { this.psEdge = now; this.psArmed = false; }
+      else if (gap > 250) this.psArmed = true;
+      if (!this.psArmed) return;
+      if (this.psDir !== down) { this.psAcc = 0; this.psDir = down; }
+      this.psAcc += Math.abs(e.deltaY);
+      if (this.psAcc > 120) go(down ? 'next' : 'prev');
+    };
+    this.psTs = (e) => { const t = e.touches && e.touches[0]; if (!t) return; this.psY = t.clientY; this.psX = t.clientX; this.psTop = atTop(); this.psBot = atBot(); };
+    this.psTe = (e) => {
+      const t = e.changedTouches && e.changedTouches[0]; if (!t || this.psY == null) return;
+      const dy = this.psY - t.clientY, dx = this.psX - t.clientX; this.psY = null;
+      if (Math.abs(dy) < 60 || Math.abs(dx) > Math.abs(dy)) return;
+      if (dy > 0 && this.psBot && atBot()) go('next');
+      else if (dy < 0 && this.psTop && atTop()) go('prev');
+    };
+    this.psKey = (e) => {
+      if (e.target && e.target.closest && e.target.closest('a, button, input, textarea')) return;
+      if (['ArrowDown', 'PageDown', ' ', 'Spacebar'].indexOf(e.key) >= 0 && atBot() && document.querySelector('a[data-next="next"]')) { e.preventDefault(); go('next'); }
+      else if (['ArrowUp', 'PageUp'].indexOf(e.key) >= 0 && atTop() && document.querySelector('a[data-next="prev"]')) { e.preventDefault(); go('prev'); }
+    };
+    window.addEventListener('wheel', this.psWheel, { passive: true });
+    window.addEventListener('touchstart', this.psTs, { passive: true });
+    window.addEventListener('touchend', this.psTe, { passive: true });
+    window.addEventListener('keydown', this.psKey);
+  }
+  psUnmount() {
+    window.removeEventListener('wheel', this.psWheel); window.removeEventListener('touchstart', this.psTs);
+    window.removeEventListener('touchend', this.psTe); window.removeEventListener('keydown', this.psKey);
+  }
   // call button: buzzes left and right like a vibrating phone (0.52s), then the page opens
   callFlip(e) {
     if (this.callGo) return;
@@ -215,7 +269,8 @@ class Component extends DCLogic {
     setTimeout(go, 560);
   }
   constructor(props) { super(props); this.state = { four: true, openG: false, seed: Math.floor(Math.random() * 1e6), mx: null, my: null, here: false }; this.pend = null; this.raf = null; this.ht = null; }
-  componentWillUnmount() { cancelAnimationFrame(this.raf); clearTimeout(this.ht); }
+  componentDidMount() { this.psMount(); }
+  componentWillUnmount() { this.psUnmount(); cancelAnimationFrame(this.raf); clearTimeout(this.ht); }
   rng(seed) {
     let a = seed >>> 0;
     return function () { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };

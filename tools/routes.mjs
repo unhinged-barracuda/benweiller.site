@@ -10,7 +10,7 @@ export const SITE = {
 
 export const ROUTES = [
   { path: '/', desktop: 'Bloburblur', mobile: 'Mobile-Home', tabletMobile: true, title: '' },
-  { path: '/work/', desktop: 'Menu-Blob-Bold', mobile: 'Mobile-Menu-List', tabletMobile: true, preload: true, backUp: '/', title: 'selected works' },
+  { path: '/work/', desktop: 'Menu-Blob-Bold', mobile: 'Mobile-Menu-List', tabletMobile: true, preload: true, up: '/', down: '/who-me/', title: 'selected works' },
   { path: '/kia-k5-gt/', desktop: 'Project-Kia-v2', mobile: 'Mobile-Kia-v2', title: 'KIA K5 GT' },
   { path: '/kia-x-line/', desktop: 'Project-Kia-XLine', mobile: 'Mobile-Kia-XLine', title: 'KIA X-LINE' },
   { path: '/kia-ev9-ev6/', desktop: 'Project-Kia-EV', mobile: 'Mobile-Kia-EV', title: 'KIA EV9 & EV6' },
@@ -23,8 +23,8 @@ export const ROUTES = [
   { path: '/motel-6/', desktop: 'Project-Motel-6', mobile: 'Mobile-Motel-6', title: 'MOTEL 6' },
   { path: '/bmw/', desktop: 'Project-BMW', mobile: 'Mobile-BMW', title: 'BMW X5/X6' },
   { path: '/vicks-vaporub/', desktop: 'Project-Vicks', mobile: 'Mobile-Vicks', title: 'VICKS VAPORUB' },
-  { path: '/who-me/', desktop: 'About-A', mobile: 'Mobile-About', title: 'who, me?' },
-  { path: '/contact/', desktop: 'Contact-A', mobile: 'Mobile-Contact', title: 'contact' },
+  { path: '/who-me/', desktop: 'About-A', mobile: 'Mobile-About', up: '/work/', down: '/contact/', title: 'who, me?' },
+  { path: '/contact/', desktop: 'Contact-A', mobile: 'Mobile-Contact', up: '/who-me/', title: 'contact' },
   { path: '/404', desktop: 'Page-404', mobile: 'Mobile-404', title: '404' },
 ];
 

@@ -73,7 +73,9 @@ function readBoard(name) {
   if (!sm) throw new Error('no logic script in ' + name);
   const pm = sm[1].match(/data-props='([^']*)'/);
   const tm = src.match(/<title>([\s\S]*?)<\/title>/);
-  return { xdc, logic: sm[2], props: pm ? pm[1] : '{}', title: tm ? tm[1] : '' };
+  // scroll paging: the boards' psMount() is the canvas-only preview; on the live site the engine drives it (setPaging), so it stays off here
+  const logic = sm[2].replace(/\bpsMount\(\) \{/, 'psMount() { return;');
+  return { xdc, logic, props: pm ? pm[1] : '{}', title: tm ? tm[1] : '' };
 }
 
 // Canvas-only controls (marked aria-label="Mockup only" on the board) are left out of the live site.
@@ -135,7 +137,7 @@ function page(r) {
 <style>html,body{margin:0;background:#F1F1EE;overscroll-behavior:none}#dc-root>[style*="100svh"]{min-height:0!important}html:has(#dc-root>[style*="100svh"]),html:has(#dc-root>[style*="100svh"]) body{overflow:hidden;height:100%}#dc-root>[style*="100svh"] canvas.fastblob{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 64px,#000 calc(100% - 72px),transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 64px,#000 calc(100% - 72px),transparent 100%)}.page{overscroll-behavior:none}#dc-root{min-height:100vh}</style><style>
 ::view-transition-old(root),::view-transition-new(root){animation-duration:.65s;animation-timing-function:cubic-bezier(.3,.7,.2,1)}
 @media (prefers-reduced-motion: reduce){::view-transition-old(root),::view-transition-new(root){animation:none}}</style>
-<script>window.__DC_PAGE__=${JSON.stringify({ tabletMobile: !!r.tabletMobile, preload: !!r.preload, backUp: r.backUp || null })};window.__IMG__=${JSON.stringify(used)}</script>
+<script>window.__DC_PAGE__=${JSON.stringify({ tabletMobile: !!r.tabletMobile, preload: !!r.preload, up: r.up || null, down: r.down || null })};window.__IMG__=${JSON.stringify(used)}</script>
 <script src="/dc-lite.js?v=${SITE.build}" defer></script>
 </head>
 <body>
