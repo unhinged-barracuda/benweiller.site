@@ -135,7 +135,7 @@ nav[aria-label="Selected works"] a{pointer-events:auto}
 </header>
 
 <sc-if value="{{shown}}" hint-placeholder-val="{{ true }}">
-<div style="opacity: {{cardO}}; transition: opacity 220ms ease; position: absolute; left: 38.5vw; top: 50%; width: min(50vw, 118vh); aspect-ratio: 8 / 5; transform: translateY(-50%); perspective: 1600px; z-index: 1">
+<div style="opacity: {{cardO}}; transition: {{cardT}}; position: absolute; left: 38.5vw; top: 50%; width: min(50vw, 118vh); aspect-ratio: 8 / 5; transform: translateY(-50%); perspective: 1600px; z-index: 1">
 <!-- the card opens the campaign it shows (Nov 20); skipped by Tab, the list links are the keyboard path -->
 <a href="{{cardHref}}" tabindex="-1" aria-label="{{cardLabel}}" onMouseEnter="{{cardHold}}" onMouseLeave="{{cardOff}}" style="position: absolute; inset: 0; z-index: 3; display: {{cardLink}}; cursor: pointer"></a>
 <div class="flipper" aria-hidden="true" style="position: absolute; inset: 0; transform-style: {{tstyle}}; transform: {{flipT}}">
@@ -255,7 +255,7 @@ class Component extends DCLogic {
     cancelAnimationFrame(this.raf);
     this.raf = requestAnimationFrame(() => { this.raf = requestAnimationFrame(() => this.setState({ fade: true })); });
   }
-  off() { clearTimeout(this.lt); this.lt = setTimeout(() => this.setState({ hover: null, shownId: 'none', cardOn: false }), 100); }
+  off() { clearTimeout(this.lt); this.lt = setTimeout(() => this.setState({ hover: null, shownId: 'none', cardOn: false }), 120); }
   hold() { clearTimeout(this.lt); }
   // hex <-> hsl helpers for thumbnail palettes
   hsl(hex) {
@@ -384,6 +384,8 @@ class Component extends DCLogic {
       cardLabel: 'Open ' + (byId[this.state.shownId].kia ? 'K5 GT' : byId[this.state.shownId].label),
       cardLink: this.state.shownId === 'none' ? 'none' : 'block',
       cardO: this.state.cardOn ? 1 : 0,
+      // fade in quick (220ms); fade out as a soft 0.65s dissolve into Bloblurb (Nov 20)
+      cardT: this.state.cardOn ? 'opacity 220ms ease' : 'opacity 650ms cubic-bezier(0.45, 0, 0.25, 1)',
       cardHold: () => this.hold(),
       cardOff: () => this.off(),
       bridgeEvents: this.state.cardOn ? 'auto' : 'none',
