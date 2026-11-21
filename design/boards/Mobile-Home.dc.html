@@ -120,9 +120,11 @@ a{color:#1E1E1C}a:hover{color:#000000}
 <div style="position: absolute; left: 24px; bottom: calc(56px + env(safe-area-inset-bottom)); width: calc(100% - 48px); z-index: 2; color: #1E1E1C; font-size: 13px; line-height: 1.5">
 <!-- the title sits right-aligned to the paragraph's width, same as desktop -->
 <div style="display: inline-block">
-<div style="text-align: right"><button class="lead" type="button" onClick="{{toggleBlurb}}" aria-expanded="{{blurbStr}}" aria-controls="blurb">a blurb about the blob.<span class="arw" aria-hidden="true" style="transform: rotate({{arwRot}}deg)">↑</span></button></div>
+<div style="text-align: right"><button class="lead" type="button" onClick="{{toggleBlurb}}" aria-expanded="{{blurbStr}}" aria-controls="{{blurbId}}">a blurb about the blob.<span class="arw" aria-hidden="true" style="transform: rotate({{arwRot}}deg)">↑</span></button></div>
 <div class="bfold {{blurbCls}}" style="grid-template-rows: {{blurbRows}}"><div>
-<p id="blurb" style="margin: 0; padding-top: 8px; white-space: nowrap">feel free to name the colorful shapeshifting<br>entity on this page whatever you like. it<br>enjoys gentle belly rubs and will be your best<br>friend if you scroll with an open mind. but if<br>you don’t.. well, let’s just say it bites.</p>
+<!-- two versions of the blurb; each homepage visit shows the other one (Nov 20) -->
+<p id="blurb" style="margin: 0; padding-top: 8px; white-space: nowrap; display: {{blurbA}}">feel free to name the colorful shapeshifting<br>entity on this page whatever you like. it<br>enjoys gentle belly rubs and will be your best<br>friend if you scroll with an open mind. but if<br>you don’t.. well, let’s just say it bites.</p>
+<p id="blurb-b" style="margin: 0; padding-top: 8px; white-space: nowrap; display: {{blurbB}}">the colorful shapeshifting entity on<br>this page is “Bloblurb.” you can play<br>with it by tilting your phone. or scroll<br>to see some ideas I’ve been playing around with.</p>
 </div></div>
 </div>
 </div>
@@ -135,6 +137,10 @@ class Component extends DCLogic {
   constructor(props) {
     super(props);
     this.state = { mx: 0, my: 0, travel: 0, blurb: false };
+    // alternate the blurb copy on every homepage visit (desktop and phone share the turn); random if storage is unavailable
+    let v = Math.random() < 0.5 ? 'a' : 'b';
+    try { const last = localStorage.getItem('bw.blurb'); if (last === 'a' || last === 'b') v = last === 'a' ? 'b' : 'a'; localStorage.setItem('bw.blurb', v); } catch (e) {}
+    this.state.ver = v;
     this.acc = 0; this.ty = null; this.root = null;
     this.last = null;
     this.pending = null;
@@ -304,7 +310,7 @@ class Component extends DCLogic {
       onTouchEnd: (e) => { const t = e.changedTouches && e.changedTouches[0]; if (e.target && e.target.closest && e.target.closest('a, button, nav')) { this.ty = null; return; } if (this.ty !== null && t && this.ty - t.clientY > 50) this.go(e.currentTarget); else if (!this.dragged) this.go(e.currentTarget); this.ty = null; },
       onLeave: () => { this.last = null; this.setState({ mx: 0, my: 0 }); },
       // the blurb's title opens and closes the paragraph (it never counts as a click-to-continue)
-      blurbStr: this.state.blurb ? 'true' : 'false', blurbCls: this.state.blurb ? '' : 'shut', blurbRows: this.state.blurb ? '1fr' : '0fr', arwRot: this.state.blurb ? 180 : 0,
+      blurbA: this.state.ver === 'a' ? 'block' : 'none', blurbB: this.state.ver === 'b' ? 'block' : 'none', blurbId: this.state.ver === 'a' ? 'blurb' : 'blurb-b', blurbStr: this.state.blurb ? 'true' : 'false', blurbCls: this.state.blurb ? '' : 'shut', blurbRows: this.state.blurb ? '1fr' : '0fr', arwRot: this.state.blurb ? 180 : 0,
       toggleBlurb: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.setState({ blurb: !this.state.blurb }); },
       ground: ground, halo: halo, accent: accent, mid: mid, core: core,
       haloPath: haloPath, accentPath: accentPath, midPath: midPath, corePath: corePath,
