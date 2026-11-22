@@ -358,8 +358,7 @@ function start(sync) {
 // The homepage opens the menu on its own (its board). Every other page in the chain says in its settings which page is
 // "up" and which is "down": wheel / trackpad (~120px), a swipe (60px; swipe down = up, swipe up = down) or the keys
 // (↑ / page up, ↓ / page down / space) open it with the usual dissolve; a page can turn swiping off (swipe: false). A page that scrolls inside itself (its scroller is
-// marked data-pscroll) only hands off from its top / bottom edge, and only on a new gesture that starts there, so a fling
-// that reaches the end never carries on into the next page.
+// marked data-pscroll) only hands off from its top / bottom edge, after a brief blink there (see the wheel handler).
 let paging = null;
 function setPaging(cfg) {
   if (paging) { paging.off(); paging = null; }
@@ -372,14 +371,20 @@ function setPaging(cfg) {
   const fire = (d) => { const to = d ? down : up; if (!to || Date.now() - t0 < 800) return; go(new URL(to, location.href), true); };
   // last = now: a scroll that is still going (a trackpad fling's momentum) when this page appears counts as the old gesture,
   // so it can't carry straight on into the next page; only a new gesture (after a 250ms pause) can hand off
-  let acc = 0, wt = 0, last = Date.now(), fresh = false, startEdge = false, dir = null, ty = null, tEdge = null;
+  // last = now: a scroll that is still going (a trackpad fling's momentum) when this page appears counts as the old gesture,
+  // so it can't carry straight on into the next page; any brief pause (80ms) starts a new gesture.
+  // On a page that scrolls, reaching the edge needs only a blink (150ms of continued scrolling, or a gesture that starts there)
+  // before the usual ~120px push, so steady scrolling flows on into the next page (spec, Nov 22).
+  let acc = 0, wt = 0, last = Date.now(), fresh = false, startEdge = false, edgeAt = 0, dir = null, ty = null, tEdge = null;
   const wheel = (e) => {
     if (e.ctrlKey || Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
     const d = e.deltaY > 0, now = Date.now();
-    if (now - last > 250) { fresh = true; startEdge = atEdge(d); acc = 0; dir = d; } // a new gesture
-    else if (d !== dir) { startEdge = atEdge(d); acc = 0; dir = d; }
+    if (now - last > 80) { fresh = true; startEdge = atEdge(d); acc = 0; dir = d; } // a new gesture
+    else if (d !== dir) { startEdge = atEdge(d); acc = 0; dir = d; edgeAt = 0; }
     last = now;
-    if (!fresh || !(d ? down : up) || !atEdge(d) || !(fits() || startEdge)) { acc = 0; return; }
+    if (!fresh || !(d ? down : up) || !atEdge(d)) { acc = 0; edgeAt = 0; return; }
+    if (!edgeAt) edgeAt = now;
+    if (!(fits() || startEdge || now - edgeAt >= 150)) { acc = 0; return; }
     acc += Math.abs(e.deltaY); clearTimeout(wt); wt = setTimeout(() => { acc = 0; }, 400);
     if (acc > 120) { acc = 0; fire(d); }
   };

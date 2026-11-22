@@ -186,10 +186,10 @@ class Component extends DCLogic {
       const down = e.deltaY > 0, edge = down ? atBot() : atTop(), now = Date.now(), gap = now - (this.psT || 0);
       this.psT = now;
       if (!edge) { this.psAcc = 0; this.psEdge = 0; this.psArmed = false; return; }
-      // a page that fits: hand off straight away. A page that scrolls: only after a pause at its edge (a new scroll), never on the same fling
+      // a page that fits: hand off straight away. A page that scrolls: after a brief pause at its edge or a beat of extra scroll there (0.35s), so a hard fling doesn't fly straight through
       if (!scrolls()) this.psArmed = true;
       else if (!this.psEdge) { this.psEdge = now; this.psArmed = false; }
-      else if (gap > 250) this.psArmed = true;
+      else if (gap > 80 || now - this.psEdge > 150) this.psArmed = true; // flows on: a blink at the edge, then the same 120px push as the homepage
       if (!this.psArmed) return;
       if (this.psDir !== down) { this.psAcc = 0; this.psDir = down; }
       this.psAcc += Math.abs(e.deltaY);
