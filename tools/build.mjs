@@ -17,24 +17,18 @@ fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
 
 // ---- assets: /_blob/<id> -> /assets/<id>.<ext> ----
-// design/web/ holds lighter copies made by tools/optimize-assets.mjs (WebP at 800 / 1600 / full width,
-// and the font as WOFF); where one exists it is served in place of the original.
+// design/web/ holds lighter WebP copies made by tools/optimize-assets.mjs; where they exist they are served
+// in place of the original. Only assets a page actually uses are copied into the site (see the end of the build),
+// so superseded images left in design/assets are never shipped.
 const WEB = path.join(ROOT, 'design/web');
 const IMG = fs.existsSync(path.join(WEB, 'manifest.json')) ? JSON.parse(fs.readFileSync(path.join(WEB, 'manifest.json'), 'utf8')) : {};
-const assetFile = {};
-if (fs.existsSync(ASSETS)) {
-  fs.mkdirSync(path.join(OUT, 'assets'), { recursive: true });
-  for (const f of fs.readdirSync(ASSETS)) {
-    const id = f.split('.')[0];
-    const web = fs.existsSync(WEB) ? fs.readdirSync(WEB).filter((w) => w.startsWith(id)) : [];
-    if (web.length) {
-      for (const w of web) fs.copyFileSync(path.join(WEB, w), path.join(OUT, 'assets', w));
-      assetFile[id] = web.find((w) => !w.includes('-')) || f;
-    } else {
-      assetFile[id] = f;
-      fs.copyFileSync(path.join(ASSETS, f), path.join(OUT, 'assets', f));
-    }
-  }
+const webFiles = fs.existsSync(WEB) ? fs.readdirSync(WEB).filter((w) => w !== 'manifest.json') : [];
+const assetFile = {}, assetCopies = {}, shipped = new Set();
+for (const f of fs.existsSync(ASSETS) ? fs.readdirSync(ASSETS) : []) {
+  const id = f.split('.')[0];
+  const web = webFiles.filter((w) => w.startsWith(id));
+  assetFile[id] = web.find((w) => !w.includes('-')) || f;
+  assetCopies[id] = web.length ? web.map((w) => path.join(WEB, w)) : [path.join(ASSETS, f)];
 }
 const missing = new Set();
 // assets not yet pulled from the canvas: show the previous version until the file is added to design/assets
@@ -45,8 +39,9 @@ function rewriteAssets(s) {
   return s.replace(/\/_blob\/([0-9a-f]{32})/g, (m, id) => {
     if (!assetFile[id] && STANDIN[id] && assetFile[STANDIN[id]]) { missing.add(id + ' (stand-in used)'); id = STANDIN[id]; }
     if (!assetFile[id]) { missing.add(id); return m; }
+    shipped.add(id);
     return '/assets/' + assetFile[id];
-  }).replace(/(url\(['"]?\/assets\/[0-9a-f]{32}\.woff['"]?\)\s*format\(['"])opentype(['"]\))/g, '$1woff$2');
+  });
 }
 
 // ---- board links: Foo.dc.html -> its route ----
@@ -183,6 +178,7 @@ if (fs.existsSync(PUB)) fs.cpSync(PUB, OUT, { recursive: true });
 fs.mkdirSync(path.join(OUT, 'assets'), { recursive: true });
 for (const [name, url] of Object.entries(FONTS)) fs.copyFileSync(path.join(FONT_DIR, name + '.woff2'), path.join(OUT, url));
 
+for (const id of shipped) for (const src of assetCopies[id]) fs.copyFileSync(src, path.join(OUT, 'assets', path.basename(src)));
 if (missing.size) console.warn('MISSING ASSETS (' + missing.size + '):', [...missing].join(' '));
 if (unknownLinks.size) console.warn('UNMAPPED BOARD LINKS → /:', [...unknownLinks].join(' '));
 console.log('built', ROUTES.length, 'pages');

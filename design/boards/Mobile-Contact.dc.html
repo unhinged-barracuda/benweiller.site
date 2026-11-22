@@ -86,9 +86,23 @@ header>a{white-space:nowrap}
 /* contact on a phone: ask ahead, the paragraph and the links on top; the stamp ring and its blob below */
 main{width:calc(100% - 32px)!important;padding:3vh 0 0!important}
 main section{max-width:none!important;margin:0!important;position:relative}
-/* the LinkedIn / email / resumé links sit under the paragraph on the left gutter (on desktop they hang under "here") */
+/* (Nov 22, later) Bloblurb sits at the top of the page (behind the header); the LinkedIn / email / resumé links sit just under
+   its pale lower edge, and "ask ahead" + the paragraph follow just below the links */
 main .here{position:static!important}
-#hereIcons{left:0!important;top:100%!important;padding-top:24px!important}
+main section{margin-top:36vh!important;padding-top:124px!important}
+#hereIcons{left:0!important;top:0!important;padding-top:0!important}
+/* (Nov 22, latest) links left-aligned on the left gutter */
+#hereIcons{left:0!important;right:auto!important;align-items:flex-start!important;text-align:left}
+#hereIcons a svg{flex:none;margin-left:-2px}
+#hereIcons a:first-child svg{margin-right:2px}
+/* "ask ahead" + the paragraph form a block on the right: it starts a third of the way across the page, text left-aligned inside it, ending on the right gutter */
+main section h1,main section p{text-align:left;margin-left:calc(33.333vw - 16px)!important}
+/* no sideways scroll on this page */
+html,body{overflow-x:hidden}
+[data-pscroll]{overflow-x:hidden!important}
+main,main section{max-width:100%!important;overflow-x:clip}
+/* the header menu's resting words sit off to the right while closed; clip them sideways so the page can't scroll right (they still drop down when opened) */
+header{overflow-x:clip}
 /* STICKY "///": once the header scrolls away, the plain "///" stays in the top-right corner, exactly as in the header (ink slashes, no button, no glass). tapped, it folds into an × and its four words open beneath it as a vertical stack, plain text like the header words */
 .fab{opacity:0;visibility:hidden;transition:opacity 220ms ease,visibility 0s linear 220ms}
 .fab.on{opacity:1;visibility:visible;transition:opacity 220ms ease,visibility 0s}
@@ -138,7 +152,7 @@ header .ico,header #hdrMenuG{visibility:hidden!important}
 <mask id="inBlob" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="900"><g class="fl" style="transform: {{b.t}}"><path class="mph" d="{{b.mid}}" fill="#fff" filter="url(#softEdge)"></path></g></mask>
 <mask id="outBlob" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="900"><rect width="1440" height="900" fill="#fff"></rect><g class="fl" style="transform: {{b.t}}"><path class="mph" d="{{b.mid}}" fill="#000" filter="url(#softEdge)"></path></g></mask>
 </defs>
-<g transform="translate(-78.0 384.0) scale(0.7)">
+<g transform="translate(-78.0 -36.0) scale(0.7)">
 
 <!-- the blob (same three-layer, cursor-following blob as the contact page) -->
 <g class="fl" style="transform: {{b.t}}">
@@ -161,7 +175,7 @@ header .ico,header #hdrMenuG{visibility:hidden!important}
 <rect width="390" height="844" filter="url(#pGrain)"></rect>
 </svg>
 
-<div data-pscroll="1" class="page" onScroll="{{onScrollF}}" style="position: absolute; inset: 0; z-index: 1; overflow-x: hidden; overflow-y: auto">
+<div data-pscroll="1" class="page" onScroll="{{onScrollF}}" style="position: absolute; inset: 0; z-index: 1; overflow-y: auto">
 <!-- scroll paging hand-off links (hidden): previous / next page in the home → menu → about → contact chain -->
 <a data-next="prev" href="Mobile-About.dc.html" tabindex="-1" aria-hidden="true" style="display: none">previous</a>
 <header style="height: 11vh; min-height: 72px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; padding: 0 4vw">
@@ -506,7 +520,7 @@ class Component extends DCLogic {
       styles: ST.map((x, i) => Object.assign({ label: x.label, pick: () => this.setState({ style: i }) }, chip(i === si))),
       onMove: (e) => {
         const r0 = e.currentTarget.getBoundingClientRect();
-        const sc = Math.max(r0.width / 390, r0.height / 844) * 0.7, ox = (r0.width - 390 * sc / 0.7) / 2 + -78.0 * sc / 0.7, oy = (r0.height - 844 * sc / 0.7) / 2 + 384.0 * sc / 0.7; // mobile: the drawing is scaled 0.7 into the phone frame
+        const sc = Math.max(r0.width / 390, r0.height / 844) * 0.7, ox = (r0.width - 390 * sc / 0.7) / 2 + -78.0 * sc / 0.7, oy = (r0.height - 844 * sc / 0.7) / 2 + -36.0 * sc / 0.7; // mobile: the drawing is scaled 0.7 into the phone frame
         const nx = (e.clientX - r0.left - ox) / sc, ny = (e.clientY - r0.top - oy) / sc;
         const d = this.lastP ? Math.min(90, Math.hypot(nx - this.lastP[0], ny - this.lastP[1])) : 0; this.lastP = [nx, ny];
         this.pend = { mx: nx, my: ny, travel: (this.pend && this.pend.travel !== undefined ? this.pend.travel : (this.state.travel || 0)) + d };
@@ -516,7 +530,7 @@ class Component extends DCLogic {
       onTouchMove: (e) => {
         const tp = e.touches && e.touches[0]; if (!tp) return;
         const r0 = e.currentTarget.getBoundingClientRect();
-        const sc = Math.max(r0.width / 390, r0.height / 844) * 0.7, ox = (r0.width - 390 * sc / 0.7) / 2 + -78.0 * sc / 0.7, oy = (r0.height - 844 * sc / 0.7) / 2 + 384.0 * sc / 0.7; // mobile: the drawing is scaled 0.7 into the phone frame
+        const sc = Math.max(r0.width / 390, r0.height / 844) * 0.7, ox = (r0.width - 390 * sc / 0.7) / 2 + -78.0 * sc / 0.7, oy = (r0.height - 844 * sc / 0.7) / 2 + -36.0 * sc / 0.7; // mobile: the drawing is scaled 0.7 into the phone frame
         const nx = (tp.clientX - r0.left - ox) / sc, ny = (tp.clientY - r0.top - oy) / sc;
         const d = this.lastP ? Math.min(90, Math.hypot(nx - this.lastP[0], ny - this.lastP[1])) : 0; this.lastP = [nx, ny];
         this.pend = { mx: nx, my: ny, travel: (this.pend && this.pend.travel !== undefined ? this.pend.travel : (this.state.travel || 0)) + d };
