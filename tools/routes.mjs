@@ -23,8 +23,8 @@ export const ROUTES = [
   { path: '/motel-6/', desktop: 'Project-Motel-6', mobile: 'Mobile-Motel-6', title: 'MOTEL 6' },
   { path: '/bmw/', desktop: 'Project-BMW', mobile: 'Mobile-BMW', title: 'BMW X5/X6' },
   { path: '/vicks-vaporub/', desktop: 'Project-Vicks', mobile: 'Mobile-Vicks', title: 'VICKS VAPORUB' },
-  { path: '/who-me/', desktop: 'About-A', mobile: 'Mobile-About', up: '/work/', down: '/contact/', swipe: false, title: 'who, me?' },
-  { path: '/contact/', desktop: 'Contact-A', mobile: 'Mobile-Contact', up: '/who-me/', swipe: false, title: 'contact' },
+  { path: '/who-me/', desktop: 'About-A', mobile: 'Mobile-About', up: '/work/', down: '/contact/', title: 'who, me?' },
+  { path: '/contact/', desktop: 'Contact-A', mobile: 'Mobile-Contact', up: '/who-me/', title: 'contact' },
   { path: '/404', desktop: 'Page-404', mobile: 'Mobile-404', title: '404' },
 ];
 
