@@ -11,160 +11,62 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&amp;display=swap" rel="stylesheet">
 <style>
 @font-face{font-family:'Dirtbag TM';src:url('/_blob/a15098c6e2313273da5b37f609489781') format('opentype');font-weight:400;font-style:normal;font-display:swap}
-body{margin:0}
-a{color:#1E1E1C}a:hover{color:#000000}
-.page{scrollbar-width:none}.page::-webkit-scrollbar{display:none}
-.lnk:focus-visible,.card:focus-visible,.ctl:focus-visible,.ico:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:4px}
-.breathe{transform-box:fill-box;transform-origin:50% 50%;animation:breathe 10s ease-in-out infinite}
-@keyframes breathe{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.03) rotate(1deg)}}
-.cardIn{animation:cardIn 1000ms cubic-bezier(.2,.75,.15,1) both}
-@keyframes cardIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
-.glowIn{animation:glowIn 1400ms ease both}
-@keyframes glowIn{from{opacity:0}to{opacity:1}}
-.play{transition:transform 300ms ease}
-.card:hover .play{transform:scale(1.08)}
-.lift{transition:transform 400ms cubic-bezier(.2,.7,.2,1)}
-.lift:hover{transform:none}
-@media (prefers-reduced-motion: reduce){.breathe,.cardIn,.glowIn{animation:none}.play,.lift{transition:none}}
-.ico{transition:transform 350ms cubic-bezier(.3,.7,.2,1)}
-.ico[aria-expanded="true"] .plus{transform:rotate(45deg)}
-.drawer a{opacity:0;transform:translateX(10px);transition:opacity 300ms ease,transform 400ms cubic-bezier(.3,.7,.2,1)}
-.drawer.open a{opacity:1;transform:none}
-.drawer.open a:nth-child(2){transition-delay:50ms}.drawer.open a:nth-child(3){transition-delay:100ms}
-.tl{position:relative;display:inline-flex;align-items:flex-end;height:20px;color:#55554F;text-decoration:none;transition:color 200ms ease}
-.tl .sl{display:inline-block;line-height:1}
-.tl .w{position:relative;display:inline-block;width:24px;height:20px}
-.tl .w span{position:absolute;left:14px;bottom:0;white-space:nowrap;transform:rotate(-71deg) translateX(-100%);transform-origin:0 100%;line-height:1}
-.tl:hover,.tl:focus-visible,.tl.on{color:#1E1E1C}
-.tl:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:6px}
-@media (prefers-reduced-motion: reduce){.tl{transition:none}}
-.burger line{transition:transform 350ms cubic-bezier(.3,.7,.2,1),opacity 200ms ease;transform-box:fill-box;transform-origin:50% 50%}
-.ico[aria-expanded="true"] .burger .l1{transform:translateX(7px) rotate(24deg)}
-.ico[aria-expanded="true"] .burger .l2{opacity:0}
-.ico[aria-expanded="true"] .burger .l3{transform:translateX(-7px) rotate(-66deg)}
-@media (prefers-reduced-motion: reduce){.burger line{transition:none}}
-@media (prefers-reduced-motion: reduce){.drawer a{transition:none}}
-.nb{color:#55554F;text-decoration:none;white-space:nowrap;transition:color 200ms ease}
-.nb:hover,.nb:focus-visible,.nb.on{color:#1E1E1C}
-.nb:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:4px}
+/* PHONE BOARD, built for the phone (Nov 22): the page itself scrolls (no inner scroll box), so iOS Safari carries the page on
+   under its status bar and toolbar; the grain and the blob are part of the page and scroll with it. */
+body{margin:0;background:#F1F1EE}
+a{color:#1E1E1C}
+/* blob: breathes, settles in on arrival, colour eases as it drifts */
 .breathe{transform-box:fill-box;transform-origin:50% 50%;animation:breathe 10s ease-in-out infinite}
 @keyframes breathe{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.035) rotate(1.5deg)}}
 .settle{transform-box:fill-box;transform-origin:50% 50%;animation:settle 1500ms cubic-bezier(.3,1.35,.45,1) both}
-@keyframes settle{from{transform:translate(-18px,22px) scale(.97)}to{transform:none}}
-.mph{transition:d 700ms cubic-bezier(.3,.7,.2,1),fill 900ms ease}
-.icons a{opacity:0;transform:translateY(-6px);transition:opacity 250ms ease,transform 300ms cubic-bezier(.3,.7,.2,1)}
-.icons.on a{opacity:1;transform:none}
-.icons.on a:nth-child(2){transition-delay:50ms}
-.ic{display:block;padding:2px}
-.ic:hover{opacity:.7}
-.hereBtn:focus-visible,.ic:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:3px}
-@media (prefers-reduced-motion: reduce){.breathe,.settle{animation:none}.mph{transition:none}.icons a{transition:none}}
-/* keyboard focus on text (links, menu words, wordmark): no box. a soft glass rectangle leaning at the lean angle sits behind the word */
-.nb:focus-visible,.tlk:focus-visible,.lnk:focus-visible{outline:none;position:relative;z-index:0}
-.nb:focus-visible::before,.tlk:focus-visible::before,.lnk:focus-visible::before{content:"";position:absolute;left:-9px;right:-9px;top:-5px;bottom:-5px;z-index:-1;transform:skewX(-16.7deg);background:linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.36));backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 1px rgba(255,255,255,0.85),0 1px 10px rgba(30,30,28,0.12)}
-/* FOCUS (approved, site-wide): keyboard only, no outlines anywhere.
-   text, words and small controls: a soft glass rectangle leaning at the lean angle behind them.
-   media and glass buttons: no frame, a soft shadow that lifts them off the page */
-*:focus-visible{outline:none!important}
-.nb:focus-visible:not([style*="position: absolute"]),.tlk:focus-visible:not([style*="position: absolute"]),.lnk:focus-visible:not([style*="position: absolute"]),.ctl:focus-visible:not([style*="position: absolute"]),.tl:focus-visible:not([style*="position: absolute"]),.ic:focus-visible:not([style*="position: absolute"]),.hereBtn:focus-visible:not([style*="position: absolute"]),.ico:focus-visible:not([style*="position: absolute"]),.item:focus-visible:not([style*="position: absolute"]),a:not(.card):not(.xp):not(.band):focus-visible:not([style*="position: absolute"]),button:not(.gb):not(.xp):not(.pp):focus-visible:not([style*="position: absolute"]){position:relative;z-index:0}
-.nb:focus-visible::before,.tlk:focus-visible::before,.lnk:focus-visible::before,.ctl:focus-visible::before,.tl:focus-visible::before,.ic:focus-visible::before,.hereBtn:focus-visible::before,.ico:focus-visible::before,.item:focus-visible::before,a:not(.card):not(.xp):not(.band):focus-visible::before,button:not(.gb):not(.xp):not(.pp):focus-visible::before{content:"";position:absolute;left:-9px;right:-9px;top:-5px;bottom:-5px;z-index:-1;transform:skewX(-16.7deg);background:linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.36));backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 1px rgba(255,255,255,0.85),0 1px 10px rgba(30,30,28,0.12)}
-.card:focus-visible::after,.xp:focus-visible::after,.band:focus-visible::after,.gbw:has(.gb:focus-visible)::after{content:none!important}
-.card:focus-visible,.xp:focus-visible,.band:focus-visible,[tabindex]:not(a):not(button):focus-visible,.gbw:has(.gb:focus-visible),.gfocus{box-shadow:0 14px 34px -8px rgba(30,30,28,0.38),0 2px 8px rgba(30,30,28,0.12)}
-.gbw:has(.gb:focus-visible),.gfocus.round{border-radius:50%}
-/* ---------- MOBILE (390 wide) ---------- */
-header{padding:0 16px!important;position:relative;z-index:6}
-header>a{white-space:nowrap}
-#hdrMenuG{position:absolute!important}
-/* about on a phone: portrait on top (about two-thirds wide), the piece below it in the same 14px type; the blob peeks out to the right of the portrait */
-main{width:calc(100% - 32px)!important;flex-direction:column!important;gap:40px!important;padding:4vh 0 12vh!important}
-main figure{width:62%!important}
-main section{padding-top:0!important;max-width:none!important}
-/* STICKY "///": once the header scrolls away, the plain "///" stays in the top-right corner, exactly as in the header (ink slashes, no button, no glass). tapped, it folds into an × and its four words open beneath it as a vertical stack, plain text like the header words */
-.fab{opacity:0;visibility:hidden;transition:opacity 220ms ease,visibility 0s linear 220ms}
-.fab.on{opacity:1;visibility:visible;transition:opacity 220ms ease,visibility 0s}
+@keyframes settle{from{transform:translate(-14px,18px) scale(.97)}to{transform:none}}
+.mph{transition:fill 900ms ease}
+/* the fixed "///" (top right, never moves): back arrow beside it, its four words open as a stack beneath it.
+   drawn light with difference blending, so it reads as ink over the page and turns light over dark images */
+.fab{position:fixed;top:calc(max(5.5vh, 36px) - 24px);right:9px;z-index:8;mix-blend-mode:difference}
 .fabBtn{width:48px;height:48px;margin-right:-7px;border:0;padding:0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .fabX{position:absolute;top:0;right:42px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;transition:opacity 200ms ease}
 .fabX:hover{opacity:0.6}
-.fabNav{position:absolute;top:52px;right:0;display:flex;flex-direction:column;align-items:flex-end;gap:16px}
-.fabNav a{color:#55554F;font-size:14px;line-height:1;text-decoration:none;white-space:nowrap;opacity:0;transform:translateY(-6px);transition:opacity 300ms ease,transform 400ms cubic-bezier(.3,.7,.2,1),color 200ms ease}
-.fabNav a:hover{color:#1E1E1C}
+.fabNav{position:absolute;top:52px;right:0;display:flex;flex-direction:column;align-items:flex-end;gap:16px;font-size:14px}
+.fabNav a{color:#A9A9B0;line-height:1;text-decoration:none;white-space:nowrap;opacity:0;transform:translateY(-6px);transition:opacity 300ms ease,transform 400ms cubic-bezier(.3,.7,.2,1),color 200ms ease}
+.fabNav a:hover,.fabNav a:focus-visible,.fabNav a[aria-current]{color:#FFFFFF}
 .fabNav.open a{opacity:1;transform:none}
 .fabNav.open a:nth-child(2){transition-delay:50ms}.fabNav.open a:nth-child(3){transition-delay:100ms}.fabNav.open a:nth-child(4){transition-delay:150ms}
-/* no jump: the header's own "///" is replaced by this fixed one from the very top, so the symbol never moves while the wordmark scrolls away. at the top its words open in a row to its left (as before); once you've scrolled down they open as a vertical stack beneath it */
-header .ico,header #hdrMenuG{visibility:hidden!important}
-.fab,.fab.on{opacity:1!important;visibility:visible!important}
-.fabNav.row{top:0;right:54px;height:48px;flex-direction:row;align-items:center;gap:28px}
-.fabNav.row a{transform:translateX(10px)}
-.fabNav.row.open a{transform:none}
-.fabBtn .burger line{stroke:#1E1E1C}
-/* the flip: the symbol and its words are drawn in light tones with "difference" blending, so over the light page they read as ink / grey (as before), and over dark images or films they turn light — no box behind them */
-.fab{mix-blend-mode:difference}
-.fabBtn .burger line{stroke:#FFFFFF!important}
-.fabX line{stroke:#FFFFFF!important}
-.fabNav a{color:#A9A9B0!important}
-.fabNav a:hover,.fabNav a:focus-visible{color:#FFFFFF!important}
-
+.burger line{stroke:#FFFFFF;transition:transform 350ms cubic-bezier(.3,.7,.2,1),opacity 200ms ease;transform-box:fill-box;transform-origin:50% 50%}
 .fabBtn[aria-expanded="true"] .burger .l1{transform:translateX(7px) rotate(24deg)}
 .fabBtn[aria-expanded="true"] .burger .l2{opacity:0}
 .fabBtn[aria-expanded="true"] .burger .l3{transform:translateX(-7px) rotate(-66deg)}
-@media (prefers-reduced-motion: reduce){.fab,.fab.on,.fabNav a{transition:none}}
-/* glass button (dark glass, lean · etched · thin ring), from the ux/ui board */
-.gbw{position:relative;display:block;flex:none}
-.gbs{position:absolute;left:-30%;top:-10%;width:160%;height:160%;pointer-events:none;overflow:visible;transition:transform 400ms cubic-bezier(.3,.7,.2,1),opacity 400ms ease}
-.gbb{position:absolute;inset:0;display:block;transition:transform 600ms cubic-bezier(.3,.7,.2,1)}
-.gb{position:absolute;inset:0;display:block;box-sizing:border-box;padding:0;border:0;border-radius:50%;cursor:pointer;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,0.42),rgba(255,255,255,0.16));backdrop-filter:blur(24px) saturate(1.1);-webkit-backdrop-filter:blur(24px) saturate(1.1);box-shadow:inset 0 1px 3px rgba(255,255,255,0.32),inset 0 -2px 6px rgba(255,255,255,0.12);-webkit-mask-size:100% 100%;mask-size:100% 100%}
-.gb .fog{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0.5}
-.win{position:absolute;inset:0;display:block;border-radius:50%;pointer-events:none;background:rgba(255,255,255,0.05);backdrop-filter:blur(3px) saturate(1.35);-webkit-backdrop-filter:blur(3px) saturate(1.35);-webkit-mask-size:100% 100%;mask-size:100% 100%}
-.gbb .ico{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
-.gbw{cursor:pointer;perspective:160px}
-.gic{position:absolute;inset:0;display:block;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,0.5),rgba(255,255,255,0.2));backdrop-filter:blur(24px) saturate(1.1);-webkit-backdrop-filter:blur(24px) saturate(1.1);-webkit-mask-size:100% 100%;mask-size:100% 100%}
-.gbw:has(.gb:focus-visible){outline:1px solid #1E1E1C;outline-offset:5px;border-radius:50%}
-.gb:focus-visible{outline:none}
-@media (prefers-reduced-motion: reduce){.gbb,.gbs{transition:none}}
-.gbw:hover .gbb,.card:hover .gbb,.gbw:hover .gbs,.card:hover .gbs{transform:none}
-.gb,.gic,.win{transition:filter 160ms ease,background 260ms ease}
-.gbw:hover .gb,.card:hover .gb{filter:saturate(1.35) brightness(1.06);background:linear-gradient(180deg,rgba(255,255,255,0.26),rgba(255,255,255,0.06))}
-.gbw:hover .gic,.card:hover .gic{filter:saturate(1.3) brightness(1.08)}
-.gv-dark .gb{background:linear-gradient(180deg,rgba(30,30,28,0.95),rgba(30,30,28,0.78))!important;box-shadow:inset 0 1px 2px rgba(255,255,255,0.25)!important}
-.gv-dark .gic{background:linear-gradient(180deg,rgba(30,30,28,0.97),rgba(30,30,28,0.82))!important}
-.gv-dark .ico{opacity:0.35}
-.callBtn{text-decoration:none;color:inherit}
+/* FOCUS (approved, site-wide): keyboard only, no outlines. words and small controls get a soft glass rectangle leaning
+   at the lean angle behind them; the glass button gets a soft lifting shadow */
+*:focus-visible{outline:none}
+.lnk:focus-visible,.fabX:focus-visible,.fabBtn:focus-visible,.fabNav a:focus-visible{position:relative;z-index:0}
+.lnk:focus-visible::before,.fabX:focus-visible::before,.fabBtn:focus-visible::before,.fabNav a:focus-visible::before{content:"";position:absolute;left:-9px;right:-9px;top:-5px;bottom:-5px;z-index:-1;transform:skewX(-16.7deg);background:linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.36));backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 1px rgba(255,255,255,0.85),0 1px 10px rgba(30,30,28,0.12)}
+.gbw:focus-visible{border-radius:50%;box-shadow:0 14px 34px -8px rgba(30,30,28,0.38),0 2px 8px rgba(30,30,28,0.12)}
+/* call button: dark glass ring with the lean phone icon (ux/ui board: lean · etched · thin ring, dark glass) */
+.gbw{position:relative;display:block;flex:none;width:48px;height:48px;cursor:pointer;text-decoration:none;color:inherit}
+.gbs{position:absolute;left:-30%;top:-10%;width:160%;height:160%;pointer-events:none;overflow:visible;opacity:0.45}
+.gbb{position:absolute;inset:0;display:block}
+.gb,.gic{position:absolute;inset:0;display:block;pointer-events:none;-webkit-mask-size:100% 100%;mask-size:100% 100%;transition:filter 160ms ease}
+.gb{border-radius:50%;overflow:hidden;background:linear-gradient(180deg,rgba(30,30,28,0.95),rgba(30,30,28,0.78));box-shadow:inset 0 1px 2px rgba(255,255,255,0.25)}
+.gic{background:linear-gradient(180deg,rgba(30,30,28,0.97),rgba(30,30,28,0.82));backdrop-filter:blur(24px) saturate(1.1);-webkit-backdrop-filter:blur(24px) saturate(1.1)}
+.gb .fog{position:absolute;inset:0;width:100%;height:100%;opacity:0.5}
+.gbb .ico{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;opacity:0.35}
+.gbw:hover .gb,.gbw:hover .gic{filter:saturate(1.3) brightness(1.08)}
+@media (prefers-reduced-motion: reduce){.breathe,.settle{animation:none}.mph,.fabNav a,.burger line,.gb,.gic{transition:none}}
 </style>
 </helmet>
-<div onMouseMove="{{onMove}}" onMouseLeave="{{onLeave}}" onTouchStart="{{onTouchStart}}" onTouchMove="{{onTouchMove}}" style="position: relative; height: 100vh; height: 100svh; min-height: 600px; overflow: hidden; background: #F1F1EE; color: #1E1E1C; font-family: 'Inter', system-ui, sans-serif">
+<div onMouseMove="{{onMove}}" onMouseLeave="{{onLeave}}" onTouchStart="{{onTouchStart}}" onTouchMove="{{onMove}}" style="position: relative; min-height: 100lvh; overflow-x: hidden; background: #F1F1EE; color: #1E1E1C; font-family: 'Inter', system-ui, sans-serif">
+<!-- page grain: covers the whole page and scrolls with it -->
 <svg aria-hidden="true" width="100%" height="100%" style="position: absolute; inset: 0; pointer-events: none"><filter id="aGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"></feTurbulence><feColorMatrix type="matrix" values="0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0.10 0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#aGrain)"></rect></svg>
-<svg aria-hidden="true" viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" style="position: absolute; inset: 0; pointer-events: none">
+<!-- the about blob, drawn in phone units (390 wide): it peeks out from behind the portrait's right side; colours and shape
+     are picked fresh each visit, the colour drifts slowly as a finger or the phone's tilt moves, and it leans a little that way -->
+<svg aria-hidden="true" viewBox="0 0 390 640" style="position: absolute; left: 0; top: 0; width: 100%; height: auto; pointer-events: none; overflow: visible">
 <defs>
-<filter id="imp-raise" filterUnits="userSpaceOnUse" x="-20" y="-20" width="260" height="140" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceAlpha" stdDeviation="0.7" result="h"></feGaussianBlur><feDiffuseLighting in="h" surfaceScale="1.3" diffuseConstant="1" lighting-color="#FFFFFF" result="dif"><feDistantLight azimuth="225" elevation="58"></feDistantLight></feDiffuseLighting><feMorphology in="SourceAlpha" operator="dilate" radius="0.9" result="dl"></feMorphology><feGaussianBlur in="dl" stdDeviation="0.4" result="zone"></feGaussianBlur><feColorMatrix in="dif" type="matrix" values="0 0 0 0 0.118  0 0 0 0 0.118  0 0 0 0 0.11  -0.45 0 0 0 0.383" result="shA"></feColorMatrix><feComposite in="shA" in2="zone" operator="in" result="sh"></feComposite><feColorMatrix in="dif" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  1.5 0 0 0 -1.275" result="liA"></feColorMatrix><feComposite in="liA" in2="zone" operator="in" result="hl"></feComposite><feFlood flood-color="#FFFFFF" flood-opacity="0.1"></feFlood><feComposite in2="SourceAlpha" operator="in" result="top"></feComposite><feOffset in="SourceAlpha" dx="0.5" dy="0.8"></feOffset><feGaussianBlur stdDeviation="1"></feGaussianBlur><feComposite in2="SourceAlpha" operator="out" result="castA"></feComposite><feFlood flood-color="#1E1E1C" flood-opacity="0.07"></feFlood><feComposite in2="castA" operator="in" result="cast"></feComposite><feMerge><feMergeNode in="cast"></feMergeNode><feMergeNode in="top"></feMergeNode><feMergeNode in="sh"></feMergeNode><feMergeNode in="hl"></feMergeNode></feMerge></filter>
-<filter id="imp-etch" filterUnits="userSpaceOnUse" x="-20" y="-20" width="260" height="140" color-interpolation-filters="sRGB"><feComponentTransfer in="SourceAlpha" result="inv"><feFuncA type="table" tableValues="1 0"></feFuncA></feComponentTransfer><feFlood flood-color="#FFFFFF" flood-opacity="0.34"></feFlood><feComposite in2="SourceAlpha" operator="in" result="floor"></feComposite><feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="1" seed="2" result="gn"></feTurbulence><feColorMatrix in="gn" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.9 -0.32" result="gA"></feColorMatrix><feComposite in="gA" in2="SourceAlpha" operator="in" result="grain"></feComposite><feOffset in="inv" dx="0.5" dy="0.7"></feOffset><feGaussianBlur stdDeviation="0.6"></feGaussianBlur><feComposite in2="SourceAlpha" operator="in" result="shA"></feComposite><feFlood flood-color="#1E1E1C" flood-opacity="0.16"></feFlood><feComposite in2="shA" operator="in" result="sh"></feComposite><feMerge><feMergeNode in="floor"></feMergeNode><feMergeNode in="grain"></feMergeNode><feMergeNode in="sh"></feMergeNode></feMerge></filter>
-<filter id="grit" x="-60%" y="-120%" width="220%" height="340%">
-<feGaussianBlur in="SourceGraphic" stdDeviation="13" result="b"></feGaussianBlur>
-<feTurbulence type="fractalNoise" baseFrequency="1.3" numOctaves="1" seed="4" result="n"></feTurbulence>
-<feDisplacementMap in="b" in2="n" scale="22" xChannelSelector="R" yChannelSelector="G" result="d"></feDisplacementMap>
-<feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="9" result="n2"></feTurbulence>
-<feColorMatrix in="n2" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1.7 -0.38" result="mask"></feColorMatrix>
-<feComposite in="d" in2="mask" operator="in"></feComposite>
-</filter>
-<filter id="gfog"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="5"></feTurbulence><feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.22 0"></feColorMatrix></filter>
-
-<filter id="cXL" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="54" result="b"></feGaussianBlur><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="n"></feTurbulence><feDisplacementMap in="b" in2="n" scale="30" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
-<filter id="cL" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="32" result="b"></feGaussianBlur><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="n"></feTurbulence><feDisplacementMap in="b" in2="n" scale="24" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
-<filter id="cM" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="20" result="b"></feGaussianBlur><feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="7" result="n"></feTurbulence><feDisplacementMap in="b" in2="n" scale="18" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
-<!-- a soft quiet zone behind the copy: the blob dims to ~25% there so it never fights the words -->
-<filter id="qBlur" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="34"></feGaussianBlur></filter>
-<mask id="quiet" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="900"><rect width="1440" height="900" fill="#fff"></rect></mask>
-<!-- illustration: hand-cut edge, and the inversion masks (the blob's body decides where the bubbles flip) -->
-<filter id="rough" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="4" result="n1"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n1" scale="5.5" xChannelSelector="R" yChannelSelector="G" result="w"></feDisplacementMap><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="1" seed="9" result="n2"></feTurbulence><feDisplacementMap in="w" in2="n2" scale="2.2" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
-<filter id="softEdge" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="5"></feGaussianBlur></filter>
-<mask id="inBlob" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="900"><g style="transform: {{b.t}}; transition: transform 1500ms cubic-bezier(.2,.65,.2,1)"><path class="mph" d="{{b.mid}}" fill="#fff" filter="url(#softEdge)"></path></g></mask>
-<mask id="outBlob" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="900"><rect width="1440" height="900" fill="#fff"></rect><g style="transform: {{b.t}}; transition: transform 1500ms cubic-bezier(.2,.65,.2,1)"><path class="mph" d="{{b.mid}}" fill="#000" filter="url(#softEdge)"></path></g></mask>
+<filter id="cXL" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="43" result="b"></feGaussianBlur><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="n"></feTurbulence><feDisplacementMap in="b" in2="n" scale="24" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
+<filter id="cL" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="26" result="b"></feGaussianBlur><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="n"></feTurbulence><feDisplacementMap in="b" in2="n" scale="19" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
+<filter id="cM" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="16" result="b"></feGaussianBlur><feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="7" result="n"></feTurbulence><feDisplacementMap in="b" in2="n" scale="14" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
 </defs>
-<g transform="translate(-579.6 -88.0) scale(0.8)">
-<!-- one grainy two-colour blob to the right of the copy; its pale edge meets the ends of the lines, the core sits away from the words -->
-<!-- each layer chases the cursor at its own speed and reach, so the blob stretches, splits a little and regroups as it dances after the pointer -->
-<g mask="url(#quiet)">
 <g class="settle">
-<!-- three aligned layers like the homepage (pale halo, body, lighter core) moving as one; only their outlines shift as it follows the cursor -->
 <g style="transform: {{b.t}}; transition: transform 1500ms cubic-bezier(.2,.65,.2,1)">
 <g class="breathe">
 <path class="mph" d="{{b.halo}}" fill="{{b.cHalo}}" filter="url(#cXL)" opacity="0.75"></path>
@@ -173,175 +75,135 @@ header .ico,header #hdrMenuG{visibility:hidden!important}
 </g>
 </g>
 </g>
-</g>
-<!-- the bubble illustration: ink outside the blob, the inverse inside it -->
-<sc-for list="{{passes}}" as="ps" hint-placeholder-count="2">
-<g mask="url(#{{ps.mask}})" filter="url(#rough)">
-<sc-for list="{{ps.shapes}}" as="sh" hint-placeholder-count="12">
-<path transform="{{sh.tf}}" d="{{sh.d}}" fill="{{sh.fill}}" stroke="{{sh.stroke}}" stroke-width="{{sh.sw}}" stroke-linejoin="round" stroke-linecap="round"></path>
-</sc-for>
-</g>
-</sc-for>
-</g>
 </svg>
-<div data-pscroll="1" class="page" onScroll="{{onScrollF}}" style="position: absolute; inset: 0; z-index: 1; overflow-x: hidden; overflow-y: auto">
 <!-- scroll paging hand-off links (hidden): previous / next page in the home → menu → about → contact chain -->
 <a data-next="prev" href="Mobile-Menu-List.dc.html" tabindex="-1" aria-hidden="true" style="display: none">previous</a>
 <a data-next="next" href="Mobile-Contact.dc.html" tabindex="-1" aria-hidden="true" style="display: none">next</a>
-<header style="height: 11vh; min-height: 72px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; padding: 0 4vw">
-<a class="lnk" href="Mobile-Home.dc.html" aria-label="Ben Weiller — home" style="display: inline-block; font-family: 'Dirtbag TM', 'Inter', sans-serif; font-size: 44px; line-height: 1; letter-spacing: 0.03em; position: relative; top: 9px; text-decoration: none; color: #1E1E1C">BEN WEILLER</a>
-<div style="display: flex; align-items: center; gap: 26px">
-<nav id="hdrMenuG" aria-label="Main" class="drawer {{openClsG}}" style="display: flex; gap: 28px; align-items: center; font-size: 13px; line-height: 1; visibility: {{drawerVisG}}">
-<a class="nb" href="Mobile-Menu-List.dc.html" tabindex="{{tabG}}">/work</a>
-<a class="nb" href="https://www.instagram.com/un_finished_lines/" target="_blank" rel="noopener" tabindex="{{tabG}}">/@un_finished_lines</a>
-<a class="nb on" href="Mobile-About.dc.html" aria-current="page" tabindex="{{tabG}}">/who, me?</a>
-<a class="nb" href="Mobile-Contact.dc.html" tabindex="{{tabG}}">/contact</a>
-</nav>
-<button class="ico" type="button" onClick="{{toggleG}}" aria-expanded="{{openStrG}}" aria-controls="hdrMenuG" aria-label="{{icoLabelG}}" style="width: 48px; height: 48px; margin-right: -7px; padding: 0; border: 0; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center">
-<svg class="burger" width="33" height="27" viewBox="0 0 22 18" overflow="visible" aria-hidden="true"><line class="l1" x1="1" y1="17" x2="7.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l2" x1="8" y1="17" x2="14.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l3" x1="15" y1="17" x2="21.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line></svg>
-</button>
-</div>
+<!-- header: the wordmark (home); it scrolls away with the page. The "///" and back arrow are the fixed group below -->
+<header style="position: relative; height: 11vh; min-height: 72px; box-sizing: border-box; display: flex; align-items: center; padding: 0 16px">
+<a class="lnk" href="Mobile-Home.dc.html" aria-label="Ben Weiller — home" style="display: inline-block; font-family: 'Dirtbag TM', 'Inter', sans-serif; font-size: 44px; line-height: 1; letter-spacing: 0.03em; white-space: nowrap; position: relative; top: 9px; text-decoration: none; color: #1E1E1C">BEN WEILLER</a>
 </header>
-<main style="width: min(1120px, 90vw); margin: 0 auto; padding: 16vh 0 12vh; display: flex; gap: 9vw; align-items: flex-start">
-<!-- portrait: a card on the page with the same hovering shadow as the menu card; the blob peeks out from behind it -->
-<figure style="margin: 0; flex: none; width: min(22vw, 300px)">
+<main style="position: relative; padding: 4vh 16px 12vh">
+<!-- portrait, about two-thirds wide; the blob peeks out from behind its right side -->
+<figure style="margin: 0 0 40px; width: 62%">
 <img src="/_blob/0843f9d7ff57f2bd39f4b271f856d46c" alt="Ben Weiller sitting under the trees in a slouchy knit hat" style="display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; filter: saturate(0.92) contrast(1.02)">
 </figure>
-<!-- the piece: set like a poem, narrow column, generous leading; placeholder until Ben's text arrives -->
-<section aria-label="About" style="max-width: 400px; padding-top: 4vh">
+<section aria-label="About">
 <h1 style="margin: 0 0 18px; font-size: 22px; font-weight: 400; letter-spacing: -0.035em; line-height: 1.25">who, me?</h1>
-<div style="font-size: 14px; line-height: 1.75; color: #1E1E1C">
+<div style="font-size: 14px; line-height: 1.75">
 <p style="margin: 0 0 18px">as a kid you might find me binging Avatar: The Last Airbender on Nickelodeon, buried in a good book or coming up with siiiick new tricks on my old school Razor scooter. “The Illustrated Man” by Ray Bradbury along with a litany of other literature inspired me to pursue my passion for wordsmithing and storytelling. later, at the University of Denver, I was enthralled by the world of big ideas and entrepreneurship. before long my two interests merged and I found myself sitting in class at Denver Ad School.</p>
 <p style="margin: 0">I’m infinitely passionate about crafting new ideas and weaving syllables into sentences, which you’ll find me doing on the daily. you can also catch me writing poetry, short fiction, cycling, camping and traveling the world. group rides and group writes encouraged.</p>
-<!-- call button: dark glass ring with a lean phone; buzzes like a vibrating phone and then opens contact -->
-<div class="gv-dark" style="margin-top: 22px; display: flex; justify-content: flex-end">
-<a class="gbw callBtn" href="Mobile-Contact.dc.html" aria-label="Contact Ben" onClick="{{callClick}}" style="width: 48px; height: 48px">
-<svg class="gbs" viewBox="0 0 160 160" aria-hidden="true" style="opacity: 0.45"><ellipse cx="80" cy="112" rx="44" ry="13" fill="#1E1E1C" fill-opacity="0.11" filter="url(#grit)"></ellipse></svg>
+</div>
+<!-- call button, below the bio, flush right: buzzes like a vibrating phone, then opens contact -->
+<div style="margin-top: 22px; display: flex; justify-content: flex-end">
+<a class="gbw callBtn" href="Mobile-Contact.dc.html" aria-label="Contact Ben" onClick="{{callClick}}">
+<svg class="gbs" viewBox="0 0 160 160" aria-hidden="true"><defs><filter id="grit" x="-60%" y="-120%" width="220%" height="340%"><feGaussianBlur in="SourceGraphic" stdDeviation="13" result="b"></feGaussianBlur><feTurbulence type="fractalNoise" baseFrequency="1.3" numOctaves="1" seed="4" result="n"></feTurbulence><feDisplacementMap in="b" in2="n" scale="22" xChannelSelector="R" yChannelSelector="G" result="d"></feDisplacementMap><feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="9" result="n2"></feTurbulence><feColorMatrix in="n2" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1.7 -0.38" result="mask"></feColorMatrix><feComposite in="d" in2="mask" operator="in"></feComposite></filter></defs><ellipse cx="80" cy="112" rx="44" ry="13" fill="#1E1E1C" fill-opacity="0.11" filter="url(#grit)"></ellipse></svg>
 <span class="gbb">
-<span class="gb" style="-webkit-mask-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cpath%20d%3D%22M50%203%20A47%2047%200%201%201%2049.99%203%20Z%22%20fill%3D%22none%22%20stroke%3D%22white%22%20stroke-width%3D%222.2%22%2F%3E%3C%2Fsvg%3E'); mask-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cpath%20d%3D%22M50%203%20A47%2047%200%201%201%2049.99%203%20Z%22%20fill%3D%22none%22%20stroke%3D%22white%22%20stroke-width%3D%222.2%22%2F%3E%3C%2Fsvg%3E')"><svg class="fog" aria-hidden="true"><rect width="100%" height="100%" filter="url(#gfog)"></rect></svg></span>
+<span class="gb" style="-webkit-mask-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cpath%20d%3D%22M50%203%20A47%2047%200%201%201%2049.99%203%20Z%22%20fill%3D%22none%22%20stroke%3D%22white%22%20stroke-width%3D%222.2%22%2F%3E%3C%2Fsvg%3E'); mask-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cpath%20d%3D%22M50%203%20A47%2047%200%201%201%2049.99%203%20Z%22%20fill%3D%22none%22%20stroke%3D%22white%22%20stroke-width%3D%222.2%22%2F%3E%3C%2Fsvg%3E')"><svg class="fog" aria-hidden="true"><filter id="gfog"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="5"></feTurbulence><feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.22 0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#gfog)"></rect></svg></span>
 <span class="gic" aria-hidden="true" style="-webkit-mask-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cpath%20transform%3D%22translate%2850%2050%29%20skewX%28-12%29%20translate%28-50%20-50%29%22%20d%3D%22M42%2027%20H58%20Q63%2027%2063%2032%20V68%20Q63%2073%2058%2073%20H42%20Q37%2073%2037%2068%20V32%20Q37%2027%2042%2027%20Z%20M41.5%2032%20V63.5%20H58.5%20V32%20Z%20M50%2066.6%20A2%202%200%201%200%2050%2070.6%20A2%202%200%201%200%2050%2066.6%20Z%22%20fill%3D%22black%22%20fill-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E'); mask-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cpath%20transform%3D%22translate%2850%2050%29%20skewX%28-12%29%20translate%28-50%20-50%29%22%20d%3D%22M42%2027%20H58%20Q63%2027%2063%2032%20V68%20Q63%2073%2058%2073%20H42%20Q37%2073%2037%2068%20V32%20Q37%2027%2042%2027%20Z%20M41.5%2032%20V63.5%20H58.5%20V32%20Z%20M50%2066.6%20A2%202%200%201%200%2050%2070.6%20A2%202%200%201%200%2050%2066.6%20Z%22%20fill%3D%22black%22%20fill-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E')"></span>
-<svg class="ico" viewBox="0 0 100 100" aria-hidden="true"><g filter="url(#imp-raise)"><path d="M50 3 A47 47 0 1 1 49.99 3 Z" fill="none" stroke="#000" stroke-width="2.2"></path></g><g filter="url(#imp-etch)"><path transform="translate(50 50) skewX(-12) translate(-50 -50)" d="M42 27 H58 Q63 27 63 32 V68 Q63 73 58 73 H42 Q37 73 37 68 V32 Q37 27 42 27 Z M41.5 32 V63.5 H58.5 V32 Z M50 66.6 A2 2 0 1 0 50 70.6 A2 2 0 1 0 50 66.6 Z" fill="#000" fill-rule="evenodd"></path></g></svg>
+<svg class="ico" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 3 A47 47 0 1 1 49.99 3 Z" fill="none" stroke="#000" stroke-width="2.2"></path><path transform="translate(50 50) skewX(-12) translate(-50 -50)" d="M42 27 H58 Q63 27 63 32 V68 Q63 73 58 73 H42 Q37 73 37 68 V32 Q37 27 42 27 Z M41.5 32 V63.5 H58.5 V32 Z M50 66.6 A2 2 0 1 0 50 70.6 A2 2 0 1 0 50 66.6 Z" fill="#000" fill-rule="evenodd"></path></svg>
 </span>
 </a>
 </div>
-</div>
 </section>
 </main>
-<!-- footer: the small copyright line, at the end of the page, left gutter -->
-<p class="copyr" style="position: relative; margin: 0; padding: 0 16px calc(16px + env(safe-area-inset-bottom)); font-size: 11px; line-height: 1; letter-spacing: 0.04em; color: #55554F">© Ben Weiller 2026</p>
-</div>
-<!-- sticky "///": appears once the header has scrolled away, plain like the header; its words open as a vertical stack -->
-<div class="fab {{fabCls}}" style="position: absolute; top: calc(max(5.5vh, 36px) - 24px); right: 9px; z-index: 8">
-<!-- back arrow (Nov 20; replaced a close ×; on every project page): sits just left of the "///", same thin ink line, takes you back to the menu; hidden while the menu words are open -->
-<a class="fabX" href="Mobile-Menu-List.dc.html" aria-label="Back to the menu" style="visibility: {{xVis}}"><svg width="26" height="22" viewBox="0 0 21 18" overflow="visible" aria-hidden="true"><line x1="1" y1="9" x2="20" y2="9" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line><line x1="1" y1="9" x2="8" y2="2" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line><line x1="1" y1="9" x2="8" y2="16" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line></svg></a>
-<button class="fabBtn" type="button" onClick="{{toggleF}}" aria-expanded="{{openStrF}}" aria-controls="fabMenu" aria-label="{{labelF}}" tabindex="{{fabTab}}">
-<svg class="burger" width="33" height="27" viewBox="0 0 22 18" overflow="visible" aria-hidden="true"><line class="l1" x1="1" y1="17" x2="7.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l2" x1="8" y1="17" x2="14.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l3" x1="15" y1="17" x2="21.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line></svg>
+<!-- footer: the small copyright line at the end of the page -->
+<p style="position: relative; margin: 0; padding: 0 16px calc(16px + env(safe-area-inset-bottom)); font-size: 11px; line-height: 1; letter-spacing: 0.04em; color: #55554F">© Ben Weiller 2026</p>
+<!-- the fixed "///" with the back arrow (to the menu) beside it; hidden arrow while the words are open -->
+<div class="fab">
+<a class="fabX" href="Mobile-Menu-List.dc.html" aria-label="Back to the menu" style="visibility: {{xVis}}"><svg width="26" height="22" viewBox="0 0 21 18" overflow="visible" aria-hidden="true"><path d="M1 9 H20 M1 9 L8 2 M1 9 L8 16" fill="none" stroke="#FFFFFF" stroke-width="0.95" stroke-linecap="round"></path></svg></a>
+<button class="fabBtn" type="button" onClick="{{toggle}}" aria-expanded="{{openStr}}" aria-controls="fabMenu" aria-label="{{label}}">
+<svg class="burger" width="33" height="27" viewBox="0 0 22 18" overflow="visible" aria-hidden="true"><line class="l1" x1="1" y1="17" x2="7.5" y2="1" stroke-width="0.85"></line><line class="l2" x1="8" y1="17" x2="14.5" y2="1" stroke-width="0.85"></line><line class="l3" x1="15" y1="17" x2="21.5" y2="1" stroke-width="0.85"></line></svg>
 </button>
-<nav id="fabMenu" aria-label="Main" class="fabNav {{openClsF}}" style="visibility: {{visF}}; font-size: 14px">
-<a href="Mobile-Menu-List.dc.html" tabindex="{{tabF}}">/work</a>
-<a href="https://www.instagram.com/un_finished_lines/" target="_blank" rel="noopener" tabindex="{{tabF}}">/@un_finished_lines</a>
-<a href="Mobile-About.dc.html" tabindex="{{tabF}}">/who, me?</a>
-<a href="Mobile-Contact.dc.html" tabindex="{{tabF}}">/contact</a>
+<nav id="fabMenu" aria-label="Main" class="fabNav {{openCls}}" style="visibility: {{navVis}}">
+<a href="Mobile-Menu-List.dc.html" tabindex="{{navTab}}">/work</a>
+<a href="https://www.instagram.com/un_finished_lines/" target="_blank" rel="noopener" tabindex="{{navTab}}">/@un_finished_lines</a>
+<a href="Mobile-About.dc.html" aria-current="page" tabindex="{{navTab}}">/who, me?</a>
+<a href="Mobile-Contact.dc.html" tabindex="{{navTab}}">/contact</a>
 </nav>
 </div>
-
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
 class Component extends DCLogic {
-  // scroll paging (Nov 21), the same hand-off as homepage → menu: scrolling on past the end of this page opens the next one
-  // (menu → about → contact) and scrolling back past the top opens the previous one (contact → about → menu → home).
-  // wheel / trackpad, a swipe, or the keys (↓ / page down / space, ↑ / page up). On a page that scrolls it only hands off once
-  // you are at its top or bottom edge and scroll again after a pause, so a fling that reaches the end doesn't carry on into the next page.
-  psMount() {
-    const sc = () => document.querySelector('[data-pscroll]');
-    const scrolls = () => { const s = sc(); return !!s && s.scrollHeight > s.clientHeight + 2; };
-    const atTop = () => { const s = sc(); return !s || s.scrollTop <= 1; };
-    const atBot = () => { const s = sc(); return !s || s.scrollTop + s.clientHeight >= s.scrollHeight - 2; };
-    const go = (dir) => {
-      const now = Date.now(); if (this.psLast && now - this.psLast < 800) return;
-      const a = document.querySelector('a[data-next="' + dir + '"]'); if (!a) return;
-      this.psLast = now; this.psAcc = 0; a.click();
-    };
-    this.psAcc = 0; this.psEdge = 0; this.psDir = null; this.psArmed = false; this.psT = 0;
-    this.psWheel = (e) => {
-      if (e.ctrlKey || Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
-      const down = e.deltaY > 0, edge = down ? atBot() : atTop(), now = Date.now(), gap = now - (this.psT || 0);
-      this.psT = now;
-      if (!edge) { this.psAcc = 0; this.psEdge = 0; this.psArmed = false; return; }
-      // a page that fits: hand off straight away. A page that scrolls: after a brief pause at its edge or a beat of extra scroll there (0.35s), so a hard fling doesn't fly straight through
-      if (!scrolls()) this.psArmed = true;
-      else if (!this.psEdge) { this.psEdge = now; this.psArmed = false; }
-      else if (gap > 80 || now - this.psEdge > 150) this.psArmed = true; // flows on: a blink at the edge, then the same 120px push as the homepage
-      if (!this.psArmed) return;
-      if (this.psDir !== down) { this.psAcc = 0; this.psDir = down; }
-      this.psAcc += Math.abs(e.deltaY);
-      if (this.psAcc > 120) go(down ? 'next' : 'prev');
-    };
-    this.psTs = (e) => { const t = e.touches && e.touches[0]; if (!t) return; this.psY = t.clientY; this.psX = t.clientX; this.psTop = atTop(); this.psBot = atBot(); };
-    this.psTe = (e) => {
-      const t = e.changedTouches && e.changedTouches[0]; if (!t || this.psY == null) return;
-      const dy = this.psY - t.clientY, dx = this.psX - t.clientX; this.psY = null;
-      if (Math.abs(dy) < 60 || Math.abs(dx) > Math.abs(dy)) return;
-      if (dy > 0 && this.psBot && atBot()) go('next');
-      else if (dy < 0 && this.psTop && atTop()) go('prev');
-    };
-    this.psKey = (e) => {
-      if (e.target && e.target.closest && e.target.closest('a, button, input, textarea')) return;
-      if (['ArrowDown', 'PageDown', ' ', 'Spacebar'].indexOf(e.key) >= 0 && atBot() && document.querySelector('a[data-next="next"]')) { e.preventDefault(); go('next'); }
-      else if (['ArrowUp', 'PageUp'].indexOf(e.key) >= 0 && atTop() && document.querySelector('a[data-next="prev"]')) { e.preventDefault(); go('prev'); }
-    };
-    window.addEventListener('wheel', this.psWheel, { passive: true });
-    window.addEventListener('touchstart', this.psTs, { passive: true });
-    window.addEventListener('touchend', this.psTe, { passive: true });
-    window.addEventListener('keydown', this.psKey);
-  }
-  psUnmount() {
-    window.removeEventListener('wheel', this.psWheel); window.removeEventListener('touchstart', this.psTs);
-    window.removeEventListener('touchend', this.psTe); window.removeEventListener('keydown', this.psKey);
-  }
-  // call button: buzzes left and right like a vibrating phone (0.52s), then the page opens
-  callFlip(e) {
-    if (this.callGo) return;
-    if (e && e.preventDefault) e.preventDefault();
-    const a = e && e.target && e.target.closest ? e.target.closest('a.callBtn') : null; if (!a) return;
-    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const go = () => { this.callGo = true; a.click(); this.callGo = false; };
-    const b = a.querySelector('.gbb'); if (reduce || !b || !b.animate) { go(); return; }
-    const K = [0, -9, 8, -9, 8, -7, 6, -5, 3, 0], o = { duration: 520, easing: 'linear' };
-    b.animate(K.map((d, i) => ({ offset: i / (K.length - 1), transform: 'translateX(' + (d / 3).toFixed(1) + 'px) rotate(' + d + 'deg)' })), o);
-    const s = a.querySelector('.gbs'); if (s) s.animate(K.map((d, i) => ({ offset: i / (K.length - 1), transform: 'translateX(' + (d / 3).toFixed(1) + 'px)' })), o);
-    setTimeout(go, 560);
-  }
-  constructor(props) { super(props); this.state = { four: true, openG: false, seed: Math.floor(Math.random() * 1e6), mx: null, my: null, here: false }; this.pend = null; this.raf = null; this.ht = null; }
+  constructor(props) { super(props); this.state = { open: false, seed: Math.floor(Math.random() * 1e6), mx: null, my: null, travel: 0 }; this.pend = null; this.raf = null; }
   componentDidMount() {
     this.psMount();
+    // tilting the phone plays the part of the cursor (blob space: 390 wide)
     this.onTilt = (e) => {
       if (e.gamma == null || e.beta == null) return;
-      const nx = 1112 + Math.max(-1, Math.min(1, e.gamma / 28)) * 320, ny = 485 + Math.max(-1, Math.min(1, (e.beta - 40) / 28)) * 260;
-      const d = this.lastP ? Math.min(90, Math.hypot(nx - this.lastP[0], ny - this.lastP[1])) : 0; this.lastP = [nx, ny];
-      this.pend = { mx: nx, my: ny, travel: (this.pend && this.pend.travel !== undefined ? this.pend.travel : (this.state.travel || 0)) + d };
-      if (this.raf) return;
-      this.raf = requestAnimationFrame(() => { this.raf = null; if (this.pend) { const q = this.pend; this.pend = null; this.setState(q); } });
+      this.point(310 + Math.max(-1, Math.min(1, e.gamma / 28)) * 256, 300 + Math.max(-1, Math.min(1, (e.beta - 40) / 28)) * 208);
     };
     if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission !== 'function') window.addEventListener('deviceorientation', this.onTilt);
   }
+  componentWillUnmount() { this.psUnmount(); if (this.onTilt) window.removeEventListener('deviceorientation', this.onTilt); cancelAnimationFrame(this.raf); }
   // iPhone asks once for motion access, and only from a touch
   askTilt() {
     if (this.tiltAsked) return; this.tiltAsked = true;
     if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') DeviceOrientationEvent.requestPermission().then((r) => { if (r === 'granted') window.addEventListener('deviceorientation', this.onTilt); }).catch(() => {});
   }
-  componentWillUnmount() { this.psUnmount(); if (this.onTilt) window.removeEventListener('deviceorientation', this.onTilt); cancelAnimationFrame(this.raf); clearTimeout(this.ht); }
+  // a pointer position in blob space; travel (how far it has moved) slowly drifts the colours. One state update per frame.
+  point(nx, ny) {
+    const d = this.lastP ? Math.min(90, Math.hypot(nx - this.lastP[0], ny - this.lastP[1])) : 0; this.lastP = [nx, ny];
+    this.pend = { mx: nx, my: ny, travel: (this.pend ? this.pend.travel : this.state.travel) + d };
+    if (this.raf) return;
+    this.raf = requestAnimationFrame(() => { this.raf = null; const q = this.pend; this.pend = null; if (q) this.setState(q); });
+  }
+  // canvas preview of scroll paging (the live site's engine does this itself): past the end of the page opens the next one,
+  // back past the top opens the previous one — wheel at the edge after a blink, a swipe that starts at the edge, or the keys
+  psMount() {
+    const s = () => document.scrollingElement;
+    const atTop = () => s().scrollTop <= 1, atBot = () => s().scrollTop + s().clientHeight >= s().scrollHeight - 2;
+    const go = (dir) => { const now = Date.now(); if (this.psLast && now - this.psLast < 800) return; const a = document.querySelector('a[data-next="' + dir + '"]'); if (a) { this.psLast = now; a.click(); } };
+    let acc = 0, last = 0, edgeAt = 0;
+    this.psWheel = (e) => {
+      if (e.ctrlKey || Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
+      const down = e.deltaY > 0, now = Date.now(), fresh = now - last > 80; last = now;
+      if (!(down ? atBot() : atTop())) { acc = 0; edgeAt = 0; return; }
+      if (!edgeAt) edgeAt = now;
+      if (!fresh && now - edgeAt < 150) return;
+      if ((acc += Math.abs(e.deltaY)) > 120) { acc = 0; go(down ? 'next' : 'prev'); }
+    };
+    this.psTs = (e) => { const t = e.touches[0]; this.psT = t && [t.clientX, t.clientY, atTop(), atBot()]; };
+    this.psTe = (e) => {
+      const t = e.changedTouches[0], a = this.psT; this.psT = null; if (!t || !a) return;
+      const dy = a[1] - t.clientY; if (Math.abs(dy) < 60 || Math.abs(a[0] - t.clientX) > Math.abs(dy)) return;
+      if (dy > 0 && a[3] && atBot()) go('next'); else if (dy < 0 && a[2] && atTop()) go('prev');
+    };
+    this.psKey = (e) => {
+      if (e.target.closest && e.target.closest('a, button')) return;
+      if (['ArrowDown', 'PageDown', ' '].includes(e.key) && atBot()) { e.preventDefault(); go('next'); }
+      else if (['ArrowUp', 'PageUp'].includes(e.key) && atTop()) { e.preventDefault(); go('prev'); }
+    };
+    window.addEventListener('wheel', this.psWheel, { passive: true }); window.addEventListener('keydown', this.psKey);
+    window.addEventListener('touchstart', this.psTs, { passive: true }); window.addEventListener('touchend', this.psTe, { passive: true });
+  }
+  psUnmount() {
+    window.removeEventListener('wheel', this.psWheel); window.removeEventListener('keydown', this.psKey);
+    window.removeEventListener('touchstart', this.psTs); window.removeEventListener('touchend', this.psTe);
+  }
+  // call button: buzzes left and right like a vibrating phone (0.52s), then the page opens
+  callFlip(e) {
+    if (this.callGo) return;
+    e.preventDefault();
+    const a = e.currentTarget, reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const go = () => { this.callGo = true; a.click(); this.callGo = false; };
+    const b = a.querySelector('.gbb'); if (reduce || !b.animate) { go(); return; }
+    const K = [0, -9, 8, -9, 8, -7, 6, -5, 3, 0], o = { duration: 520, easing: 'linear' };
+    b.animate(K.map((d, i) => ({ offset: i / (K.length - 1), transform: 'translateX(' + (d / 3).toFixed(1) + 'px) rotate(' + d + 'deg)' })), o);
+    a.querySelector('.gbs').animate(K.map((d, i) => ({ offset: i / (K.length - 1), transform: 'translateX(' + (d / 3).toFixed(1) + 'px)' })), o);
+    setTimeout(go, 560);
+  }
   rng(seed) {
     let a = seed >>> 0;
     return function () { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
   }
-  // homepage-style layer: shared centre and rotation, its own lobes; t (cursor travel) makes the lobes drift and swell
-  sblob(seed, cx, cy, rx, ry, rot, wob, n, t) {
+  // homepage-style layer: shared centre and rotation, its own lobes
+  sblob(seed, cx, cy, rx, ry, rot, wob, n) {
     const r = this.rng(seed), harm = [];
     for (let k = 2; k <= 6; k++) {
-      const a0 = (r() * 2 - 1) * wob / (k * 0.7), p0 = r() * 6.283, sp = (r() * 2 - 1) * (0.5 + r() * 0.8), q = r() * 6.283;
-      harm.push({ k: k, a: a0 * (0.6 + 0.7 * Math.abs(Math.sin(t * 0.6 + q))) + (0.12 / k) * Math.sin(t * 0.9 + q * 2), p: p0 + t * sp });
+      const a0 = (r() * 2 - 1) * wob / (k * 0.7), p0 = r() * 6.283; r(); r(); const q = r() * 6.283; // (two draws kept from the moving version, so shapes match)
+      harm.push({ k: k, a: a0 * (0.6 + 0.7 * Math.abs(Math.sin(q))) + (0.12 / k) * Math.sin(q * 2), p: p0 });
     }
     const pts = [], c = Math.cos(rot), sn = Math.sin(rot);
     for (let i = 0; i < n; i++) {
@@ -358,167 +220,37 @@ class Component extends DCLogic {
     }
     return d + ' Z';
   }
-  // t = cursor travel: each lobe drifts at its own speed and swells/settles, so the shape keeps shifting as you move
-  vblob(seed, cx, cy, rx, ry, n, t) {
-    t = t || 0;
-    const r = this.rng(seed), harm = [];
-    const rot = (r() - 0.5) * 2.2, sx = 0.75 + r() * 0.55, sy = 0.75 + r() * 0.55, wob = 0.22 + r() * 0.34;
-    for (let k = 2; k <= 6; k++) {
-      const a0 = (r() * 2 - 1) * wob / (k * 0.7);
-      const base = a0 * (1 + 0.45 * Math.sin(k * 1.7 + r() * 3)) + (r() < 0.35 ? (0.08 + r() * 0.08) / k : 0), p0 = r() * 6.283, sp = (r() * 2 - 1) * (0.6 + r() * 0.9), q = r() * 6.283;
-      harm.push({ k: k, a: base * (0.55 + 0.8 * Math.abs(Math.sin(t * 0.7 + q))) + (0.07 / k) * Math.sin(t * 1.1 + q * 2), p: p0 + t * sp });
-    }
-    const pts = [], c = Math.cos(rot), sn = Math.sin(rot);
-    for (let i = 0; i < n; i++) {
-      const t = (i / n) * 6.283; let f = 1;
-      harm.forEach((h) => { f += h.a * Math.sin(h.k * t + h.p); });
-      f = Math.max(0.35, f);
-      const x = Math.cos(t) * rx * sx * f, y = Math.sin(t) * ry * sy * f;
-      pts.push([cx + x * c - y * sn, cy + x * sn + y * c]);
-    }
-    let d = 'M' + pts[0][0].toFixed(1) + ' ' + pts[0][1].toFixed(1);
-    for (let i = 0; i < n; i++) {
-      const p0 = pts[(i - 1 + n) % n], p1 = pts[i], p2 = pts[(i + 1) % n], p3 = pts[(i + 2) % n];
-      d += ' C' + (p1[0] + (p2[0] - p0[0]) / 6).toFixed(1) + ' ' + (p1[1] + (p2[1] - p0[1]) / 6).toFixed(1) + ' ' + (p2[0] - (p3[0] - p1[0]) / 6).toFixed(1) + ' ' + (p2[1] - (p3[1] - p1[1]) / 6).toFixed(1) + ' ' + p2[0].toFixed(1) + ' ' + p2[1].toFixed(1);
-    }
-    return d + ' Z';
-  }
-  mix(h1, h2, t) {
-    const a = parseInt(h1.slice(1), 16), b = parseInt(h2.slice(1), 16);
-    const c = (sh) => Math.round(((a >> sh) & 255) * (1 - t) + ((b >> sh) & 255) * t);
-    return 'rgb(' + c(16) + ',' + c(8) + ',' + c(0) + ')';
-  }
   renderVals() {
-    const o = !!this.state.openG;
-    // randomised per visit: palette pairing and shapes (homepage palettes; the core lifted so it reads as a third colour)
-    // colours from the whole wheel (like the homepage): a random body hue, a halo hue offset from it, a core that's deeper but not dark
-    const sd = this.state.seed, r = this.rng(sd + 3);
-    // colours: a random start anywhere on the wheel, then every layer drifts through hues on its own as the cursor moves (like the homepage)
-    // static on this page: no cursor following or morphing — colours and shape are still picked fresh each visit
-    // colour drifts slowly with how far the cursor has travelled (slower than the contact page); the shape itself stays put
-    const T = (this.state.travel || 0) / 1800, H = r() * 360 + 140 * Math.sin(T * 0.8 + r() * 6), H2 = H + (r() < 0.5 ? 1 : -1) * (60 + r() * 120) + 90 * Math.sin(T * 0.6 + 2), H3 = H - 25 + 50 * Math.sin(T * 1.1 + 4);
-    const hsl = (h, sa, l) => 'hsl(' + (((h % 360) + 360) % 360).toFixed(1) + ',' + sa.toFixed(1) + '%,' + l.toFixed(1) + '%)';
-    // home: just left of the copy (copy sits on the right), so the words start on the blob's pale right edge
-    const cx = 1105 + r() * 15, cy = 470 + r() * 30, t = 0;
-    // smaller than before (homepage proportions, scaled down)
-    const rot = (r() - 0.5) * 1.6, rx = 120 + r() * 30, ry = 105 + r() * 30;
-    const ox = -28 - r() * 30, oy = (r() - 0.5) * 34;
+    const o = this.state.open, sd = this.state.seed, r = this.rng(sd + 3);
+    // colours from the whole wheel, picked per visit: a body hue, a pale halo in an offset hue, a deeper core.
+    // they drift slowly with how far the finger / tilt has travelled; the shape stays put
+    const T = this.state.travel / 1800, H = r() * 360 + 140 * Math.sin(T * 0.8 + r() * 6), H2 = H + (r() < 0.5 ? 1 : -1) * (60 + r() * 120) + 90 * Math.sin(T * 0.6 + 2), H3 = H - 25 + 50 * Math.sin(T * 1.1 + 4);
+    const hsl = (h, s, l) => 'hsl(' + (((h % 360) + 360) % 360).toFixed(1) + ',' + s.toFixed(1) + '%,' + l.toFixed(1) + '%)';
+    // home: right of the portrait, level with it
+    const cx = 304 + r() * 12, cy = 290 + r() * 24, rot = (r() - 0.5) * 1.6, rx = 96 + r() * 24, ry = 84 + r() * 24, ox = -22 - r() * 24, oy = (r() - 0.5) * 27;
     const b = {
-      halo: this.sblob(sd + 1, cx, cy, rx * 1.35, ry * 1.35, rot, 0.28, 10, t),
-      mid: this.sblob(sd + 3, cx, cy, rx, ry, rot, 0.34, 10, t * 1.1),
-      core: this.sblob(sd + 4, cx + ox, cy + oy, rx * 0.55, ry * 0.5, rot - 0.4, 0.38, 9, t * 1.2),
+      halo: this.sblob(sd + 1, cx, cy, rx * 1.35, ry * 1.35, rot, 0.28, 10),
+      mid: this.sblob(sd + 3, cx, cy, rx, ry, rot, 0.34, 10),
+      core: this.sblob(sd + 4, cx + ox, cy + oy, rx * 0.55, ry * 0.5, rot - 0.4, 0.38, 9),
       cHalo: hsl(H2, 62 + r() * 22, 82 + r() * 7), cMid: hsl(H, 40 + r() * 30, 42 + r() * 14), cCore: hsl(H3, 48 + r() * 24, 26 + r() * 10)
     };
-    const reduce = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const on = this.state.mx !== null, dx = on ? this.state.mx - cx : 0, dy = on ? this.state.my - cy : 0;
-    // the whole blob follows the cursor as one (same reach as before); near the copy's height it stops short of the text's left edge
-    const TX = 660, TY0 = 240, TY1 = 620, K = 0.75;
-    let tx = cx + dx * K; const ty = cy + dy * K;
-    if (ty > TY0 - 150 && ty < TY1 + 150) tx = Math.min(tx, Math.max(cx, TX - 160));
-    // subtle drift only: the blob leans toward the cursor (max 28px across, 20px up/down), no reshaping
-    const still = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const sx = Math.max(-28, Math.min(28, dx * 0.06)), sy = Math.max(-20, Math.min(20, dy * 0.06));
+    // it leans toward the finger / tilt, at most 22px across and 16px up or down; still under reduced motion
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches, on = this.state.mx !== null;
+    const sx = on ? Math.max(-22, Math.min(22, (this.state.mx - cx) * 0.06)) : 0, sy = on ? Math.max(-16, Math.min(16, (this.state.my - cy) * 0.06)) : 0;
     b.t = still ? 'none' : 'translate(' + sx.toFixed(1) + 'px,' + sy.toFixed(1) + 'px)';
-    const here = !!this.state.here;
-    // ---------- bubble illustration (all ink silhouettes, details cut out), arcing up toward the copy ----------
-    const INK = '#1E1E1C', GR = '#F1F1EE';
-    const C = (x, y, rr) => 'M' + (x + rr) + ' ' + y + ' A' + rr + ' ' + rr + ' 0 1 0 ' + (x - rr) + ' ' + y + ' A' + rr + ' ' + rr + ' 0 1 0 ' + (x + rr) + ' ' + y + ' Z';
-    const star = (x, y, k) => { const q = (a, b2) => (x + a * k).toFixed(1) + ' ' + (y + b2 * k).toFixed(1); return 'M' + q(0, -16) + ' C' + q(2, -4) + ' ' + q(4, -2) + ' ' + q(16, 0) + ' C' + q(4, 2) + ' ' + q(2, 4) + ' ' + q(0, 16) + ' C' + q(-2, 4) + ' ' + q(-4, 2) + ' ' + q(-16, 0) + ' C' + q(-4, -2) + ' ' + q(-2, -4) + ' ' + q(0, -16) + ' Z'; };
-    const E = (x, y, ax, ay) => 'M' + (x + ax) + ' ' + y + ' A' + ax + ' ' + ay + ' 0 1 0 ' + (x - ax) + ' ' + y + ' A' + ax + ' ' + ay + ' 0 1 0 ' + (x + ax) + ' ' + y + ' Z';
-    const BUB = [
-      [{ k: 'body', d: 'M-6 38 C-30 38 -50 22 -50 0 C-50 -24 -26 -40 0 -40 C26 -40 50 -24 50 0 C50 24 28 40 4 40 C-2 46 -14 54 -28 56 C-20 50 -14 44 -6 38 Z' }, { k: 'dot', d: C(-16, 0, 4.5) + ' ' + C(0, 0, 4.5) + ' ' + C(16, 0, 4.5) }],
-      [{ k: 'body', d: 'M-40 10 A18 18 0 0 1 -30 -20 A22 22 0 0 1 4 -36 A22 22 0 0 1 36 -18 A18 18 0 0 1 40 14 A20 20 0 0 1 10 34 A22 22 0 0 1 -28 30 A16 16 0 0 1 -40 10 Z ' + C(-46, 44, 7) + ' ' + C(-58, 58, 4) }, { k: 'dot', d: star(-6, -4, 1.05) + ' ' + star(18, -15, 0.48) + ' ' + star(17, 13, 0.58) + ' ' + star(-24, 15, 0.38) + ' ' + star(4, 20, 0.3) }],
-      [{ k: 'body', d: 'M-58 0 C-58 -26 -30 -36 0 -36 C32 -36 58 -26 58 0 C58 24 34 34 4 34 L-16 34 L-34 50 L-30 31 C-48 27 -58 16 -58 0 Z' }, { k: 'dot', d: 'M-21.8 22 L-18.2 22 L-18.8 -8 L-21.2 -8 Z M-1.8 22 L1.8 22 L1.2 -14 L-1.2 -14 Z M17.2 22 L20.8 22 L20.2 -5 L17.8 -5 Z' + ' ' + E(-25, -10, 4.2, 3) + ' ' + E(-16, -12, 4.5, 3.2) + ' ' + E(-21, -17, 4, 3.4) + ' ' + E(-14, -4, 3.6, 2.6) + ' ' + E(-26, -2, 3.4, 2.6) + ' ' + E(-19, -6, 3.6, 2.8) + ' ' + E(-5, -16, 4.2, 3) + ' ' + E(4, -18, 4.5, 3.2) + ' ' + E(-1, -23, 4, 3.4) + ' ' + E(6, -10, 3.6, 2.6) + ' ' + E(-6, -8, 3.4, 2.6) + ' ' + E(1, -12, 3.6, 2.8) + ' ' + E(14, -7, 4.2, 3) + ' ' + E(23, -9, 4.5, 3.2) + ' ' + E(18, -14, 4, 3.4) + ' ' + E(25, -1, 3.6, 2.6) + ' ' + E(13, 1, 3.4, 2.6) + ' ' + E(20, -3, 3.6, 2.8) }, { k: 'ink', d: 'M-21.8 15.4 L-19.4 15.4 M-20.6 8.5 L-18.2 8.5 M-21.8 1.6 L-20 1.6 M-1.8 14.1 L0.6 14.1 M-0.6 5.8 L1.8 5.8 M-1.8 -2.5 L0 -2.5 M17.2 16.1 L19.6 16.1 M18.4 9.8 L20.8 9.8 M17.2 3.6 L19 3.6', w: 1.3 }, { k: 'cut', d: 'M-32 23 L32 23', w: 2 }],
-      [{ k: 'body', d: 'M-44 -34 L44 -34 Q54 -34 54 -24 L54 22 Q54 32 44 32 L-10 32 L-28 48 L-24 32 L-44 32 Q-54 32 -54 22 L-54 -24 Q-54 -34 -44 -34 Z' }, { k: 'cut', d: 'M-29 -11 C-28 -22 -11 -23 -11 -10 C-11 -2 -20 0 -20 7 M0 -17 L2 5 M11 -11 C12 -22 29 -23 29 -10 C29 -2 20 0 20 7', w: 4.2 }, { k: 'dot', d: C(-20, 16, 3.2) + ' ' + C(2.5, 15, 3.2) + ' ' + C(20, 16, 3.2) }]
-      ,
-      // a row of eyeballs, pupils glancing toward the cursor
-      [{ k: 'body', d: 'M-40 -32 L40 -32 C58 -32 66 -18 66 -2 C66 16 56 30 38 30 L18 30 L28 48 L4 30 L-40 30 C-58 30 -66 16 -66 -2 C-66 -18 -58 -32 -40 -32 Z' }, { k: 'dot', ring: true, d: C(-36, -2, 10.5) + ' ' + C(-12, -2, 10.5) + ' ' + C(12, -2, 10.5) + ' ' + C(36, -2, 10.5) }, { k: 'pupil', eyes: [-36, -12, 12, 36] }]
-      ,
-      // an ear, listening
-      [{ k: 'body', d: 'M-6 38 C-30 38 -50 22 -50 0 C-50 -24 -26 -40 0 -40 C26 -40 50 -24 50 0 C50 24 28 40 4 40 C-2 46 -14 54 -28 56 C-20 50 -14 44 -6 38 Z' }, { k: 'dot', d: 'M-30 -40 C-30 -66 0 -78 22 -70 C46 -62 54 -34 46 -12 C40 4 26 12 22 30 C18 50 4 64 -12 62 C-26 60 -30 48 -24 40 C-20 34 -14 30 -16 20 C-18 10 -30 0 -30 -40 Z', sub: 'translate(0 -2) scale(0.42)' }, { k: 'ink', d: 'M-12 -34 C-6 -54 24 -52 28 -30 C30 -14 16 -6 10 6 C6 14 -2 14 -4 6', w: 7, sub: 'translate(0 -2) scale(0.42)' }],
-      // a road bicycle (drop bars)
-      [{ k: 'body', d: 'M-58 0 C-58 -26 -30 -36 0 -36 C32 -36 58 -26 58 0 C58 24 34 34 4 34 L-16 34 L-34 50 L-30 31 C-48 27 -58 16 -58 0 Z' }, { k: 'cut', d: C(-24, 8, 14) + ' ' + C(24, 8, 14) + ' M-24 8 L-7 -11 L15 -11 L1 8 Z M1 8 L-7 -11 M15 -11 L24 8 M15 -11 L18 -16 C25 -17 27 -10 22 -7 M-13 -14 L-1 -14', w: 2.8 }, { k: 'spokes', wheels: [[-24, 8, 1], [24, 8, 1.4]] }]
-    ];
-    // positions: lower left, rising toward the headline; the blob's home sits over the third
-    // the arc: eyes → sparkle cloud → road bike → ?!? (dots, trees and ear sit this one out)
-    // quieter + more room: slightly smaller, nudged up-left so the headline has space
-    // arc rising from the lower left toward the headline (shifted with the copy so the headline keeps its breathing room)
-    const PP = [null, [422, 510, -7, 0.7], null, [705, 392, -2, 0.77], [275, 566, -10, 0.65], null, [565, 452, -4, 0.72]];
-    // trial: just the sparkly thought bubble, larger, sitting by the blob's home so it starts half-flipped
-    const ONE = false; // the arc is the chosen layout (the cluster is saved on the illustration board)
-    // the cluster: all roughly the same size
-    const PP1 = [null, [640, 560, -6, 1.12], [420, 470, -8, 0.98], [790, 470, -3, 1.0], [455, 690, 4, 0.9], [600, 375, 5, 1.08], [665, 745, -4, 0.95]];
-    const passes = [false, true].map((inside) => {
-      // in the arc the bubbles are printed in the soft caption grey so the copy stays the darkest thing on the page
-      const tone = ONE ? INK : '#6B6B64';
-      const main = inside ? GR : tone, counter = inside ? tone : GR, shapes = [];
-      BUB.forEach((parts, i) => {
-        const pp = ONE ? PP1[i] : PP[i];
-        if (!pp) return;
-        const tf = 'translate(' + pp[0] + ' ' + pp[1] + ') rotate(' + pp[2] + ') scale(' + pp[3] + ')', line = false; // all solid ink silhouettes
-        parts.forEach((pt) => {
-          if (pt.k === 'body') shapes.push(line ? { tf: tf, d: pt.d, fill: 'none', stroke: main, sw: 3.4 } : { tf: tf, d: pt.d, fill: main, stroke: 'none', sw: 0 });
-          else if (pt.k === 'cut') shapes.push({ tf: tf + (pt.sub ? ' ' + pt.sub : ''), d: pt.d, fill: 'none', stroke: line ? main : counter, sw: line ? Math.min(pt.w, 3.4) : pt.w });
-          else if (pt.k === 'pupil') {
-            // pupils look toward the cursor (or straight ahead when it's away)
-            const ang = this.state.mx === null ? 0 : Math.atan2(this.state.my - pp[1], this.state.mx - pp[0]) - pp[2] * Math.PI / 180;
-            const ox = this.state.mx === null ? 3 : Math.cos(ang) * 4.5, oy = this.state.mx === null ? 1.5 : Math.sin(ang) * 4.5;
-            shapes.push({ tf: tf, d: pt.eyes.map((ex) => C(+(ex + ox).toFixed(1), +(-2 + oy).toFixed(1), 5.2)).join(' '), fill: main, stroke: 'none', sw: 0 });
-          }
-          else if (pt.k === 'spokes') {
-            // the wheels turn as the cursor moves (each at its own speed); still when the cursor rests
-            const turn = (this.state.travel || 0) / 38;
-            const d = pt.wheels.map((w) => { let out = ''; for (let q = 0; q < 3; q++) { const a = turn * w[2] + q * Math.PI / 3, dx = Math.cos(a) * 12, dy = Math.sin(a) * 12; out += 'M' + (w[0] - dx).toFixed(1) + ' ' + (w[1] - dy).toFixed(1) + ' L' + (w[0] + dx).toFixed(1) + ' ' + (w[1] + dy).toFixed(1) + ' '; } return out; }).join('');
-            shapes.push({ tf: tf, d: d, fill: 'none', stroke: line ? main : counter, sw: 1.3 });
-          }
-          else if (pt.k === 'mainfill') shapes.push({ tf: tf + (pt.sub ? ' ' + pt.sub : ''), d: pt.d, fill: main, stroke: 'none', sw: 0 });
-          else if (pt.k === 'ink') shapes.push({ tf: tf + (pt.sub ? ' ' + pt.sub : ''), d: pt.d, fill: 'none', stroke: main, sw: pt.w });
-          else if (pt.ring && line) shapes.push({ tf: tf, d: pt.d, fill: 'none', stroke: main, sw: 2.2 });
-          else shapes.push({ tf: tf + (pt.sub ? ' ' + pt.sub : ''), d: pt.d, fill: line ? main : counter, stroke: 'none', sw: 0 });
-        });
-      });
-      return { mask: inside ? 'inBlob' : 'outBlob', shapes: shapes };
-    });
-    return { callClick: (e) => this.callFlip(e),
-      b: b, passes: [],
-      fourLabel: this.state.four ? 'arc (tap for the cluster)' : 'cluster (tap for the arc)', toggleFour: () => this.setState({ four: !this.state.four }),
+    return {
+      b: b,
+      callClick: (e) => this.callFlip(e),
       onMove: (e) => {
-        const r0 = e.currentTarget.getBoundingClientRect();
-        // map to the blob's 1440x900 (slice) space
-        const sc = Math.max(r0.width / 390, r0.height / 844) * 0.8, ox = (r0.width - 390 * sc / 0.8) / 2 + -579.6 * sc / 0.8, oy = (r0.height - 844 * sc / 0.8) / 2 + -88.0 * sc / 0.8; // mobile: the drawing is scaled 0.8 into the phone frame
-        const nx = (e.clientX - r0.left - ox) / sc, ny = (e.clientY - r0.top - oy) / sc;
-        const d = this.lastP ? Math.min(90, Math.hypot(nx - this.lastP[0], ny - this.lastP[1])) : 0; this.lastP = [nx, ny];
-        this.pend = { mx: nx, my: ny, travel: (this.pend && this.pend.travel !== undefined ? this.pend.travel : (this.state.travel || 0)) + d };
-        if (this.raf) return;
-        this.raf = requestAnimationFrame(() => { this.raf = null; if (this.pend) { const q = this.pend; this.pend = null; this.setState(q); } });
+        const p = e.touches ? e.touches[0] : e; if (!p) return;
+        const k = 390 / e.currentTarget.getBoundingClientRect().width; // page units → blob units
+        this.point(p.clientX * k, p.pageY * k);
       },
-      onTouchMove: (e) => {
-        const tp = e.touches && e.touches[0]; if (!tp) return;
-        const r0 = e.currentTarget.getBoundingClientRect();
-        // map to the blob's 1440x900 (slice) space
-        const sc = Math.max(r0.width / 390, r0.height / 844) * 0.8, ox = (r0.width - 390 * sc / 0.8) / 2 + -579.6 * sc / 0.8, oy = (r0.height - 844 * sc / 0.8) / 2 + -88.0 * sc / 0.8; // mobile: the drawing is scaled 0.8 into the phone frame
-        const nx = (tp.clientX - r0.left - ox) / sc, ny = (tp.clientY - r0.top - oy) / sc;
-        const d = this.lastP ? Math.min(90, Math.hypot(nx - this.lastP[0], ny - this.lastP[1])) : 0; this.lastP = [nx, ny];
-        this.pend = { mx: nx, my: ny, travel: (this.pend && this.pend.travel !== undefined ? this.pend.travel : (this.state.travel || 0)) + d };
-        if (this.raf) return;
-        this.raf = requestAnimationFrame(() => { this.raf = null; if (this.pend) { const q = this.pend; this.pend = null; this.setState(q); } });
-      },
-      onTouchStart: () => { this.askTilt(); },
-      onScrollF: (e) => { const on = ((e.target && e.target.scrollTop) || 0) > 90; if (on !== !!this.state.fab) this.setState({ fab: on }); },
-      fabCls: this.state.fab ? 'on' : '', fabTab: '0', xVis: this.state.openF ? 'hidden' : 'visible',
-      openStrF: this.state.openF ? 'true' : 'false', openClsF: this.state.openF ? 'open' : '', // mobile: always a vertical stack (no room for a row beside the wordmark) visF: this.state.openF ? 'visible' : 'hidden', tabF: this.state.openF ? '0' : '-1',
-      labelF: this.state.openF ? 'Close menu' : 'Open menu',
-      toggleF: () => this.setState({ openF: !this.state.openF }),
-
+      onTouchStart: () => this.askTilt(),
       onLeave: () => { this.lastP = null; this.setState({ mx: null, my: null }); },
-      // "HERE": hover (or click / focus) shows the LinkedIn and email icons above it
-      hereCls: here ? 'on' : '', hereVis: here ? 'visible' : 'hidden', hereTab: here ? '0' : '-1', hereOpenStr: here ? 'true' : 'false',
-      hereOn: () => { clearTimeout(this.ht); this.setState({ here: true }); },
-      hereOff: () => { clearTimeout(this.ht); this.ht = setTimeout(() => this.setState({ here: false }), 350); },
-      hereToggle: () => { clearTimeout(this.ht); this.setState({ here: !this.state.here }); },
-      openClsG: o ? 'open' : '', openStrG: o ? 'true' : 'false', drawerVisG: o ? 'visible' : 'hidden', tabG: o ? '0' : '-1',
-      icoLabelG: o ? 'Close menu' : 'Open menu',
-      toggleG: () => this.setState({ openG: !this.state.openG })
+      xVis: o ? 'hidden' : 'visible', openStr: o ? 'true' : 'false', openCls: o ? 'open' : '',
+      navVis: o ? 'visible' : 'hidden', navTab: o ? '0' : '-1', label: o ? 'Close menu' : 'Open menu',
+      toggle: () => this.setState({ open: !o })
     };
   }
 }

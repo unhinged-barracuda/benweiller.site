@@ -357,20 +357,19 @@ function start(sync) {
 // ---------- scroll paging: home ⇄ menu ⇄ about ⇄ contact ----------
 // The homepage opens the menu on its own (its board). Every other page in the chain says in its settings which page is
 // "up" and which is "down": wheel / trackpad (~120px), a swipe (60px; swipe down = up, swipe up = down) or the keys
-// (↑ / page up, ↓ / page down / space) open it with the usual dissolve. A page that scrolls inside itself (its scroller is
-// marked data-pscroll) only hands off from its top / bottom edge, after a brief blink there (see the wheel handler).
+// (↑ / page up, ↓ / page down / space) open it with the usual dissolve. A page that scrolls only hands off from its
+// top / bottom edge, after a brief blink there (see the wheel handler). Phone boards built for the phone scroll the page
+// itself; older boards scroll an inner box marked data-pscroll (until they are rebuilt).
 let paging = null;
 function setPaging(cfg) {
   if (paging) { paging.off(); paging = null; }
   const up = cfg && cfg.up, down = cfg && cfg.down;
   if (!up && !down) return;
   const t0 = Date.now();
-  const sc = () => document.querySelector('#dc-root [data-pscroll]');
-  const fits = () => { const s = sc(); return !s || s.scrollHeight <= s.clientHeight + 2; };
-  const atEdge = (d) => { const s = sc(); if (!s) return true; return d ? s.scrollTop + s.clientHeight >= s.scrollHeight - 2 : s.scrollTop <= 1; };
+  const sc = () => document.querySelector('#dc-root [data-pscroll]') || document.scrollingElement;
+  const fits = () => { const s = sc(); return s.scrollHeight <= s.clientHeight + 2; };
+  const atEdge = (d) => { const s = sc(); return d ? s.scrollTop + s.clientHeight >= s.scrollHeight - 2 : s.scrollTop <= 1; };
   const fire = (d) => { const to = d ? down : up; if (!to || Date.now() - t0 < 800) return; go(new URL(to, location.href), true); };
-  // last = now: a scroll that is still going (a trackpad fling's momentum) when this page appears counts as the old gesture,
-  // so it can't carry straight on into the next page; only a new gesture (after a 250ms pause) can hand off
   // last = now: a scroll that is still going (a trackpad fling's momentum) when this page appears counts as the old gesture,
   // so it can't carry straight on into the next page; any brief pause (80ms) starts a new gesture.
   // On a page that scrolls, reaching the edge needs only a blink (150ms of continued scrolling, or a gesture that starts there)
