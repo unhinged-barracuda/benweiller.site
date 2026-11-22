@@ -357,7 +357,7 @@ function start(sync) {
 // ---------- scroll paging: home ⇄ menu ⇄ about ⇄ contact ----------
 // The homepage opens the menu on its own (its board). Every other page in the chain says in its settings which page is
 // "up" and which is "down": wheel / trackpad (~120px), a swipe (60px; swipe down = up, swipe up = down) or the keys
-// (↑ / page up, ↓ / page down / space) open it with the usual dissolve. A page that scrolls inside itself (its scroller is
+// (↑ / page up, ↓ / page down / space) open it with the usual dissolve; a page can turn swiping off (swipe: false). A page that scrolls inside itself (its scroller is
 // marked data-pscroll) only hands off from its top / bottom edge, and only on a new gesture that starts there, so a fling
 // that reaches the end never carries on into the next page.
 let paging = null;
@@ -396,8 +396,8 @@ function setPaging(cfg) {
     e.preventDefault(); fire(d);
   };
   window.addEventListener('wheel', wheel, { passive: true });
-  window.addEventListener('touchstart', ts, { passive: true });
-  window.addEventListener('touchend', te, { passive: true });
+  // about and contact turn swiping off (swipe: false in routes.mjs): on a phone a swipe there only scrolls the text
+  if (cfg.swipe !== false) { window.addEventListener('touchstart', ts, { passive: true }); window.addEventListener('touchend', te, { passive: true }); }
   window.addEventListener('keydown', key);
   paging = { off: () => { clearTimeout(wt); window.removeEventListener('wheel', wheel); window.removeEventListener('touchstart', ts); window.removeEventListener('touchend', te); window.removeEventListener('keydown', key); } };
 }
