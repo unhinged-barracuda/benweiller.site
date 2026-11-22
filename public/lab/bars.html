@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>bars test</title>
+<style>
+  /* Test page: what does iOS 26 Safari draw under its status bar and toolbar?
+     ?v=a  today's site: a screen-sized box, page locked, text scrolls inside the box
+     ?v=b  the page itself scrolls; blob + grain fixed to the screen
+     ?v=c  the page itself scrolls; blob + grain are part of the page (scroll with it)
+     add &short=1 for a page that fits the screen (like the homepage / menu) */
+  :root { --ground: #F1F1EE; }
+  html, body { margin: 0; background: var(--ground); font: 16px/1.6 system-ui, sans-serif; color: #1E1E1C; }
+  .grain { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .blob { background: radial-gradient(40% 30% at 70% 30%, #6a4fa8, transparent 70%), radial-gradient(45% 35% at 30% 75%, #4f8fa8, transparent 70%); filter: blur(20px); }
+  .layer { inset: 0; pointer-events: none; }
+  .txt { padding: 24px 16px 40px; position: relative; z-index: 1; }
+  .txt p { margin: 0 0 14px; }
+  nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+  nav a { padding: 6px 10px; border: 1px solid #1E1E1C; border-radius: 6px; color: inherit; text-decoration: none; font-size: 14px; }
+  nav a.on { background: #1E1E1C; color: #F1F1EE; }
+  /* a: locked box */
+  .va, .va body { overflow: hidden; height: 100%; }
+  .va .box { position: relative; height: 100svh; overflow: hidden; }
+  .va .layer { position: absolute; }
+  .va .scroller { position: absolute; inset: 0; overflow-y: auto; }
+  /* b: page scrolls, background fixed */
+  .vb .layer { position: fixed; }
+  /* c: page scrolls, background part of the page */
+  .vc .box { position: relative; min-height: 100lvh; }
+  .vc .layer { position: absolute; }
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="layer grain"></div>
+  <div class="layer blob"></div>
+  <div class="scroller"><div class="txt" id="t"></div></div>
+</div>
+<script>
+  const q = new URLSearchParams(location.search), v = q.get('v') || 'a', short = q.get('short') === '1';
+  document.documentElement.className = 'v' + v;
+  const t = document.getElementById('t');
+  const link = (vv, s, label) => `<a class="${vv === v && s === short ? 'on' : ''}" href="?v=${vv}${s ? '&short=1' : ''}">${label}</a>`;
+  t.innerHTML = '<nav>' + link('a', false, 'a · today') + link('b', false, 'b · fixed bg') + link('c', false, 'c · bg in page') +
+    link('a', true, 'a short') + link('b', true, 'b short') + link('c', true, 'c short') + '</nav>' +
+    `<p><b>${{ a: 'a · today’s site', b: 'b · page scrolls, blob + grain fixed', c: 'c · page scrolls, blob + grain in the page' }[v]}${short ? ' · fits the screen' : ''}</b></p>` +
+    Array.from({ length: short ? 4 : 40 }, (_, i) => `<p>line ${i + 1} — the quick brown fox jumps over the lazy dog, again and again.</p>`).join('');
+  t.insertAdjacentHTML('beforeend', `<p style="font-size:12px;color:#55554F">innerHeight ${innerHeight} · screen ${screen.height}</p>`);
+</script>
+</body>
+</html>
