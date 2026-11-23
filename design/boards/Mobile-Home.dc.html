@@ -143,10 +143,10 @@ class Component extends DCLogic {
     for (let i = 0; i < 400; i++) this.ph.push(Math.random() * Math.PI * 2);
   }
   // Safari's strips (behind the clock and around the toolbar): iOS 26 fills them with the page's background colour, which no
-  // page drawing can reach. So the page's background follows this ground as it shifts, darkened by the grain's 4% (the grain
-  // averages ~4% toward #4D4D4D), and the strips read as more of the same page. Reset when the page goes.
+  // page drawing can reach. This page's ground shifts with the blob's colours, so the page's background follows it and the
+  // strips stay the same colour as the page beside them (checked on Ben's iPhone, Nov 22). Reset when the page goes.
   paintStrips() {
-    const c = 'color-mix(in srgb, ' + this.ground + ' 96%, #4D4D4D)';
+    const c = this.ground;
     if (c === this.strip) return; this.strip = c;
     document.documentElement.style.backgroundColor = c; document.body.style.backgroundColor = c;
   }

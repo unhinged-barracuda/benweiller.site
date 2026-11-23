@@ -222,11 +222,7 @@ class Component extends DCLogic {
     this.state = { seed: Math.floor(Math.random() * 1e6), shownId: 'w0', front: 'w0', back: 'w0', top: 'front', fade: true, kia: false, sel: null, openG: false };
     this.t = null; this.lt = null; this.kt = null; this.raf = null;
   }
-  // Safari's strips (behind the clock and around the toolbar): iOS 26 fills them with the page's background colour, which no
-  // page drawing can reach. So the page's background is this page's ground as it actually looks: #F1F1EE with the grain on it
-  // (the grain averages ~3.2% toward #4D4D4D) = #ECECE9, and the strips read as more of the same page. Reset when the page goes.
   componentDidMount() {
-    document.documentElement.style.backgroundColor = document.body.style.backgroundColor = '#ECECE9';
     this.psMount();
     // the blob moves, reshapes and recolours on its own: every 2.6s it steps to the next campaign's colours and spot (no touch needed)
     const still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -236,7 +232,7 @@ class Component extends DCLogic {
     // its own wander, not tied to the campaigns: every 2.6s a new spot somewhere on the page, a new shape and a fresh colour mix
     this.auto = setInterval(() => { this.setState({ step: (this.state.step || 0) + 1 }); }, 2600);
   }
-  componentWillUnmount() { document.documentElement.style.backgroundColor = document.body.style.backgroundColor = ''; this.psUnmount(); clearTimeout(this.t); clearTimeout(this.lt); clearTimeout(this.kt); clearTimeout(this.spinT); clearInterval(this.auto); cancelAnimationFrame(this.raf); }
+  componentWillUnmount() { this.psUnmount(); clearTimeout(this.t); clearTimeout(this.lt); clearTimeout(this.kt); clearTimeout(this.spinT); clearInterval(this.auto); cancelAnimationFrame(this.raf); }
   // a tap: spin that arrow a full turn, then open the link (kia: open / close its three)
   spinGo(key, e, isKia) {
     if (this.passing) return;
