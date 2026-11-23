@@ -111,7 +111,7 @@ a{color:#1E1E1C}a:hover{color:#000000}
 <mask id="keepOffList" maskUnits="userSpaceOnUse" x="0" y="0" width="390" height="844"><rect width="390" height="844" fill="url(#clearB)"></rect></mask>
 </defs>
 <g><g transform="translate(-260.6 120.5) scale(0.55)">
-<g style="transform: {{blobT}}; transition: transform 1300ms cubic-bezier(.3,.6,.2,1)">
+<g style="transform: {{blobT}}; transform-box: fill-box; transform-origin: 50% 50%; transition: transform 1300ms cubic-bezier(.3,.6,.2,1)">
 <g class="{{settleCls}}">
 <g class="breathe">
 <path class="morph" d="{{haloPath}}" fill="{{halo}}" filter="url(#gXL)" opacity="0.92"></path>
@@ -336,21 +336,40 @@ class Component extends DCLogic {
   // mobile menu only: the blob wanders through many spots and colour mixes of its own (it doesn't follow the campaigns or the project pages)
   wander() {
     const st = this.state.step || 0, r = this.rng(this.state.seed * 31 + st * 7919 + 3);
-    // a new spot each step, anywhere from behind the header to the bottom of the screen, edge to edge (drawing units; the blob is scaled 0.42 into the phone)
+    // a new spot each step, anywhere across the screen (drawing units; the blob is drawn at 0.55 into the phone); its height on the
+    // screen is set by keepIn below, so the whole blob stays inside the visible screen
     const x = (r() - 0.5) * 620, y = (r() - 0.5) * 1500;
     // colours: a random base hue each step, with the halo, accent, body and core spread around the wheel so every mix is different
     const H = r() * 360, hs = (h, s, l) => 'hsl(' + (((h % 360) + 360) % 360).toFixed(0) + ',' + s.toFixed(0) + '%,' + l.toFixed(0) + '%)';
     const aH = H + 40 + r() * 140, hH = H + 150 + r() * 120;
     const sd = this.state.seed + st * 104729;
     const acx = 20 + r() * 220, acy = (r() - 0.5) * 300, kx = (r() - 0.5) * 200, ky = (r() - 0.5) * 140;
-    return {
-      blobT: 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)',
+    const paths = {
       haloPath: this.vblob(sd + 12, 960, 450, 515, 350, 10),
       accentPath: this.vblob(sd + 212, 960 + acx, 450 + acy, 275, 198, 9),
       midPath: this.vblob(sd + 112, 1010, 500, 330, 230, 10),
-      corePath: this.vblob(sd + 312, 1010 + kx, 500 + ky, 155, 110, 9),
-      halo: hs(hH, 60 + r() * 25, 84 + r() * 6), accent: hs(aH, 45 + r() * 30, 62 + r() * 12), mid: hs(H, 45 + r() * 25, 38 + r() * 10), core: hs(H + 10 - r() * 20, 50 + r() * 20, 22 + r() * 8)
+      corePath: this.vblob(sd + 312, 1010 + kx, 500 + ky, 155, 110, 9)
     };
+    return Object.assign(paths, {
+      blobT: this.keepIn(paths, x, y),
+      halo: hs(hH, 60 + r() * 25, 84 + r() * 6), accent: hs(aH, 45 + r() * 30, 62 + r() * 12), mid: hs(H, 45 + r() * 25, 38 + r() * 10), core: hs(H + 10 - r() * 20, 50 + r() * 20, 22 + r() * 8)
+    });
+  }
+  // Safari draws its own strips behind the clock and around the toolbar, and nothing on the page can show there (iOS 26), so the
+  // blob never goes near them (Ben, Nov 22): the whole blob, its soft blurred edge and its breathing included, stays inside the
+  // visible screen. Its spot moves up or down just enough; a shape too tall to fit is drawn a little smaller for that step.
+  // Left and right stay free (the screen's own sides). Drawing → phone: x 0.55 − 260.6, y 0.55 + 120.5 (the group transform).
+  keepIn(paths, x, y) {
+    let y0 = 1e9, y1 = -1e9;
+    Object.keys(paths).forEach((k) => { const n = paths[k].match(/-?\d+(\.\d+)?/g); for (let i = 1; i < n.length; i += 2) { y0 = Math.min(y0, +n[i]); y1 = Math.max(y1, +n[i]); } });
+    const K = 0.55, OY = 120.5, BLUR = 124, GROW = 1.04; // halo blur reaches ~2σ (σ 62); breathing swells 3.5%
+    const W = window.innerWidth || 390, Hs = window.innerHeight || 844, sc = Math.max(W / 390, Hs / 844);
+    const top = 422 - Hs / sc / 2 + 6, bot = 422 + Hs / sc / 2 - 6; // the visible screen in phone units (the svg is drawn "slice")
+    const half = ((y1 - y0) / 2 + BLUR) * K * GROW, k = Math.min(1, (bot - top) / 2 / half);
+    let cy = ((y0 + y1) / 2 + y) * K + OY;
+    cy = Math.max(top + half * k, Math.min(bot - half * k, cy));
+    const ty = (cy - OY) / K - (y0 + y1) / 2;
+    return 'translate(' + x.toFixed(1) + 'px,' + ty.toFixed(1) + 'px)' + (k < 1 ? ' scale(' + k.toFixed(3) + ')' : '');
   }
   renderVals() {
     const works = [

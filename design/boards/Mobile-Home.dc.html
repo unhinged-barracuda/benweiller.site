@@ -94,7 +94,7 @@ a{color:#1E1E1C}a:hover{color:#000000}
 <feColorMatrix type="matrix" values="0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0.12 0"></feColorMatrix>
 </filter>
 </defs>
-<g transform="translate(-288.6 63.2) scale(0.62)">
+<g style="transform: {{fitT}}"><g transform="translate(-288.6 63.2) scale(0.62)">
 <g style="transform: {{haloT}}; transform-box: fill-box; transform-origin: 50% 50%; transition: transform 1400ms cubic-bezier(.2,.7,.2,1)">
 <g class="drift">
 <path d="{{haloPath}}" fill="{{halo}}" filter="url(#grainBlurXL)" opacity="0.95"></path>
@@ -109,7 +109,7 @@ a{color:#1E1E1C}a:hover{color:#000000}
 </g>
 </g>
 </g>
-</g>
+</g></g>
 <rect width="390" height="844" filter="url(#pageGrain)"></rect>
 </svg>
 
@@ -151,6 +151,22 @@ class Component extends DCLogic {
     document.documentElement.style.backgroundColor = c; document.body.style.backgroundColor = c;
   }
   componentDidUpdate() { this.paintStrips(); }
+  // the blob sits on the name and stays inside the visible screen. The name is placed in screen pixels, but the drawing is a
+  // 390 × 844 frame cropped to fit the screen ("slice"), so on any phone not 844 tall the two drifted apart (the name landed
+  // ~70px below the core on a 700px screen). Here the drawing is moved so its anchor lands on the name, then, when its outline
+  // (blur, lean and swell included; [path, blur reach] pairs in drawing units) would reach past the top or bottom of the visible
+  // screen, drawn just small enough to fit, around the name, so the name stays on the core. Safari draws its own strips behind
+  // the clock and around the toolbar and nothing on the page can show there (iOS 26), so the blob never goes near them (Ben, Nov 22).
+  keepIn(layers, ax, ay) {
+    let y0 = 1e9, y1 = -1e9;
+    layers.forEach(([d, blur]) => { const n = d.match(/-?\d+(\.\d+)?/g); for (let i = 1; i < n.length; i += 2) { y0 = Math.min(y0, +n[i] - blur); y1 = Math.max(y1, +n[i] + blur); } });
+    const LEAN = 34, top = y0 * 0.62 + 63.2 - LEAN, bot = y1 * 0.62 + 63.2 + LEAN; // the finger / tilt lean moves layers up to ~34px
+    const W = window.innerWidth || 390, H = window.innerHeight || 844, sc = Math.max(W / 390, H / 844);
+    const vTop = 422 - H / sc / 2, vLeft = 195 - W / sc / 2; // the visible screen's top-left in drawing (viewBox) units
+    const nx = vLeft + ax / sc, ny = vTop + ay / sc; // the name's spot (ax, ay screen px) in drawing units
+    const k = Math.min(1, (ny - vTop - 6) / Math.max(1, ay - top), (vTop + H / sc - 6 - ny) / Math.max(1, bot - ay));
+    return 'translate(' + nx.toFixed(1) + 'px,' + ny.toFixed(1) + 'px) scale(' + k.toFixed(3) + ') translate(' + (-ax).toFixed(1) + 'px,' + (-ay).toFixed(1) + 'px)';
+  }
   componentWillUnmount() { document.documentElement.style.backgroundColor = ''; document.body.style.backgroundColor = ''; if (this.raf) cancelAnimationFrame(this.raf); if (this.onKey) window.removeEventListener('keydown', this.onKey); if (this.onTilt) window.removeEventListener('deviceorientation', this.onTilt); }
   componentDidMount() {
     this.paintStrips();
@@ -295,8 +311,12 @@ class Component extends DCLogic {
     const bx = 780 + (r2() - 0.5) * 120, by = 440 + (r2() - 0.5) * 80;
     // the same anchor in phone pixels (the drawing is scaled 0.62 and moved into the phone frame)
     const pbx = bx * 0.62 - 288.6, pby = by * 0.62 + 63.2;
+    // Safari draws its own strips behind the clock and around the toolbar and nothing on the page can show there (iOS 26), so the
+    // blob never goes near them (Ben, Nov 22): when its outline (blur, lean and swell included) would reach past the top or bottom of
+    // the visible screen, the whole drawing is drawn just small enough to fit, around the name's spot so the name stays on the core.
+    const fitT = this.keepIn([[haloPath, 140], [accentPath, 84], [midPath, 84], [corePath, 52]], pbx, pby);
     return {
-      seed: 7,
+      seed: 7, fitT: fitT,
       bodyT: bodyT, coreT: coreT, haloT: haloT,
       textT: 'none', // the name stays put; the blob moves around it
       onMove: (e) => this.move(e, pbx, pby),
