@@ -97,7 +97,7 @@ a{color:#1E1E1C}a:hover{color:#000000}
 <feColorMatrix type="matrix" values="0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0.12 0"></feColorMatrix>
 </filter>
 </defs>
-<g transform="translate(-288.6 233.2) scale(0.62)">
+<g style="transform: {{fitT}}"><g transform="translate(-288.6 233.2) scale(0.62)">
 <g transform="{{gjH}}">
 <g style="transform: {{haloT}}; transform-box: fill-box; transform-origin: 50% 50%; transition: transform 1400ms cubic-bezier(.2,.7,.2,1)">
 <g class="drift">
@@ -116,7 +116,7 @@ a{color:#1E1E1C}a:hover{color:#000000}
 </g>
 </g>
 </g>
-</g>
+</g></g>
 <rect width="390" height="844" filter="url(#pageGrain)"></rect>
 </svg>
 
@@ -152,6 +152,24 @@ class Component extends DCLogic {
     for (let i = 0; i < 400; i++) this.ph.push(Math.random() * Math.PI * 2);
   }
   componentWillUnmount() { clearTimeout(this.gt); if (this.raf) cancelAnimationFrame(this.raf); if (this.onKey) window.removeEventListener('keydown', this.onKey); if (this.onTilt) window.removeEventListener('deviceorientation', this.onTilt); }
+  // the "404" and the blob share one frame: the drawing is a 390 × 844 frame cropped to fit the screen ("slice"), and the "404"
+  // used to be placed in plain screen pixels, so on shorter phones it slid below the core (and off the bottom of an SE). Now the
+  // "404" is placed where the frame puts the blob's anchor on this screen. When the blob's outline (blur, lean, swell and the
+  // glitch jumps included; [path, blur reach] pairs in drawing units) would reach past the top or bottom of the visible screen, it
+  // is drawn just small enough to fit, around the "404". Safari draws its own strips behind the clock and around the toolbar and
+  // nothing on the page can show there (iOS 26), so the blob never goes near them (Ben, Nov 22).
+  keepIn(layers, ax, ay) {
+    let y0 = 1e9, y1 = -1e9;
+    layers.forEach(([d, blur]) => { const n = d.match(/-?\d+(\.\d+)?/g); for (let i = 1; i < n.length; i += 2) { y0 = Math.min(y0, +n[i] - blur); y1 = Math.max(y1, +n[i] + blur); } });
+    const LEAN = 42, top = y0 * 0.62 + 233.2 - LEAN, bot = y1 * 0.62 + 233.2 + LEAN; // finger / tilt lean (~34px) + glitch jumps (~8px)
+    const W = window.innerWidth || 390, H = window.innerHeight || 844, sc = Math.max(W / 390, H / 844);
+    const vTop = 422 - H / sc / 2, vLeft = 195 - W / sc / 2, vBot = vTop + H / sc; // the visible screen in frame units
+    const k = Math.min(1, (ay - vTop - 6) / Math.max(1, ay - top), (vBot - 6 - ay) / Math.max(1, bot - ay));
+    return {
+      t: k >= 1 ? 'none' : 'translate(' + ax.toFixed(1) + 'px,' + ay.toFixed(1) + 'px) scale(' + k.toFixed(3) + ') translate(' + (-ax).toFixed(1) + 'px,' + (-ay).toFixed(1) + 'px)',
+      x: (ax - vLeft) * sc, y: (ay - vTop) * sc // the anchor on this screen, in px
+    };
+  }
   componentDidMount() {
     // 404 only: the blob glitches — its colours snap to loud palettes the rest of the site never uses, in irregular bursts, with the layers jumping out of register now and then
     const still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -302,8 +320,10 @@ class Component extends DCLogic {
     const bx = 780 + (r2() - 0.5) * 120, by = 440 + (r2() - 0.5) * 80;
     // the same anchor in phone pixels (the drawing is scaled 0.62 and moved into the phone frame)
     const pbx = bx * 0.62 - 288.6, pby = by * 0.62 + 233.2; // 404 mobile: the blob sits lower so the blurb fits above it
+    // keep the blob on the "404" and inside the visible screen (see keepIn)
+    const fit = this.keepIn([[haloPath, 140], [accentPath, 84], [midPath, 84], [corePath, 52]], pbx, pby);
     return {
-      seed: 7,
+      seed: 7, fitT: fit.t,
       bodyT: bodyT, coreT: coreT, haloT: haloT,
       textT: 'translate(' + (mx * 3.2).toFixed(2) + 'vw,' + (my * 3.8).toFixed(2) + 'vh)',
       onMove: (e) => this.move(e, pbx, pby),
@@ -342,7 +362,7 @@ class Component extends DCLogic {
         };
       })(),
       haloPath: haloPath, accentPath: accentPath, midPath: midPath, corePath: corePath,
-      nameX: Math.round(pbx - 92), nameY: Math.round(pby - 10),
+      nameX: Math.round(fit.x - 92), nameY: Math.round(fit.y - 10),
       paraX: leftSide ? 14 : 66, paraY: leftSide ? 62 : 70
     };
   }
