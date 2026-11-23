@@ -142,8 +142,18 @@ class Component extends DCLogic {
     this.ph = [];
     for (let i = 0; i < 400; i++) this.ph.push(Math.random() * Math.PI * 2);
   }
-  componentWillUnmount() { if (this.raf) cancelAnimationFrame(this.raf); if (this.onKey) window.removeEventListener('keydown', this.onKey); if (this.onTilt) window.removeEventListener('deviceorientation', this.onTilt); }
+  // Safari's strips (behind the clock and around the toolbar): iOS 26 fills them with the page's background colour, which no
+  // page drawing can reach. So the page's background follows this ground as it shifts, darkened by the grain's 4% (the grain
+  // averages ~4% toward #4D4D4D), and the strips read as more of the same page. Reset when the page goes.
+  paintStrips() {
+    const c = 'color-mix(in srgb, ' + this.ground + ' 96%, #4D4D4D)';
+    if (c === this.strip) return; this.strip = c;
+    document.documentElement.style.backgroundColor = c; document.body.style.backgroundColor = c;
+  }
+  componentDidUpdate() { this.paintStrips(); }
+  componentWillUnmount() { document.documentElement.style.backgroundColor = ''; document.body.style.backgroundColor = ''; if (this.raf) cancelAnimationFrame(this.raf); if (this.onKey) window.removeEventListener('keydown', this.onKey); if (this.onTilt) window.removeEventListener('deviceorientation', this.onTilt); }
   componentDidMount() {
+    this.paintStrips();
     this.onKey = (e) => { if (e.target && e.target.closest && e.target.closest('button, a')) return; if (['ArrowDown', 'PageDown', ' ', 'Spacebar'].indexOf(e.key) >= 0) { e.preventDefault(); this.go(); } };
     window.addEventListener('keydown', this.onKey);
     // tilt: leaning the phone left/right and toward/away plays the part of the cursor
@@ -263,7 +273,7 @@ class Component extends DCLogic {
     const mid = this.hsl(H - 2 + 25 * this.n(7, tc), 49 + 22 * this.n(8, tc), 34 + 10 * this.n(9, tc));
     const accent = this.hsl(accH, 38 + 25 * this.n(10, tc), 64 + 10 * this.n(11, tc));
     const halo = this.hsl(haloH, 66 + 20 * this.n(12, tc), 85 + 5 * this.n(13, tc));
-    const ground = this.hsl(haloH, 10 + 6 * this.n(14, tc), 94.5);
+    const ground = this.hsl(haloH, 10 + 6 * this.n(14, tc), 94.5); this.ground = ground;
     // shape: same starting bloburb, then endlessly varying
     const r = this.rng(7 * 9973 + 11);
     const cx = 780 + (r() - 0.5) * 120 + 60 * this.n(20, ts * 0.5), cy = 440 + (r() - 0.5) * 80 + 40 * this.n(21, ts * 0.5);
