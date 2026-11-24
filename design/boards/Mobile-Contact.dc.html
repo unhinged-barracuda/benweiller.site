@@ -10,149 +10,57 @@
 <helmet>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;display=swap" rel="stylesheet">
 <style>
+@font-face{font-family:'Dirtbag TM';src:url('/_blob/a15098c6e2313273da5b37f609489781') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+/* PHONE BOARD, built for the phone (Nov 24, Ben; same build as Mobile-About): the page itself scrolls (no inner scroll box), so
+   iOS Safari carries it on under its status bar and toolbar and the copyright sits at the very bottom of the phone. The page is
+   at least the phone's full height (100lvh), so it scrolls only by about the height of Safari's toolbar. Grain and blob are part
+   of the page. Same content, colours and positions as the previous board (which sized everything to the screen between Safari's bars) */
 body{margin:0}
+a{color:#1E1E1C}
 .breathe{transform-box:fill-box;transform-origin:50% 50%;animation:breathe 10s ease-in-out infinite}
 @keyframes breathe{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.035) rotate(1.5deg)}}
 .mph{transition:d 700ms cubic-bezier(.3,.7,.2,1)}
 .fl{transition:transform 1500ms cubic-bezier(.2,.65,.2,1)}
-.ctl:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:3px}
-@media (prefers-reduced-motion: reduce){.breathe{animation:none}.mph,.fl{transition:none}}
-
-@font-face{font-family:'Dirtbag TM';src:url('/_blob/a15098c6e2313273da5b37f609489781') format('opentype');font-weight:400;font-style:normal;font-display:swap}
-body{margin:0}
-a{color:#1E1E1C}a:hover{color:#000000}
-.page{scrollbar-width:none}.page::-webkit-scrollbar{display:none}
-.lnk:focus-visible,.card:focus-visible,.ctl:focus-visible,.ico:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:4px}
-.breathe{transform-box:fill-box;transform-origin:50% 50%;animation:breathe 10s ease-in-out infinite}
-@keyframes breathe{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.03) rotate(1deg)}}
-.cardIn{animation:cardIn 1000ms cubic-bezier(.2,.75,.15,1) both}
-@keyframes cardIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
-.glowIn{animation:glowIn 1400ms ease both}
-@keyframes glowIn{from{opacity:0}to{opacity:1}}
-.play{transition:transform 300ms ease}
-.card:hover .play{transform:scale(1.08)}
-.lift{transition:transform 400ms cubic-bezier(.2,.7,.2,1)}
-.lift:hover{transform:none}
-@media (prefers-reduced-motion: reduce){.breathe,.cardIn,.glowIn{animation:none}.play,.lift{transition:none}}
-.ico{transition:transform 350ms cubic-bezier(.3,.7,.2,1)}
-.ico[aria-expanded="true"] .plus{transform:rotate(45deg)}
-.drawer a{opacity:0;transform:translateX(10px);transition:opacity 300ms ease,transform 400ms cubic-bezier(.3,.7,.2,1)}
-.drawer.open a{opacity:1;transform:none}
-.drawer.open a:nth-child(2){transition-delay:50ms}.drawer.open a:nth-child(3){transition-delay:100ms}
-.tl{position:relative;display:inline-flex;align-items:flex-end;height:20px;color:#55554F;text-decoration:none;transition:color 200ms ease}
-.tl .sl{display:inline-block;line-height:1}
-.tl .w{position:relative;display:inline-block;width:24px;height:20px}
-.tl .w span{position:absolute;left:14px;bottom:0;white-space:nowrap;transform:rotate(-71deg) translateX(-100%);transform-origin:0 100%;line-height:1}
-.tl:hover,.tl:focus-visible,.tl.on{color:#1E1E1C}
-.tl:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:6px}
-@media (prefers-reduced-motion: reduce){.tl{transition:none}}
-.burger line{transition:transform 350ms cubic-bezier(.3,.7,.2,1),opacity 200ms ease;transform-box:fill-box;transform-origin:50% 50%}
-.ico[aria-expanded="true"] .burger .l1{transform:translateX(7px) rotate(24deg)}
-.ico[aria-expanded="true"] .burger .l2{opacity:0}
-.ico[aria-expanded="true"] .burger .l3{transform:translateX(-7px) rotate(-66deg)}
-@media (prefers-reduced-motion: reduce){.burger line{transition:none}}
-@media (prefers-reduced-motion: reduce){.drawer a{transition:none}}
-.nb{color:#55554F;text-decoration:none;white-space:nowrap;transition:color 200ms ease}
-.nb:hover,.nb:focus-visible,.nb.on{color:#1E1E1C}
-.nb:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:4px}
-.breathe{transform-box:fill-box;transform-origin:50% 50%;animation:breathe 10s ease-in-out infinite}
-@keyframes breathe{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.035) rotate(1.5deg)}}
-.settle{transform-box:fill-box;transform-origin:50% 50%;animation:settle 1500ms cubic-bezier(.3,1.35,.45,1) both}
-@keyframes settle{from{transform:translate(-18px,22px) scale(.97)}to{transform:none}}
-.mph{transition:d 700ms cubic-bezier(.3,.7,.2,1)}
-.icons a{opacity:0;transform:translateY(-6px);transition:opacity 250ms ease,transform 300ms cubic-bezier(.3,.7,.2,1)}
-.icons.on a{opacity:1;transform:none}
-.icons.on a:nth-child(2){transition-delay:50ms}
-.ic{display:block;padding:2px}
+/* the links (LinkedIn / email / resumé): icon on the left gutter, label beside it; colours come from Bloblurb */
+.ic{display:flex;align-items:center;gap:8px;padding:2px;text-decoration:none;font-size:13px;transition:color 900ms ease}
 .ic:hover{opacity:.7}
-.hereBtn:focus-visible,.ic:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:3px}
-@media (prefers-reduced-motion: reduce){.breathe,.settle{animation:none}.mph{transition:none}.icons a{transition:none}}
-/* keyboard focus on text (links, menu words, wordmark): no box. a soft glass rectangle leaning at the lean angle sits behind the word */
-.nb:focus-visible,.tlk:focus-visible,.lnk:focus-visible{outline:none;position:relative;z-index:0}
-.nb:focus-visible::before,.tlk:focus-visible::before,.lnk:focus-visible::before{content:"";position:absolute;left:-9px;right:-9px;top:-5px;bottom:-5px;z-index:-1;transform:skewX(-16.7deg);background:linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.36));backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 1px rgba(255,255,255,0.85),0 1px 10px rgba(30,30,28,0.12)}
-/* FOCUS (approved, site-wide): keyboard only, no outlines anywhere.
-   text, words and small controls: a soft glass rectangle leaning at the lean angle behind them.
-   media and glass buttons: no frame, a soft shadow that lifts them off the page */
-*:focus-visible{outline:none!important}
-.nb:focus-visible:not([style*="position: absolute"]),.tlk:focus-visible:not([style*="position: absolute"]),.lnk:focus-visible:not([style*="position: absolute"]),.ctl:focus-visible:not([style*="position: absolute"]),.tl:focus-visible:not([style*="position: absolute"]),.ic:focus-visible:not([style*="position: absolute"]),.hereBtn:focus-visible:not([style*="position: absolute"]),.ico:focus-visible:not([style*="position: absolute"]),.item:focus-visible:not([style*="position: absolute"]),a:not(.card):not(.xp):not(.band):focus-visible:not([style*="position: absolute"]),button:not(.gb):not(.xp):not(.pp):focus-visible:not([style*="position: absolute"]){position:relative;z-index:0}
-.nb:focus-visible::before,.tlk:focus-visible::before,.lnk:focus-visible::before,.ctl:focus-visible::before,.tl:focus-visible::before,.ic:focus-visible::before,.hereBtn:focus-visible::before,.ico:focus-visible::before,.item:focus-visible::before,a:not(.card):not(.xp):not(.band):focus-visible::before,button:not(.gb):not(.xp):not(.pp):focus-visible::before{content:"";position:absolute;left:-9px;right:-9px;top:-5px;bottom:-5px;z-index:-1;transform:skewX(-16.7deg);background:linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.36));backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 1px rgba(255,255,255,0.85),0 1px 10px rgba(30,30,28,0.12)}
-.card:focus-visible::after,.xp:focus-visible::after,.band:focus-visible::after,.gbw:has(.gb:focus-visible)::after{content:none!important}
-.card:focus-visible,.xp:focus-visible,.band:focus-visible,[tabindex]:not(a):not(button):focus-visible,.gbw:has(.gb:focus-visible),.gfocus{box-shadow:0 14px 34px -8px rgba(30,30,28,0.38),0 2px 8px rgba(30,30,28,0.12)}
-.gbw:has(.gb:focus-visible),.gfocus.round{border-radius:50%}
-/* ---------- MOBILE (390 wide) ---------- */
-header{padding:0 16px!important;position:relative;z-index:6}
-header>a{white-space:nowrap}
-#hdrMenuG{position:absolute!important}
-/* contact on a phone: ask ahead, the paragraph and the links on top; the stamp ring and its blob below */
-main{width:calc(100% - 32px)!important;padding:3vh 0 0!important}
-main section{max-width:none!important;margin:0!important;position:relative}
-/* (Nov 22, later) Bloblurb sits at the top of the page (behind the header); the LinkedIn / email / resumé links sit just under
-   its pale lower edge, and "ask ahead" + the paragraph follow just below the links */
-main .here{position:static!important}
-main section{margin-top:36vh!important;padding-top:124px!important}
-#hereIcons{left:0!important;top:0!important;padding-top:0!important}
-/* (Nov 22, latest) links left-aligned on the left gutter */
-#hereIcons{left:0!important;right:auto!important;align-items:flex-start!important;text-align:left}
-#hereIcons a svg{flex:none;margin-left:-2px}
-#hereIcons a:first-child svg{margin-right:2px}
-/* "ask ahead" + the paragraph form a block on the right: it starts a third of the way across the page, text left-aligned inside it, ending on the right gutter */
-main section h1,main section p{text-align:left;margin-left:calc(33.333vw - 16px)!important}
-/* no sideways scroll on this page */
-html,body{overflow-x:hidden}
-[data-pscroll]{overflow-x:hidden!important}
-main,main section{max-width:100%!important;overflow-x:clip}
-/* the header menu's resting words sit off to the right while closed; clip them sideways so the page can't scroll right (they still drop down when opened) */
-header{overflow-x:clip}
-/* STICKY "///": once the header scrolls away, the plain "///" stays in the top-right corner, exactly as in the header (ink slashes, no button, no glass). tapped, it folds into an × and its four words open beneath it as a vertical stack, plain text like the header words */
-.fab{opacity:0;visibility:hidden;transition:opacity 220ms ease,visibility 0s linear 220ms}
-.fab.on{opacity:1;visibility:visible;transition:opacity 220ms ease,visibility 0s}
+.ic svg{flex:none;margin-left:-2px}
+.ic:first-child svg{margin-right:2px}
+/* the fixed "///" (top right, never moves): back arrow beside it, its four words open as a stack beneath it.
+   drawn light with difference blending, so it reads as ink over the page and turns light over dark images */
+.fab{position:fixed;top:calc(max(5.5vh, 36px) - 24px);right:9px;z-index:8;mix-blend-mode:difference}
 .fabBtn{width:48px;height:48px;margin-right:-7px;border:0;padding:0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .fabX{position:absolute;top:0;right:42px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;transition:opacity 200ms ease}
 .fabX:hover{opacity:0.6}
-.fabNav{position:absolute;top:52px;right:0;display:flex;flex-direction:column;align-items:flex-end;gap:16px}
-.fabNav a{color:#55554F;font-size:14px;line-height:1;text-decoration:none;white-space:nowrap;opacity:0;transform:translateY(-6px);transition:opacity 300ms ease,transform 400ms cubic-bezier(.3,.7,.2,1),color 200ms ease}
-.fabNav a:hover{color:#1E1E1C}
+.fabNav{position:absolute;top:52px;right:0;display:flex;flex-direction:column;align-items:flex-end;gap:16px;font-size:14px}
+.fabNav a{color:#A9A9B0;line-height:1;text-decoration:none;white-space:nowrap;opacity:0;transform:translateY(-6px);transition:opacity 300ms ease,transform 400ms cubic-bezier(.3,.7,.2,1),color 200ms ease}
+.fabNav a:hover,.fabNav a:focus-visible,.fabNav a[aria-current]{color:#FFFFFF}
 .fabNav.open a{opacity:1;transform:none}
 .fabNav.open a:nth-child(2){transition-delay:50ms}.fabNav.open a:nth-child(3){transition-delay:100ms}.fabNav.open a:nth-child(4){transition-delay:150ms}
-/* no jump: the header's own "///" is replaced by this fixed one from the very top, so the symbol never moves while the wordmark scrolls away. at the top its words open in a row to its left (as before); once you've scrolled down they open as a vertical stack beneath it */
-header .ico,header #hdrMenuG{visibility:hidden!important}
-.fab,.fab.on{opacity:1!important;visibility:visible!important}
-.fabNav.row{top:0;right:54px;height:48px;flex-direction:row;align-items:center;gap:28px}
-.fabNav.row a{transform:translateX(10px)}
-.fabNav.row.open a{transform:none}
-.fabBtn .burger line{stroke:#1E1E1C}
-/* the flip: the symbol and its words are drawn in light tones with "difference" blending, so over the light page they read as ink / grey (as before), and over dark images or films they turn light — no box behind them */
-.fab{mix-blend-mode:difference}
-.fabBtn .burger line{stroke:#FFFFFF!important}
-.fabX line{stroke:#FFFFFF!important}
-.fabNav a{color:#A9A9B0!important}
-.fabNav a:hover,.fabNav a:focus-visible{color:#FFFFFF!important}
-
+.burger line{stroke:#FFFFFF;transition:transform 350ms cubic-bezier(.3,.7,.2,1),opacity 200ms ease;transform-box:fill-box;transform-origin:50% 50%}
 .fabBtn[aria-expanded="true"] .burger .l1{transform:translateX(7px) rotate(24deg)}
 .fabBtn[aria-expanded="true"] .burger .l2{opacity:0}
 .fabBtn[aria-expanded="true"] .burger .l3{transform:translateX(-7px) rotate(-66deg)}
-@media (prefers-reduced-motion: reduce){.fab,.fab.on,.fabNav a{transition:none}}
+/* FOCUS (approved, site-wide): keyboard only, no outlines. words and small controls get a soft glass rectangle leaning
+   at the lean angle behind them; the glass button gets a soft lifting shadow */
+*:focus-visible{outline:none}
+.lnk:focus-visible,.fabX:focus-visible,.fabBtn:focus-visible,.fabNav a:focus-visible{position:relative;z-index:0}
+.lnk:focus-visible::before,.fabX:focus-visible::before,.fabBtn:focus-visible::before,.fabNav a:focus-visible::before{content:"";position:absolute;left:-9px;right:-9px;top:-5px;bottom:-5px;z-index:-1;transform:skewX(-16.7deg);background:linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.36));backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 1px rgba(255,255,255,0.85),0 1px 10px rgba(30,30,28,0.12)}
+@media (prefers-reduced-motion: reduce){.breathe{animation:none}.mph,.fl,.ic,.fabNav a,.burger line{transition:none}}
 </style>
 </helmet>
-<div onMouseMove="{{onMove}}" onMouseLeave="{{onLeave}}" onTouchStart="{{onTouchStart}}" onTouchMove="{{onTouchMove}}" style="position: relative; height: 100vh; height: 100svh; min-height: 600px; overflow: hidden; background: #F1F1EE; color: #1E1E1C; font-family: 'Inter', system-ui, sans-serif">
-<svg aria-hidden="true" viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" style="position: absolute; inset: 0; pointer-events: none">
+<div onMouseMove="{{onMove}}" onMouseLeave="{{onLeave}}" onTouchMove="{{onTouchMove}}" onTouchEnd="{{onTouchEnd}}" style="position: relative; min-height: 100lvh; display: flex; flex-direction: column; overflow-x: hidden; background: #F1F1EE; color: #1E1E1C; font-family: 'Inter', system-ui, sans-serif">
+<!-- page grain: covers the whole page and scrolls with it -->
+<svg aria-hidden="true" width="100%" height="100%" style="position: absolute; inset: 0; pointer-events: none"><filter id="cGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"></feTurbulence><feColorMatrix type="matrix" values="0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0.10 0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#cGrain)"></rect></svg>
+<!-- Bloblurb at the top of the page, behind the header (same blob as before: three layers, colours picked per visit, it follows
+     a finger or the phone's tilt and morphs / shifts colour as they travel). Drawn in a 390 × 844 frame scaled to the page width -->
+<svg aria-hidden="true" viewBox="0 0 390 844" style="position: absolute; left: 0; top: 0; width: 100%; height: auto; pointer-events: none; overflow: visible">
 <defs>
 <filter id="iXL" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="46" result="b"></feGaussianBlur><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="n"></feTurbulence><feDisplacementMap in="b" in2="n" scale="28" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
 <filter id="iL" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="26" result="b"></feGaussianBlur><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="n"></feTurbulence><feDisplacementMap in="b" in2="n" scale="22" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
 <filter id="iM" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="16" result="b"></feGaussianBlur><feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" seed="7" result="n"></feTurbulence><feDisplacementMap in="b" in2="n" scale="16" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
-<!-- hand-cut edge: a little roughness so shapes read as ink / paper, not vector -->
-<filter id="rough" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="4" result="n1"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n1" scale="{{roughness}}" xChannelSelector="R" yChannelSelector="G" result="w"></feDisplacementMap><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="1" seed="9" result="n2"></feTurbulence><feDisplacementMap in="w" in2="n2" scale="2.2" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
-<!-- worn rubber stamp: rough edge plus speckled gaps where the ink didn't take -->
-<filter id="worn" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="4" result="n1"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n1" scale="5" xChannelSelector="R" yChannelSelector="G" result="w"></feDisplacementMap><feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="11" result="sp"></feTurbulence><feColorMatrix in="sp" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -18 0 0 0 12.4" result="spA"></feColorMatrix><feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="1" seed="21" result="pa"></feTurbulence><feColorMatrix in="pa" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -12 0 0 0 11.2" result="paA"></feColorMatrix><feComposite in="spA" in2="paA" operator="in" result="keep"></feComposite><feComposite in="w" in2="keep" operator="in"></feComposite></filter>
-<filter id="softEdge" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="5"></feGaussianBlur></filter>
-<filter id="pGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"></feTurbulence><feColorMatrix type="matrix" values="0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0 0.3  0 0 0 0.10 0"></feColorMatrix></filter>
-<!-- inversion masks: the blob's body (same shape, same movement) decides where the illustration flips -->
-<mask id="inBlob" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="900"><g class="fl" style="transform: {{b.t}}"><path class="mph" d="{{b.mid}}" fill="#fff" filter="url(#softEdge)"></path></g></mask>
-<mask id="outBlob" maskUnits="userSpaceOnUse" x="0" y="0" width="1440" height="900"><rect width="1440" height="900" fill="#fff"></rect><g class="fl" style="transform: {{b.t}}"><path class="mph" d="{{b.mid}}" fill="#000" filter="url(#softEdge)"></path></g></mask>
 </defs>
 <g transform="translate(-78.0 -36.0) scale(0.7)">
-
-<!-- the blob (same three-layer, cursor-following blob as the contact page) -->
 <g class="fl" style="transform: {{b.t}}">
 <g class="breathe">
 <path class="mph" d="{{b.halo}}" fill="{{b.cHalo}}" filter="url(#iXL)" opacity="0.92"></path>
@@ -160,154 +68,78 @@ header .ico,header #hdrMenuG{visibility:hidden!important}
 <path class="mph" d="{{b.core}}" fill="{{b.cCore}}" filter="url(#iM)" opacity="0.85"></path>
 </g>
 </g>
-
-<!-- the illustration, drawn twice: in ink outside the blob, in the ground colour inside it (the inverse) -->
-<sc-for list="{{passes}}" as="ps" hint-placeholder-count="2">
-<g mask="url(#{{ps.mask}})" filter="url(#{{ps.filter}})">
-<sc-for list="{{ps.shapes}}" as="sh" hint-placeholder-count="20">
-<path transform="{{sh.tf}}" d="{{sh.d}}" fill="{{sh.fill}}" fill-rule="{{sh.rule}}" stroke="{{sh.stroke}}" stroke-width="{{sh.sw}}" stroke-linejoin="round" stroke-linecap="round" opacity="{{sh.o}}"><sc-for list="{{sh.anims}}" as="an" hint-placeholder-count="0"><animateTransform attributeName="transform" type="rotate" values="{{an.v}}" dur="{{an.dur}}" repeatCount="indefinite" additive="sum" calcMode="spline" keyTimes="0;0.5;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1"></animateTransform></sc-for></path>
-</sc-for>
 </g>
-</sc-for>
-</g>
-<rect width="390" height="844" filter="url(#pGrain)"></rect>
 </svg>
-
-<div data-pscroll="1" class="page" onScroll="{{onScrollF}}" style="position: absolute; inset: 0; z-index: 1; overflow-y: auto; display: grid; grid-template-rows: auto auto 1fr">
-<!-- scroll paging: contact is the end of the chain both ways, no paging back up to about (Nov 22, Ben) -->
-<header style="height: 11vh; min-height: 72px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; padding: 0 4vw">
-<a class="lnk" href="Mobile-Home.dc.html" aria-label="Ben Weiller — home" style="display: inline-block; font-family: 'Dirtbag TM', 'Inter', sans-serif; font-size: 44px; line-height: 1; letter-spacing: 0.03em; position: relative; top: 9px; text-decoration: none; color: #1E1E1C">BEN WEILLER</a>
-<div style="display: flex; align-items: center; gap: 26px">
-<nav id="hdrMenuG" aria-label="Main" class="drawer {{openClsG}}" style="display: flex; gap: 28px; align-items: center; font-size: 13px; line-height: 1; visibility: {{drawerVisG}}">
-<a class="nb" href="Mobile-Menu-List.dc.html" tabindex="{{tabG}}">/work</a>
-<a class="nb" href="https://www.instagram.com/un_finished_lines/" target="_blank" rel="noopener" tabindex="{{tabG}}">/@un_finished_lines</a>
-<a class="nb" href="Mobile-About.dc.html" tabindex="{{tabG}}">/who, me?</a>
-<a class="nb on" href="Mobile-Contact.dc.html" aria-current="page" tabindex="{{tabG}}">/contact</a>
-</nav>
-<button class="ico" type="button" onClick="{{toggleG}}" aria-expanded="{{openStrG}}" aria-controls="hdrMenuG" aria-label="{{icoLabelG}}" style="width: 48px; height: 48px; margin-right: -7px; padding: 0; border: 0; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center">
-<svg class="burger" width="33" height="27" viewBox="0 0 22 18" overflow="visible" aria-hidden="true"><line class="l1" x1="1" y1="17" x2="7.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l2" x1="8" y1="17" x2="14.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l3" x1="15" y1="17" x2="21.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line></svg>
-</button>
-</div>
+<!-- scroll paging: phone contact is the end of the chain both ways (no hand-off links) -->
+<!-- header: the wordmark (home); it scrolls away with the page. The "///" and back arrow are the fixed group below -->
+<header style="position: relative; height: 11vh; min-height: 72px; box-sizing: border-box; display: flex; align-items: center; padding: 0 16px">
+<a class="lnk" href="Mobile-Home.dc.html" aria-label="Ben Weiller — home" style="display: inline-block; font-family: 'Dirtbag TM', 'Inter', sans-serif; font-size: 44px; line-height: 1; letter-spacing: 0.03em; white-space: nowrap; position: relative; top: 9px; text-decoration: none; color: #1E1E1C">BEN WEILLER</a>
 </header>
-<main style="width: min(1120px, 90vw); margin: 0 auto; padding: 44vh 0 8vh">
-<section aria-label="Contact" style="max-width: 350px; margin-left: auto; margin-right: 70px">
+<!-- the links start halfway down the phone, just under Bloblurb's pale lower edge; "ask ahead" + the paragraph follow as a block
+     that starts a third of the way across the page and ends on the right gutter -->
+<main style="position: relative; padding: 39vh 16px 0">
+<nav aria-label="Contact links" style="display: flex; flex-direction: column; align-items: flex-start; gap: 8px">
+<a class="ic" href="https://www.linkedin.com/in/benjaminweiller/" target="_blank" rel="noopener" aria-label="Ben Weiller on LinkedIn" style="color: {{b.tDeep}}"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 14 14" style="display: block; flex: none"><rect width="14" height="14" rx="2" fill="currentColor"></rect><circle cx="3.6" cy="3.4" r="1.15" fill="#F1F1EE"></circle><rect x="2.6" y="5.3" width="2" height="6.2" fill="#F1F1EE"></rect><path d="M6.2 5.3h1.9v.9c.4-.7 1.1-1.1 2-1.1 1.5 0 2.2 1 2.2 2.7v3.7h-2V8.3c0-.8-.3-1.3-.95-1.3-.7 0-1.15.5-1.15 1.3v3.2H6.2z" fill="#F1F1EE"></path></svg><span aria-hidden="true">Ben Weiller</span></a>
+<a class="ic" href="mailto:bweiller2@gmail.com" aria-label="Email bweiller2@gmail.com" style="color: {{b.tMid}}"><svg aria-hidden="true" width="20" height="18" viewBox="0 0 20 18" style="display: block; flex: none"><rect x="1" y="3" width="18" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1.1"></rect><path d="M1.5 3.6 L10 10 L18.5 3.6" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"></path></svg><span aria-hidden="true">bweiller2@gmail.com</span></a>
+<a class="ic" href="https://drive.google.com/file/d/1mTToHY3NtLPFwvyO971khSHzdQX7BbZc/view?usp=sharing" target="_blank" rel="noopener" aria-label="Resumé (opens in Google Drive)" style="color: {{b.tPurple}}"><svg aria-hidden="true" width="20" height="18" viewBox="0 0 20 18" style="display: block; flex: none"><path d="M5 1.5 H12 L16 5.5 V16.5 H5 Z" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"></path><path d="M12 1.5 V5.5 H16" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"></path></svg><span aria-hidden="true">resumé</span></a>
+</nav>
+<section aria-label="Contact" style="margin: 38px 0 0 calc(33.333vw - 16px)">
 <h1 style="margin: 0; font-size: 13px; font-weight: 500; line-height: 1.5">ask ahead</h1>
-<p style="margin: 0; padding-top: 8px; font-size: 13px; line-height: 1.5">this is the part where I ask you to ask me for some fresh words or ideas. even if you just want to jam on some gig posters for your garage band that’s finally moving out of the garage-into another one.&nbsp; I’m <span class="here" style="position: relative; display: inline-block; color: #1E1E1C; transition: color 900ms ease"><span style="font-weight: 500">here</span><span id="hereIcons" style="position: absolute; left: 0; top: 100%; padding-top: 30px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; white-space: nowrap">
-<a class="ic" href="https://www.linkedin.com/in/benjaminweiller/" target="_blank" rel="noopener" aria-label="Ben Weiller on LinkedIn" style="display: flex; align-items: center; gap: 8px; text-decoration: none; color: {{b.tDeep}}; transition: color 900ms ease; font-size: 13px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 14 14" style="display: block; flex: none"><rect width="14" height="14" rx="2" fill="currentColor"></rect><circle cx="3.6" cy="3.4" r="1.15" fill="#F1F1EE"></circle><rect x="2.6" y="5.3" width="2" height="6.2" fill="#F1F1EE"></rect><path d="M6.2 5.3h1.9v.9c.4-.7 1.1-1.1 2-1.1 1.5 0 2.2 1 2.2 2.7v3.7h-2V8.3c0-.8-.3-1.3-.95-1.3-.7 0-1.15.5-1.15 1.3v3.2H6.2z" fill="#F1F1EE"></path></svg><span aria-hidden="true">Ben Weiller</span></a>
-<a class="ic" href="mailto:bweiller2@gmail.com" aria-label="Email bweiller2@gmail.com" style="display: flex; align-items: center; gap: 8px; text-decoration: none; color: {{b.tMid}}; transition: color 900ms ease; font-size: 13px"><svg aria-hidden="true" width="20" height="18" viewBox="0 0 20 18" style="display: block; flex: none"><rect x="1" y="3" width="18" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="1.1"></rect><path d="M1.5 3.6 L10 10 L18.5 3.6" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"></path></svg><span aria-hidden="true">bweiller2@gmail.com</span></a>
-<a class="ic" href="https://drive.google.com/file/d/1mTToHY3NtLPFwvyO971khSHzdQX7BbZc/view?usp=sharing" target="_blank" rel="noopener" aria-label="Resumé (opens in Google Drive)" style="display: flex; align-items: center; gap: 8px; text-decoration: none; color: {{b.tPurple}}; transition: color 900ms ease; font-size: 13px"><svg aria-hidden="true" width="20" height="18" viewBox="0 0 20 18" style="display: block; flex: none"><path d="M5 1.5 H12 L16 5.5 V16.5 H5 Z" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"></path><path d="M12 1.5 V5.5 H16" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"></path></svg><span aria-hidden="true">resumé</span></a>
-</span></span> for it.</p>
+<p style="margin: 0; padding-top: 8px; font-size: 13px; line-height: 1.5">this is the part where I ask you to ask me for some fresh words or ideas. even if you just want to jam on some gig posters for your garage band that’s finally moving out of the garage-into another one.&nbsp; I’m <span style="font-weight: 500">here</span> for it.</p>
 </section>
 </main>
-<!-- footer (Nov 24): the copyright line, the last thing on the page: at the very bottom of the screen when everything fits, below the copy when it doesn’t (it never sits over the text). Site type (Inter 13px / 1.5) in washed-out ink (the ink at half strength) -->
-<p class="copyr" style="align-self: end; margin: 0; padding: 24px 16px calc(16px + env(safe-area-inset-bottom)); font-size: 13px; line-height: 1.5; color: rgba(30, 30, 28, 0.5)">© Ben Weiller 2026</p>
-</div>
-<!-- sticky "///": appears once the header has scrolled away, plain like the header; its words open as a vertical stack -->
-<div class="fab {{fabCls}}" style="position: absolute; top: calc(max(5.5vh, 36px) - 24px); right: 9px; z-index: 8">
-<!-- back arrow (Nov 20; replaced a close ×; on every project page): sits just left of the "///", same thin ink line, takes you back to the menu; hidden while the menu words are open -->
-<a class="fabX" href="Mobile-Menu-List.dc.html" aria-label="Back to the menu" style="visibility: {{xVis}}"><svg width="26" height="22" viewBox="0 0 21 18" overflow="visible" aria-hidden="true"><line x1="1" y1="9" x2="20" y2="9" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line><line x1="1" y1="9" x2="8" y2="2" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line><line x1="1" y1="9" x2="8" y2="16" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line></svg></a>
-<button class="fabBtn" type="button" onClick="{{toggleF}}" aria-expanded="{{openStrF}}" aria-controls="fabMenu" aria-label="{{labelF}}" tabindex="{{fabTab}}">
-<svg class="burger" width="33" height="27" viewBox="0 0 22 18" overflow="visible" aria-hidden="true"><line class="l1" x1="1" y1="17" x2="7.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l2" x1="8" y1="17" x2="14.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l3" x1="15" y1="17" x2="21.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line></svg>
+<!-- footer: the copyright line, the last thing on the page, at the very bottom of the phone (Inter 13px / 1.5, washed-out ink) -->
+<p class="copyr" style="position: relative; margin: auto 0 0; padding: 24px 16px calc(16px + env(safe-area-inset-bottom)); font-size: 13px; line-height: 1.5; color: rgba(30, 30, 28, 0.5)">© Ben Weiller 2026</p>
+<!-- the fixed "///" with the back arrow (to the menu) beside it; hidden arrow while the words are open -->
+<div class="fab">
+<a class="fabX" href="Mobile-Menu-List.dc.html" aria-label="Back to the menu" style="visibility: {{xVis}}"><svg width="26" height="22" viewBox="0 0 21 18" overflow="visible" aria-hidden="true"><path d="M1 9 H20 M1 9 L8 2 M1 9 L8 16" fill="none" stroke="#FFFFFF" stroke-width="0.95" stroke-linecap="round"></path></svg></a>
+<button class="fabBtn" type="button" onClick="{{toggle}}" aria-expanded="{{openStr}}" aria-controls="fabMenu" aria-label="{{label}}">
+<svg class="burger" width="33" height="27" viewBox="0 0 22 18" overflow="visible" aria-hidden="true"><line class="l1" x1="1" y1="17" x2="7.5" y2="1" stroke-width="0.85"></line><line class="l2" x1="8" y1="17" x2="14.5" y2="1" stroke-width="0.85"></line><line class="l3" x1="15" y1="17" x2="21.5" y2="1" stroke-width="0.85"></line></svg>
 </button>
-<nav id="fabMenu" aria-label="Main" class="fabNav {{openClsF}}" style="visibility: {{visF}}; font-size: 14px">
-<a href="Mobile-Menu-List.dc.html" tabindex="{{tabF}}">/work</a>
-<a href="https://www.instagram.com/un_finished_lines/" target="_blank" rel="noopener" tabindex="{{tabF}}">/@un_finished_lines</a>
-<a href="Mobile-About.dc.html" tabindex="{{tabF}}">/who, me?</a>
-<a href="Mobile-Contact.dc.html" tabindex="{{tabF}}">/contact</a>
+<nav id="fabMenu" aria-label="Main" class="fabNav {{openCls}}" style="visibility: {{navVis}}">
+<a href="Mobile-Menu-List.dc.html" tabindex="{{navTab}}">/work</a>
+<a href="https://www.instagram.com/un_finished_lines/" target="_blank" rel="noopener" tabindex="{{navTab}}">/@un_finished_lines</a>
+<a href="Mobile-About.dc.html" tabindex="{{navTab}}">/who, me?</a>
+<a href="Mobile-Contact.dc.html" aria-current="page" tabindex="{{navTab}}">/contact</a>
 </nav>
 </div>
-
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
 class Component extends DCLogic {
-  // scroll paging (Nov 21), the same hand-off as homepage → menu: scrolling on past the end of this page opens the next one
-  // (menu → about → contact) and scrolling back past the top opens the previous one (contact → about → menu → home).
-  // wheel / trackpad, a swipe, or the keys (↓ / page down / space, ↑ / page up). On a page that scrolls it only hands off once
-  // you are at its top or bottom edge and scroll again after a pause, so a fling that reaches the end doesn't carry on into the next page.
-  psMount() {
-    const sc = () => document.querySelector('[data-pscroll]');
-    const scrolls = () => { const s = sc(); return !!s && s.scrollHeight > s.clientHeight + 2; };
-    const atTop = () => { const s = sc(); return !s || s.scrollTop <= 1; };
-    const atBot = () => { const s = sc(); return !s || s.scrollTop + s.clientHeight >= s.scrollHeight - 2; };
-    const go = (dir) => {
-      const now = Date.now(); if (this.psLast && now - this.psLast < 800) return;
-      const a = document.querySelector('a[data-next="' + dir + '"]'); if (!a) return;
-      this.psLast = now; this.psAcc = 0; a.click();
-    };
-    this.psAcc = 0; this.psEdge = 0; this.psDir = null; this.psArmed = false; this.psT = 0;
-    this.psWheel = (e) => {
-      if (e.ctrlKey || Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
-      const down = e.deltaY > 0, edge = down ? atBot() : atTop(), now = Date.now(), gap = now - (this.psT || 0);
-      this.psT = now;
-      if (!edge) { this.psAcc = 0; this.psEdge = 0; this.psArmed = false; return; }
-      // a page that fits: hand off straight away. A page that scrolls: after a brief pause at its edge or a beat of extra scroll there (0.35s), so a hard fling doesn't fly straight through
-      if (!scrolls()) this.psArmed = true;
-      else if (!this.psEdge) { this.psEdge = now; this.psArmed = false; }
-      else if (gap > 80 || now - this.psEdge > 150) this.psArmed = true; // flows on: a blink at the edge, then the same 120px push as the homepage
-      if (!this.psArmed) return;
-      if (this.psDir !== down) { this.psAcc = 0; this.psDir = down; }
-      this.psAcc += Math.abs(e.deltaY);
-      if (this.psAcc > 120) go(down ? 'next' : 'prev');
-    };
-    this.psTs = (e) => { const t = e.touches && e.touches[0]; if (!t) return; this.psY = t.clientY; this.psX = t.clientX; this.psTop = atTop(); this.psBot = atBot(); };
-    this.psTe = (e) => {
-      const t = e.changedTouches && e.changedTouches[0]; if (!t || this.psY == null) return;
-      const dy = this.psY - t.clientY, dx = this.psX - t.clientX; this.psY = null;
-      if (Math.abs(dy) < 60 || Math.abs(dx) > Math.abs(dy)) return;
-      if (dy > 0 && this.psBot && atBot()) go('next');
-      else if (dy < 0 && this.psTop && atTop()) go('prev');
-    };
-    this.psKey = (e) => {
-      if (e.target && e.target.closest && e.target.closest('a, button, input, textarea')) return;
-      if (['ArrowDown', 'PageDown', ' ', 'Spacebar'].indexOf(e.key) >= 0 && atBot() && document.querySelector('a[data-next="next"]')) { e.preventDefault(); go('next'); }
-      else if (['ArrowUp', 'PageUp'].indexOf(e.key) >= 0 && atTop() && document.querySelector('a[data-next="prev"]')) { e.preventDefault(); go('prev'); }
-    };
-    window.addEventListener('wheel', this.psWheel, { passive: true });
-    window.addEventListener('touchstart', this.psTs, { passive: true });
-    window.addEventListener('touchend', this.psTe, { passive: true });
-    window.addEventListener('keydown', this.psKey);
-  }
-  psUnmount() {
-    window.removeEventListener('wheel', this.psWheel); window.removeEventListener('touchstart', this.psTs);
-    window.removeEventListener('touchend', this.psTe); window.removeEventListener('keydown', this.psKey);
-  }
-  constructor(props) { super(props); this.state = { style: 2, subject: 0, openG: false, seed: Math.floor(Math.random() * 1e6), mx: null, my: null, travel: 0 }; this.pend = null; this.raf = null; }
+  constructor(props) { super(props); this.state = { open: false, seed: Math.floor(Math.random() * 1e6), mx: null, my: null, travel: 0 }; this.pend = null; this.raf = null; }
   componentDidMount() {
-    this.psMount();
+    // tilting the phone plays the part of the finger (blob units, the 1440-wide drawing the blob is made in)
     this.onTilt = (e) => {
       if (e.gamma == null || e.beta == null) return;
-      const nx = 390 + Math.max(-1, Math.min(1, e.gamma / 28)) * 320, ny = 380 + Math.max(-1, Math.min(1, (e.beta - 40) / 28)) * 260;
-      const d = this.lastP ? Math.min(90, Math.hypot(nx - this.lastP[0], ny - this.lastP[1])) : 0; this.lastP = [nx, ny];
-      this.pend = { mx: nx, my: ny, travel: (this.pend && this.pend.travel !== undefined ? this.pend.travel : (this.state.travel || 0)) + d };
-      if (this.raf) return;
-      this.raf = requestAnimationFrame(() => { this.raf = null; if (this.pend) { const q = this.pend; this.pend = null; this.setState(q); } });
+      this.point(390 + Math.max(-1, Math.min(1, e.gamma / 28)) * 320, 380 + Math.max(-1, Math.min(1, (e.beta - 40) / 28)) * 260, 1);
     };
     if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission !== 'function') window.addEventListener('deviceorientation', this.onTilt);
   }
-  // iPhone asks once for motion access, and only from a touch
+  componentWillUnmount() { if (this.onTilt) window.removeEventListener('deviceorientation', this.onTilt); cancelAnimationFrame(this.raf); }
+  // an iPhone asks once for motion access, and only from the end of a touch
   askTilt() {
     if (this.tiltAsked) return; this.tiltAsked = true;
     if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') DeviceOrientationEvent.requestPermission().then((r) => { if (r === 'granted') window.addEventListener('deviceorientation', this.onTilt); }).catch(() => {});
   }
-  componentWillUnmount() { this.psUnmount(); if (this.onTilt) window.removeEventListener('deviceorientation', this.onTilt); cancelAnimationFrame(this.raf); }
-  // Safari draws its own strips behind the clock and around the toolbar and nothing on the page can show there (iOS 26), so the
-  // blob never goes near them (Ben, Nov 22): it follows the finger / tilt only as far as its whole outline (blur and breathing
-  // included; [path, blur reach] pairs in drawing units) stays inside the visible screen, and an outline too tall to fit is drawn
-  // a little smaller, around its centre. Drawing → phone: y 0.7 − 36 (the group transform); the svg is drawn "slice".
-  keepIn(layers, cx, cy, dx, dy) {
-    let y0 = 1e9, y1 = -1e9;
-    layers.forEach(([d, blur]) => { const n = d.match(/-?\d+(\.\d+)?/g); for (let i = 1; i < n.length; i += 2) { y0 = Math.min(y0, +n[i] - blur); y1 = Math.max(y1, +n[i] + blur); } });
-    const W = window.innerWidth || 390, H = window.innerHeight || 844, sc = Math.max(W / 390, H / 844);
-    const vTop = ((422 - H / sc / 2 + 6) + 36) / 0.7, vBot = ((422 + H / sc / 2 - 6) + 36) / 0.7; // visible screen, drawing units
-    const up = (cy - y0) * 1.04, down = (y1 - cy) * 1.04, k = Math.min(1, (vBot - vTop) / (up + down));
-    dy = Math.max(vTop - cy + k * up, Math.min(vBot - cy - k * down, dy));
-    return 'translate(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px)' + (k < 1 ? ' translate(' + cx + 'px,' + cy + 'px) scale(' + k.toFixed(3) + ') translate(' + (-cx) + 'px,' + (-cy) + 'px)' : '');
+  // a pointer position in blob units; its travel morphs Bloblurb and shifts its colours (rate: 1 for tilt / cursor, 0.5 for a
+  // finger drag — Nov 24, Ben: slower on this page). One state update per frame.
+  point(nx, ny, rate) {
+    const d = this.lastP ? Math.min(90, Math.hypot(nx - this.lastP[0], ny - this.lastP[1])) * rate : 0; this.lastP = [nx, ny];
+    this.pend = { mx: nx, my: ny, travel: (this.pend ? this.pend.travel : this.state.travel) + d };
+    if (this.raf) return;
+    this.raf = requestAnimationFrame(() => { this.raf = null; const q = this.pend; this.pend = null; if (q) this.setState(q); });
+  }
+  // page position → blob units (the drawing is scaled 0.7 and moved −78 / −36 inside the 390-wide frame)
+  toBlob(e, p) {
+    const k = 390 / e.currentTarget.getBoundingClientRect().width;
+    return [(p.clientX * k + 78) / 0.7, (p.pageY * k + 36) / 0.7];
   }
   rng(seed) {
     let a = seed >>> 0;
     return function () { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
-  }  sblob(seed, cx, cy, rx, ry, rot, wob, n, t) {
+  }
+  sblob(seed, cx, cy, rx, ry, rot, wob, n, t) {
     const r = this.rng(seed), harm = [];
     for (let k = 2; k <= 6; k++) {
       const a0 = (r() * 2 - 1) * wob / (k * 0.7), p0 = r() * 6.283, sp = (r() * 2 - 1) * (0.5 + r() * 0.8), q = r() * 6.283;
@@ -327,237 +159,34 @@ class Component extends DCLogic {
       d += ' C' + (p1[0] + (p2[0] - p0[0]) / 6).toFixed(1) + ' ' + (p1[1] + (p2[1] - p0[1]) / 6).toFixed(1) + ' ' + (p2[0] - (p3[0] - p1[0]) / 6).toFixed(1) + ' ' + (p2[1] - (p3[1] - p1[1]) / 6).toFixed(1) + ' ' + p2[0].toFixed(1) + ' ' + p2[1].toFixed(1);
     }
     return d + ' Z';
-  }  circ(r) { return 'M' + r + ' 0 A' + r + ' ' + r + ' 0 1 0 ' + (-r) + ' 0 A' + r + ' ' + r + ' 0 1 0 ' + r + ' 0 Z'; }
+  }
   renderVals() {
-    const ST = [
-      // A: solid ink silhouette, hand-cut edge; details cut out of it
-      { label: 'A · ink silhouette', mode: 'fill', rough: 6 },
-      // B: brush-marker outline, slightly uneven, like quick hand drawing
-      { label: 'B · marker line', mode: 'line', rough: 5 },
-      // A+B: alternates solid and outlined, like a solid bubble answering an outlined one
-      { label: 'A+B · mixed', mode: 'mix', rough: 5.5 }
-    ];
-    const SUB = ['cluster · stamps', 'cluster · bubbles (saved)', 'bubbles', 'bubbles → ear', 'bubbles → receiver', 'bubbles → ear drums', 'dart → bullseye'];
-    const si = this.state.style, st = ST[si], su = this.state.subject || 0, INK = '#1E1E1C', G = '#F1F1EE';
-    const sd = this.state.seed, r = this.rng(sd + 3);
+    const o = this.state.open, sd = this.state.seed, r = this.rng(sd + 3);
     const T = (this.state.travel || 0) / 700, H = r() * 360 + 140 * Math.sin(T * 0.8 + r() * 6), H2 = H + (r() < 0.5 ? 1 : -1) * (60 + r() * 120) + 90 * Math.sin(T * 0.6 + 2), H3 = H - 25 + 50 * Math.sin(T * 1.1 + 4);
     const hsl = (h, sa, l) => 'hsl(' + (((h % 360) + 360) % 360).toFixed(1) + ',' + sa.toFixed(1) + '%,' + l.toFixed(1) + '%)';
     const cx = 390, cy = 380, t = (this.state.travel || 0) / 260;
-    const rot = (r() - 0.5) * 1.6, rx = (165 + r() * 30) * 0.85, ry = (135 + r() * 30) * 0.85; // a touch smaller here, so it stays under the copy
+    const rot = (r() - 0.5) * 1.6, rx = (165 + r() * 30) * 0.85, ry = (135 + r() * 30) * 0.85;
     const b = {
       halo: this.sblob(sd + 1, cx, cy, rx * 1.35, ry * 1.35, rot, 0.28, 10, t),
       mid: this.sblob(sd + 3, cx, cy, rx, ry, rot, 0.34, 10, t * 1.1),
       core: this.sblob(sd + 4, cx - 30, cy + 8, rx * 0.55, ry * 0.5, rot - 0.4, 0.38, 9, t * 1.2),
       cHalo: hsl(H2, 62 + r() * 22, 82 + r() * 7), cMid: hsl(H, 40 + r() * 30, 42 + r() * 14), cCore: hsl(H3, 48 + r() * 24, 26 + r() * 10)
     };
-    // text colours from the blob (here / links): body hue, halo hue deepened (purple), core hue (deep)
+    // text colours from the blob (links): body hue, halo hue deepened (purple), core hue (deep)
     b.tMid = hsl(H, 55, 34); b.tPurple = hsl(H2, 50, 44); b.tDeep = hsl(H3, 60, 24);
-    const reduce = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const on = this.state.mx !== null, K = 0.75;
-    // follows the cursor as one, but stops short of the ASK AHEAD copy on the right, and stays inside the visible screen (keepIn)
-    const ftx = on ? Math.min(cx + (this.state.mx - cx) * K, 620) : cx, fty = on ? cy + (this.state.my - cy) * K : cy;
-    b.t = this.keepIn([[b.halo, 92], [b.mid, 52], [b.core, 32]], cx, cy, reduce || !on ? 0 : ftx - cx, reduce || !on ? 0 : fty - cy);
-
-    // ---------- drawings (each centred on 0,0) ----------
-    // kinds: body = the main mass; cut = strokes drawn into a body; dot = small filled marks inside a body; line = free strokes
-    const C = (x, y, rr) => 'M' + (x + rr) + ' ' + y + ' A' + rr + ' ' + rr + ' 0 1 0 ' + (x - rr) + ' ' + y + ' A' + rr + ' ' + rr + ' 0 1 0 ' + (x + rr) + ' ' + y + ' Z';
-    const E = (x, y, ax, ay) => 'M' + (x + ax) + ' ' + y + ' A' + ax + ' ' + ay + ' 0 1 0 ' + (x - ax) + ' ' + y + ' A' + ax + ' ' + ay + ' 0 1 0 ' + (x + ax) + ' ' + y + ' Z';
-    const star = (x, y, k) => { const p = (a, b2) => (x + a * k).toFixed(1) + ' ' + (y + b2 * k).toFixed(1); return 'M' + p(0, -16) + ' C' + p(2, -4) + ' ' + p(4, -2) + ' ' + p(16, 0) + ' C' + p(4, 2) + ' ' + p(2, 4) + ' ' + p(0, 16) + ' C' + p(-2, 4) + ' ' + p(-4, 2) + ' ' + p(-16, 0) + ' C' + p(-4, -2) + ' ' + p(-2, -4) + ' ' + p(0, -16) + ' Z'; };
-    const BUB = {
-      round: 'M-6 38 C-30 38 -50 22 -50 0 C-50 -24 -26 -40 0 -40 C26 -40 50 -24 50 0 C50 24 28 40 4 40 C-2 46 -14 54 -28 56 C-20 50 -14 44 -6 38 Z',
-      cloud: 'M-40 10 A18 18 0 0 1 -30 -20 A22 22 0 0 1 4 -36 A22 22 0 0 1 36 -18 A18 18 0 0 1 40 14 A20 20 0 0 1 10 34 A22 22 0 0 1 -28 30 A16 16 0 0 1 -40 10 Z ' + C(-46, 44, 7) + ' ' + C(-58, 58, 4),
-      oval: 'M-58 0 C-58 -26 -30 -36 0 -36 C32 -36 58 -26 58 0 C58 24 34 34 4 34 L-16 34 L-34 50 L-30 31 C-48 27 -58 16 -58 0 Z',
-      box: 'M-44 -34 L44 -34 Q54 -34 54 -24 L54 22 Q54 32 44 32 L-10 32 L-28 48 L-24 32 L-44 32 Q-54 32 -54 22 L-54 -24 Q-54 -34 -44 -34 Z'
-    };
-    // four bubbles that change shape and contents as they travel: typing dots → a sparkle → a tangled thought → a spiral
-    const bubbles = [
-      [{ k: 'body', d: BUB.round }, { k: 'dot', d: C(-16, 0, 4.5) + ' ' + C(0, 0, 4.5) + ' ' + C(16, 0, 4.5) }],
-      [{ k: 'body', d: BUB.cloud }, { k: 'dot', d: star(0, 0, 1.1) }],
-      [{ k: 'body', d: BUB.oval }, { k: 'cut', d: 'M-22 4 C-26 -14 10 -20 16 -4 C20 10 -12 16 -16 2 C-20 -12 22 -14 24 4 C26 18 -8 18 -6 6 C-4 -6 14 -4 10 6', w: 3.2 }],
-      // last bubble: a hand-drawn !?
-      [{ k: 'body', d: BUB.box }, { k: 'cut', d: 'M-14 -17 L-12 5 M3 -11 C4 -22 23 -23 23 -10 C23 -2 12 0 12 7', w: 4.2 }, { k: 'dot', d: C(-11.5, 15, 3.2) + ' ' + C(12, 16, 3.2) }]
-    ];
-    const EAR_OUT = 'M-30 -40 C-30 -66 0 -78 22 -70 C46 -62 54 -34 46 -12 C40 4 26 12 22 30 C18 50 4 64 -12 62 C-26 60 -30 48 -24 40 C-20 34 -14 30 -16 20 C-18 10 -30 0 -30 -40 Z';
-    const EAR_IN = 'M-12 -34 C-6 -54 24 -52 28 -30 C30 -14 16 -6 10 6 C6 14 -2 14 -4 6';
-    const ear = (x, y, k) => [{ k: 'body', d: EAR_OUT, tf: 'translate(' + x + ' ' + y + ') scale(' + k + ')' }, { k: 'cut', d: EAR_IN, w: 6, tf: 'translate(' + x + ' ' + y + ') scale(' + k + ')' }, { k: 'dot', d: C(-12, -6, 5), tf: 'translate(' + x + ' ' + y + ') scale(' + k + ')' }];
-    const RECEIVERS = {
-      ear: ear(0, 0, 1.25),
-      // an old telephone handset, cord curling down
-      receiver: [
-        { k: 'body', d: 'M-80 12 L-30 12 L-30 4 C-18 -24 18 -24 30 4 L30 12 L80 12 C82 0 76 -12 62 -15 C42 -60 -42 -60 -62 -15 C-76 -12 -82 0 -80 12 Z' },
-        { k: 'dot', d: C(-64, 4, 2.6) + ' ' + C(-55, 4, 2.6) + ' ' + C(-46, 4, 2.6) + ' ' + C(46, 4, 2.6) + ' ' + C(55, 4, 2.6) + ' ' + C(64, 4, 2.6) },
-        { k: 'line', d: 'M64 14 C74 26 56 32 66 42 C76 52 58 58 68 68 C78 78 60 84 70 94', w: 3 }
-      ],
-      // a little kit: kick drum with an ear on its face, two ear toms, a cymbal on a stand
-      drums: [
-        { k: 'body', d: C(0, 40, 54) }, { k: 'cut', d: EAR_IN, w: 5, tf: 'translate(4 46) scale(0.75)' },
-        { k: 'body', d: EAR_OUT, tf: 'translate(-40 -36) scale(0.52) rotate(-14)' }, { k: 'cut', d: EAR_IN, w: 6, tf: 'translate(-40 -36) scale(0.52) rotate(-14)' },
-        { k: 'body', d: EAR_OUT, tf: 'translate(36 -40) scale(0.48) rotate(12)' }, { k: 'cut', d: EAR_IN, w: 6, tf: 'translate(36 -40) scale(0.48) rotate(12)' },
-        { k: 'body', d: E(-104, -40, 36, 6) }, { k: 'line', d: 'M-104 -34 L-104 94 M-118 94 L-90 94', w: 3 },
-        { k: 'line', d: 'M-30 92 L-40 104 M30 92 L40 104', w: 3 }
-      ],
-      dart: []
-    };
-    const DART = [
-      { k: 'body', d: 'M64 0 C50 -7 30 -10 -28 -9 L-44 -28 L-60 -28 L-48 -8 L-52 0 L-48 8 L-60 28 L-44 28 L-28 9 C30 10 50 7 64 0 Z' },
-      { k: 'body', d: 'M-54 -6 C-66 -12 -78 -3 -96 0 C-78 3 -66 12 -54 6 C-59 3 -59 -3 -54 -6 Z', flame: 1 },
-      { k: 'line', d: 'M-108 -14 L-150 -14 M-112 0 L-176 0 M-108 14 L-140 14', w: 2, flame: 1 }
-    ];
-    // ---------- composition: four travellers on an arc into the receiver ----------
-    const P = [[290, 630, -18, 0.86], [510, 555, -12, 0.94], [730, 480, -6, 1.02], [950, 410, -2, 1.1]];
-    const BS = 1.45; // bubbles drawn a bit larger than the darts
-    const key = ['stampN', 'cluster', 'none', 'ear', 'receiver', 'drums', 'dart'][su];
-    const stamp = key === 'stampN';
-    let items = [];
-    const CL = [
-      [{ k: 'body', d: 'M-6 38 C-30 38 -50 22 -50 0 C-50 -24 -26 -40 0 -40 C26 -40 50 -24 50 0 C50 24 28 40 4 40 C-2 46 -14 54 -28 56 C-20 50 -14 44 -6 38 Z' }, { k: 'dot', d: C(-16, 0, 4.5) + ' ' + C(0, 0, 4.5) + ' ' + C(16, 0, 4.5) }],
-      [{ k: 'body', d: 'M-40 10 A18 18 0 0 1 -30 -20 A22 22 0 0 1 4 -36 A22 22 0 0 1 36 -18 A18 18 0 0 1 40 14 A20 20 0 0 1 10 34 A22 22 0 0 1 -28 30 A16 16 0 0 1 -40 10 Z ' + C(-46, 44, 7) + ' ' + C(-58, 58, 4) }, { k: 'dot', d: star(-6, -4, 1.05) + ' ' + star(18, -15, 0.48) + ' ' + star(17, 13, 0.58) + ' ' + star(-24, 15, 0.38) + ' ' + star(4, 20, 0.3) }],
-      [{ k: 'body', d: 'M-58 0 C-58 -26 -30 -36 0 -36 C32 -36 58 -26 58 0 C58 24 34 34 4 34 L-16 34 L-34 50 L-30 31 C-48 27 -58 16 -58 0 Z' }, { k: 'dot', d: 'M-21.8 22 L-18.2 22 L-18.8 -8 L-21.2 -8 Z M-1.8 22 L1.8 22 L1.2 -14 L-1.2 -14 Z M17.2 22 L20.8 22 L20.2 -5 L17.8 -5 Z' + ' ' + E(-25, -10, 4.2, 3) + ' ' + E(-16, -12, 4.5, 3.2) + ' ' + E(-21, -17, 4, 3.4) + ' ' + E(-14, -4, 3.6, 2.6) + ' ' + E(-26, -2, 3.4, 2.6) + ' ' + E(-19, -6, 3.6, 2.8) + ' ' + E(-5, -16, 4.2, 3) + ' ' + E(4, -18, 4.5, 3.2) + ' ' + E(-1, -23, 4, 3.4) + ' ' + E(6, -10, 3.6, 2.6) + ' ' + E(-6, -8, 3.4, 2.6) + ' ' + E(1, -12, 3.6, 2.8) + ' ' + E(14, -7, 4.2, 3) + ' ' + E(23, -9, 4.5, 3.2) + ' ' + E(18, -14, 4, 3.4) + ' ' + E(25, -1, 3.6, 2.6) + ' ' + E(13, 1, 3.4, 2.6) + ' ' + E(20, -3, 3.6, 2.8) }, { k: 'ink', d: 'M-21.8 15.4 L-19.4 15.4 M-20.6 8.5 L-18.2 8.5 M-21.8 1.6 L-20 1.6 M-1.8 14.1 L0.6 14.1 M-0.6 5.8 L1.8 5.8 M-1.8 -2.5 L0 -2.5 M17.2 16.1 L19.6 16.1 M18.4 9.8 L20.8 9.8 M17.2 3.6 L19 3.6', w: 1.3 }, { k: 'cut', d: 'M-32 23 L32 23', w: 2 }],
-      [{ k: 'body', d: 'M-44 -34 L44 -34 Q54 -34 54 -24 L54 22 Q54 32 44 32 L-10 32 L-28 48 L-24 32 L-44 32 Q-54 32 -54 22 L-54 -24 Q-54 -34 -44 -34 Z' }, { k: 'cut', d: 'M-29 -11 C-28 -22 -11 -23 -11 -10 C-11 -2 -20 0 -20 7 M0 -17 L2 5 M11 -11 C12 -22 29 -23 29 -10 C29 -2 20 0 20 7', w: 4.2 }, { k: 'dot', d: C(-20, 16, 3.2) + ' ' + C(2.5, 15, 3.2) + ' ' + C(20, 16, 3.2) }]
-      ,
-      // a row of eyeballs, pupils glancing toward the cursor
-      [{ k: 'body', d: 'M-40 -32 L40 -32 C58 -32 66 -18 66 -2 C66 16 56 30 38 30 L18 30 L28 48 L4 30 L-40 30 C-58 30 -66 16 -66 -2 C-66 -18 -58 -32 -40 -32 Z' }, { k: 'dot', ring: true, d: C(-36, -2, 10.5) + ' ' + C(-12, -2, 10.5) + ' ' + C(12, -2, 10.5) + ' ' + C(36, -2, 10.5) }, { k: 'pupil', eyes: [-36, -12, 12, 36] }]
-      ,
-      // a dead devil fish: x for an eye, little horns, a pointed devil tail; soft rounded fins
-      [{ k: 'body', d: 'M-6 38 C-30 38 -50 22 -50 0 C-50 -24 -26 -40 0 -40 C26 -40 50 -24 50 0 C50 24 28 40 4 40 C-2 46 -14 54 -28 56 C-20 50 -14 44 -6 38 Z' },
-       { k: 'dot', d: 'M-36 2 C-29 -13 -3 -16 12 -7 C17 -12 25 -15 29 -12 C27 -7 25 -3 25 1 C25 5 27 9 29 14 C25 17 17 15 12 10 C-3 19 -29 17 -36 2 Z' },
-       { k: 'dot', d: 'M-27 -5 C-31 -12 -30 -19 -25 -23 C-25 -17 -23 -12 -19 -8 Z M-16 -9 C-18 -15 -15 -22 -9 -24 C-11 -19 -11 -14 -9 -9 Z' },
-       { k: 'cut', d: 'M27 2 C35 4 39 10 37 17', w: 2 },
-       { k: 'dot', d: 'M37 15 L42 22 L33 23 Z' },
-       { k: 'ink', d: 'M-26.5 -5 L-19.5 2 M-19.5 -5 L-26.5 2', w: 2.2 },
-       { k: 'ink', d: 'M-9 -7 C-6.5 -2.5 -6.5 6.5 -9 11', w: 1.3 },
-       { k: 'ink', d: 'M-36 2 C-33 4 -31 4 -29 3', w: 1.4 }],
-      // a road bicycle (drop bars)
-      [{ k: 'body', d: 'M-58 0 C-58 -26 -30 -36 0 -36 C32 -36 58 -26 58 0 C58 24 34 34 4 34 L-16 34 L-34 50 L-30 31 C-48 27 -58 16 -58 0 Z' }, { k: 'cut', d: C(-24, 8, 14) + ' ' + C(24, 8, 14) + ' M-24 8 L-7 -11 L15 -11 L1 8 Z M1 8 L-7 -11 M15 -11 L24 8 M15 -11 L18 -16 C25 -17 27 -10 22 -7 M-13 -14 L-1 -14', w: 2.8 }, { k: 'spokes', wheels: [[-24, 8, 1], [24, 8, 1.4]] }],
-      // a place setting: fork, a plate with a ? on it, knife (what's on the menu?)
-      [{ k: 'body', d: 'M-58 0 C-58 -26 -30 -36 0 -36 C32 -36 58 -26 58 0 C58 24 34 34 4 34 L-16 34 L-34 50 L-30 31 C-48 27 -58 16 -58 0 Z' },
-       { k: 'dot', d: C(0, -1, 19) },
-       { k: 'ink', d: C(0, -1, 13.5), w: 1.1 },
-       { k: 'ink', d: 'M-4.6 -7.5 C-4.6 -13 4.6 -13 4.6 -7.5 C4.6 -3.5 0 -2.8 0 2.2', w: 2.6 },
-       { k: 'mainfill', d: C(0, 7, 1.7) },
-       { k: 'cut', d: 'M-35 -19 L-35 -9 M-31 -19 L-31 -9 M-27 -19 L-27 -9 M-35 -9 C-35 -4 -27 -4 -27 -9', w: 1.6 },
-       { k: 'cut', d: 'M-31 -5 L-31 19', w: 2.8 },
-       { k: 'dot', d: 'M29 -21 C36 -17 36 -6 33 -2 L29 -2 Z' },
-       { k: 'cut', d: 'M31 -2 L31 19', w: 2.8 }]
-    ];
-
-    // ---------- the cluster as ink stamps / micrologos (no speech bubbles) ----------
-    // same seven motifs and spots as the cluster, each just the inked motif (no frame), printed with a worn rubber-stamp texture
-    const RR = (w, h, q) => { const x = w / 2, y = h / 2; return 'M' + (-x + q) + ' ' + (-y) + ' L' + (x - q) + ' ' + (-y) + ' Q' + x + ' ' + (-y) + ' ' + x + ' ' + (-y + q) + ' L' + x + ' ' + (y - q) + ' Q' + x + ' ' + y + ' ' + (x - q) + ' ' + y + ' L' + (-x + q) + ' ' + y + ' Q' + (-x) + ' ' + y + ' ' + (-x) + ' ' + (y - q) + ' L' + (-x) + ' ' + (-y + q) + ' Q' + (-x) + ' ' + (-y) + ' ' + (-x + q) + ' ' + (-y) + ' Z'; };
-    const TRI = 'M-7 -41 Q0 -52 7 -41 L45 27 Q51 39 37 39 L-37 39 Q-51 39 -45 27 Z';
-    const TRI2 = 'M-8 -49 Q0 -61 8 -49 L53 31 Q60 45 44 45 L-44 45 Q-60 45 -53 31 Z';
-    const EYES = [-36, -12, 12, 36];
-    const FISH = CL[5][1].d, HORNS = CL[5][2].d, FTAIL = CL[5][3].d, FARROW = CL[5][4].d, FX = CL[5][5].d, FGILL = CL[5][6].d;
-    const BIKE = CL[6][1].d;
-    const spokes = [[-24, 8], [24, 8]].map((w) => { let o = ''; for (let q = 0; q < 3; q++) { const an = 0.4 + q * Math.PI / 3, dx = Math.cos(an) * 12, dy = Math.sin(an) * 12; o += 'M' + (w[0] - dx).toFixed(1) + ' ' + (w[1] - dy).toFixed(1) + ' L' + (w[0] + dx).toFixed(1) + ' ' + (w[1] + dy).toFixed(1) + ' '; } return o; }).join('');
-    const FORK = 'M-35 -19 L-35 -9 M-31 -19 L-31 -9 M-27 -19 L-27 -9 M-35 -9 C-35 -4 -27 -4 -27 -9 M-31 -5 L-31 19', KNIFE = 'M29 -21 C36 -17 36 -6 33 -2 L29 -2 Z', KNIFEH = 'M31 -2 L31 19';
-    const QM = 'M-4.6 -7.5 C-4.6 -13 4.6 -13 4.6 -7.5 C4.6 -3.5 0 -2.8 0 2.2';
-    // fish motion (SVG rotate: angle, pivot x, pivot y in the fish's own drawing); off for reduced motion
-    const FLOP = [], WAG = []; // stamps are static (Nov 20, mirrored from the live site)
-    const SN = [
-      null,
-      null, // the sparkles in the centre of the cluster removed (user's call, Nov 20); the five stamps keep their ring around the empty centre
-      [{ k: 'mainfill', d: CL[2][1].d, sub: 'scale(1.35)' }, { k: 'cut', d: CL[2][2].d, w: 1.3, sub: 'scale(1.35)' }, { k: 'ink', d: 'M-34 23 L34 23', w: 2.4, sub: 'scale(1.35)' }],
-      null, // ?!? removed from the stamp cluster (felt crowded)
-      // four eyeballs: inked rims, pupils glancing toward the cursor
-      [{ k: 'ink', d: EYES.map((x) => C(x * 1.3, 0, 13.5)).join(' '), w: 2.8 }, { k: 'glance', eyes: EYES.map((x) => x * 1.3), r: 6.2, reach: 5.6 }],
-      // devil fish (horns, x eye; devil tail removed): rocks gently
-      [{ k: 'mainfill', d: FISH, sub: 'scale(1.45)', anims: FLOP }, { k: 'mainfill', d: HORNS, sub: 'scale(1.45)', anims: FLOP }, { k: 'cut', d: FX, w: 2.4, sub: 'scale(1.45)', anims: FLOP }, { k: 'cut', d: FGILL, w: 1.4, sub: 'scale(1.45)', anims: FLOP }],
-      // bike: spokes turn as the cursor travels, the front wheel a little faster
-      [{ k: 'ink', d: BIKE, w: 3.2, sub: 'scale(1.4)' }, { k: 'spokes', ink: true, w: 1.2, sub: 'scale(1.4)', wheels: [[-24, 8, 1], [24, 8, 1.4]] }],
-      [{ k: 'mainfill', d: C(0, -1, 26) }, { k: 'cut', d: C(0, -1, 19), w: 1.2 }, { k: 'cut', d: QM, w: 3, sub: 'scale(1.25)' }, { k: 'dot', d: C(0, 8.5, 2.2) }, { k: 'mainfill', d: KNIFE, sub: 'translate(10 0) scale(1.15)' }, { k: 'ink', d: KNIFEH, w: 3, sub: 'translate(10 0) scale(1.15)' }, { k: 'ink', d: FORK, w: 2, sub: 'translate(-10 0) scale(1.15)' }]
-    ];
-    // the saved cluster from the contact page, plus the place-setting bubble: seven ink-silhouette bubbles grouped around the blob
-    if (key === 'cluster' || stamp) {
-      const POS = stamp
-        // stamps: the five around the stars sit evenly on an ellipse (every 72°, clockwise from the top: fish, place setting, bike, eyes, trees)
-        ? [null, [390, 380, -6, 1.1], [195, 332, -8, 0.92], null, [272, 520, 4, 0.85], [390, 210, 5, 0.98], [508, 520, -4, 0.9], [585, 332, 4, 0.92]]
-        : [null, [720, 470, -6, 1.12], [500, 380, -8, 0.98], [870, 380, -3, 1.0], [535, 600, 4, 0.9], [680, 285, 5, 1.08], [745, 655, -4, 0.95], [935, 560, 4, 1.02]];
-      const turn = 0; // bike wheels static (Nov 20)
-      (stamp ? SN : CL).forEach((parts, i) => {
-        const pp = POS[i]; if (!pp) return;
-        const tf = 'translate(' + pp[0] + ' ' + pp[1] + ') rotate(' + pp[2] + ') scale(' + pp[3] + ')';
-        if (!parts) return;
-        parts.forEach((pt) => {
-          if (pt.skip) return;
-          const t2 = tf + (pt.sub ? ' ' + pt.sub : '');
-          if (pt.k === 'glance') { const on = false; /* eyes static (Nov 20) */ const an = on ? Math.atan2(this.state.my - pp[1], this.state.mx - pp[0]) - pp[2] * Math.PI / 180 : 0.3; const ox = Math.cos(an) * pt.reach, oy = Math.sin(an) * pt.reach; items.push({ k: 'mfill', d: pt.eyes.map((ex) => C(+(ex + ox).toFixed(2), +oy.toFixed(2), pt.r)).join(' '), tf: tf, frame: 0 }); }
-          else if (pt.k === 'pupil') items.push({ k: 'mfill', d: pt.eyes.map((ex) => C(ex + 3, -0.5, 5.2)).join(' '), tf: tf, frame: 0 });
-          else if (pt.k === 'spokes') items.push({ k: pt.ink ? 'inkline' : 'cut', w: pt.w || 1.3, frame: 0, tf: t2, d: pt.wheels.map((w) => { let o = ''; for (let q = 0; q < 3; q++) { const an = turn * w[2] + q * Math.PI / 3, dx = Math.cos(an) * 12, dy = Math.sin(an) * 12; o += 'M' + (w[0] - dx).toFixed(1) + ' ' + (w[1] - dy).toFixed(1) + ' L' + (w[0] + dx).toFixed(1) + ' ' + (w[1] + dy).toFixed(1) + ' '; } return o; }).join('') });
-          else if (pt.k === 'mainfill') items.push({ k: 'mfill', d: pt.d, tf: t2, frame: 0, anims: pt.anims });
-          else if (pt.k === 'ink') items.push({ k: 'inkline', d: pt.d, w: pt.w, tf: t2, frame: 0, anims: pt.anims });
-          else items.push({ k: pt.k, d: pt.d, w: pt.w, tf: t2, frame: 0, anims: pt.anims });
-        });
-      });
-    }
-    if (key !== 'cluster' && !stamp) P.forEach((p, i) => {
-      const parts = key === 'dart' ? DART : bubbles[i];
-      const sc = key === 'dart' ? p[3] : p[3] * BS;
-      parts.forEach((pt) => items.push(Object.assign({}, pt, { tf: 'translate(' + p[0] + ' ' + p[1] + ') rotate(' + p[2] + ') scale(' + sc.toFixed(3) + ')' + (pt.tf ? ' ' + pt.tf : ''), frame: i })));
-    });
-    const RX = 1170, RY = 330;
-    if (key === 'dart') {
-      items.push({ k: 'body', d: C(0, 0, 60) + ' ' + C(0, 0, 46) + ' ' + C(0, 0, 32) + ' ' + C(0, 0, 18) + ' ' + C(0, 0, 6), rule: 'evenodd', ring: 1, tf: 'translate(' + RX + ' ' + RY + ')', frame: 4 });
-      DART.filter((d) => !d.flame).forEach((pt) => items.push(Object.assign({}, pt, { tf: 'translate(' + (RX - 66) + ' ' + (RY + 4) + ') rotate(-4)', frame: 5 })));
-    } else if (key !== 'none' && key !== 'cluster' && !stamp) {
-      const rr = key === 'receiver' ? ' rotate(-18) scale(1.2)' : key === 'drums' ? ' scale(1.15)' : '';
-      RECEIVERS[key].forEach((pt) => items.push(Object.assign({}, pt, { tf: 'translate(' + RX + ' ' + RY + ')' + rr + (pt.tf ? ' ' + pt.tf : ''), frame: 4 })));
-    }
-    // resolve colours per pass: outside the blob ink on ground; inside, the inverse
-    const pass = (inside) => {
-      const main = inside ? G : INK, counter = inside ? INK : G;
-      const shapeOf = (it) => {
-        const line = key !== 'cluster' && !stamp && (st.mode === 'line' || (st.mode === 'mix' && it.frame % 2 === 1));
-        const o = '1';
-        if (it.ring && line) return { tf: it.tf, d: it.d, rule: 'nonzero', fill: 'none', stroke: main, sw: 2.6, o: o };
-        if (it.k === 'body') return line ? { tf: it.tf, d: it.d, rule: it.rule || 'nonzero', fill: 'none', stroke: main, sw: 3.4, o: o } : { tf: it.tf, d: it.d, rule: it.rule || 'nonzero', fill: main, stroke: 'none', sw: 0, o: o };
-        if (it.k === 'cut') return { tf: it.tf, d: it.d, rule: 'nonzero', fill: 'none', stroke: line ? main : counter, sw: line ? Math.min(it.w || 3, 3.2) : (it.w || 3), o: o };
-        if (it.k === 'mfill') return { tf: it.tf, d: it.d, rule: 'nonzero', fill: main, stroke: 'none', sw: 0, o: o };
-        if (it.k === 'inkline') return { tf: it.tf, d: it.d, rule: 'nonzero', fill: 'none', stroke: main, sw: it.w, o: o };
-        if (it.k === 'dot') return { tf: it.tf, d: it.d, rule: 'nonzero', fill: line ? main : counter, stroke: 'none', sw: 0, o: o };
-        if (line && it.w > 6) return [{ tf: it.tf, d: it.d, rule: 'nonzero', fill: 'none', stroke: main, sw: it.w, o: o }, { tf: it.tf, d: it.d, rule: 'nonzero', fill: 'none', stroke: counter, sw: it.w - 6.8, o: o }];
-        return { tf: it.tf, d: it.d, rule: 'nonzero', fill: 'none', stroke: main, sw: it.w || 3, o: o };
-      };
-      const shapes = items.map((it) => { const out = shapeOf(it); (Array.isArray(out) ? out : [out]).forEach((o) => { o.anims = it.anims || []; }); return out; }).flat();
-      return { mask: inside ? 'inBlob' : 'outBlob', shapes: shapes, filter: stamp ? 'worn' : 'rough' };
-    };
-    const chip = (o) => ({ bg: o ? '#1E1E1C' : 'rgba(255,255,255,0.6)', ink: o ? '#F1F1EE' : '#1E1E1C', pressed: o ? 'true' : 'false' });
+    // follows the finger / tilt as one, part of the way (0.75), and only so far down (it stays above the links)
+    const still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches, on = this.state.mx !== null, K = 0.75;
+    const dx = on ? Math.max(-260, Math.min(260, (this.state.mx - cx) * K)) : 0, dy = on ? Math.max(-120, Math.min(150, (this.state.my - cy) * K)) : 0;
+    b.t = still ? 'none' : 'translate(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px)';
     return {
-      b: b, roughness: st.rough,
-      openClsG: this.state.openG ? 'open' : '', openStrG: this.state.openG ? 'true' : 'false', drawerVisG: this.state.openG ? 'visible' : 'hidden', tabG: this.state.openG ? '0' : '-1',
-      icoLabelG: this.state.openG ? 'Close menu' : 'Open menu',
-      toggleG: () => this.setState({ openG: !this.state.openG }),
-      subjects: SUB.map((x, i) => Object.assign({ label: x, pick: () => this.setState({ subject: i }) }, chip(i === su))),
-      passes: [], // stamps hidden for now (Nov 20); restore with [pass(false), pass(true)]
-      styles: ST.map((x, i) => Object.assign({ label: x.label, pick: () => this.setState({ style: i }) }, chip(i === si))),
-      onMove: (e) => {
-        const r0 = e.currentTarget.getBoundingClientRect();
-        const sc = Math.max(r0.width / 390, r0.height / 844) * 0.7, ox = (r0.width - 390 * sc / 0.7) / 2 + -78.0 * sc / 0.7, oy = (r0.height - 844 * sc / 0.7) / 2 + -36.0 * sc / 0.7; // mobile: the drawing is scaled 0.7 into the phone frame
-        const nx = (e.clientX - r0.left - ox) / sc, ny = (e.clientY - r0.top - oy) / sc;
-        const d = this.lastP ? Math.min(90, Math.hypot(nx - this.lastP[0], ny - this.lastP[1])) : 0; this.lastP = [nx, ny];
-        this.pend = { mx: nx, my: ny, travel: (this.pend && this.pend.travel !== undefined ? this.pend.travel : (this.state.travel || 0)) + d };
-        if (this.raf) return;
-        this.raf = requestAnimationFrame(() => { this.raf = null; if (this.pend) { const q = this.pend; this.pend = null; this.setState(q); } });
-      },
-      onTouchMove: (e) => {
-        const tp = e.touches && e.touches[0]; if (!tp) return;
-        const r0 = e.currentTarget.getBoundingClientRect();
-        const sc = Math.max(r0.width / 390, r0.height / 844) * 0.7, ox = (r0.width - 390 * sc / 0.7) / 2 + -78.0 * sc / 0.7, oy = (r0.height - 844 * sc / 0.7) / 2 + -36.0 * sc / 0.7; // mobile: the drawing is scaled 0.7 into the phone frame
-        const nx = (tp.clientX - r0.left - ox) / sc, ny = (tp.clientY - r0.top - oy) / sc;
-        // a finger drag morphs Bloblurb at 0.5x its travel (half speed) (Nov 24, Ben: slower on this page; it still follows the finger at full speed)
-        const d = this.lastP ? Math.min(90, Math.hypot(nx - this.lastP[0], ny - this.lastP[1])) * 0.5 : 0; this.lastP = [nx, ny];
-        this.pend = { mx: nx, my: ny, travel: (this.pend && this.pend.travel !== undefined ? this.pend.travel : (this.state.travel || 0)) + d };
-        if (this.raf) return;
-        this.raf = requestAnimationFrame(() => { this.raf = null; if (this.pend) { const q = this.pend; this.pend = null; this.setState(q); } });
-      },
-      onTouchStart: () => { this.askTilt(); },
-      onScrollF: (e) => { const on = ((e.target && e.target.scrollTop) || 0) > 90; if (on !== !!this.state.fab) this.setState({ fab: on }); },
-      fabCls: this.state.fab ? 'on' : '', fabTab: '0', xVis: this.state.openF ? 'hidden' : 'visible',
-      openStrF: this.state.openF ? 'true' : 'false', openClsF: this.state.openF ? 'open' : '', // mobile: always a vertical stack (no room for a row beside the wordmark) visF: this.state.openF ? 'visible' : 'hidden', tabF: this.state.openF ? '0' : '-1',
-      labelF: this.state.openF ? 'Close menu' : 'Open menu',
-      toggleF: () => this.setState({ openF: !this.state.openF }),
-
-      onLeave: () => { this.lastP = null; this.setState({ mx: null, my: null }); }
+      b: b,
+      onMove: (e) => { const q = this.toBlob(e, e); this.point(q[0], q[1], 1); },
+      onTouchMove: (e) => { const p = e.touches && e.touches[0]; if (!p) return; const q = this.toBlob(e, p); this.point(q[0], q[1], 0.5); },
+      onTouchEnd: () => this.askTilt(),
+      onLeave: () => { this.lastP = null; this.setState({ mx: null, my: null }); },
+      xVis: o ? 'hidden' : 'visible', openStr: o ? 'true' : 'false', openCls: o ? 'open' : '',
+      navVis: o ? 'visible' : 'hidden', navTab: o ? '0' : '-1', label: o ? 'Close menu' : 'Open menu',
+      toggle: () => this.setState({ open: !o })
     };
   }
 }
