@@ -135,8 +135,6 @@ header .ico,header #hdrMenuG{visibility:hidden!important}
 </style>
 </helmet>
 <div onMouseMove="{{onMove}}" onMouseLeave="{{onLeave}}" onTouchStart="{{onTouchStart}}" onTouchMove="{{onTouchMove}}" style="position: relative; height: 100vh; height: 100svh; min-height: 600px; overflow: hidden; background: #F1F1EE; color: #1E1E1C; font-family: 'Inter', system-ui, sans-serif">
-<!-- footer (Nov 24): the copyright line, bottom-left corner, in the site type (Inter 13px / 1.5, ink, like the ask ahead copy) -->
-<p class="copyr" style="position: absolute; left: 16px; bottom: calc(16px + env(safe-area-inset-bottom)); margin: 0; z-index: 4; font-size: 13px; line-height: 1.5; color: #1E1E1C; pointer-events: none">© Ben Weiller 2026</p>
 <svg aria-hidden="true" viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" style="position: absolute; inset: 0; pointer-events: none">
 <defs>
 <filter id="iXL" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="46" result="b"></feGaussianBlur><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="n"></feTurbulence><feDisplacementMap in="b" in2="n" scale="28" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
@@ -175,7 +173,7 @@ header .ico,header #hdrMenuG{visibility:hidden!important}
 <rect width="390" height="844" filter="url(#pGrain)"></rect>
 </svg>
 
-<div data-pscroll="1" class="page" onScroll="{{onScrollF}}" style="position: absolute; inset: 0; z-index: 1; overflow-y: auto">
+<div data-pscroll="1" class="page" onScroll="{{onScrollF}}" style="position: absolute; inset: 0; z-index: 1; overflow-y: auto; display: grid; grid-template-rows: auto auto 1fr">
 <!-- scroll paging: contact is the end of the chain both ways, no paging back up to about (Nov 22, Ben) -->
 <header style="height: 11vh; min-height: 72px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; padding: 0 4vw">
 <a class="lnk" href="Mobile-Home.dc.html" aria-label="Ben Weiller — home" style="display: inline-block; font-family: 'Dirtbag TM', 'Inter', sans-serif; font-size: 44px; line-height: 1; letter-spacing: 0.03em; position: relative; top: 9px; text-decoration: none; color: #1E1E1C">BEN WEILLER</a>
@@ -201,6 +199,8 @@ header .ico,header #hdrMenuG{visibility:hidden!important}
 </span></span> for it.</p>
 </section>
 </main>
+<!-- footer (Nov 24): the copyright line, the last thing on the page: at the very bottom of the screen when everything fits, below the copy when it doesn’t (it never sits over the text). Site type (Inter 13px / 1.5) in washed-out ink (the ink at half strength) -->
+<p class="copyr" style="align-self: end; margin: 0; padding: 24px 16px calc(16px + env(safe-area-inset-bottom)); font-size: 13px; line-height: 1.5; color: rgba(30, 30, 28, 0.5)">© Ben Weiller 2026</p>
 </div>
 <!-- sticky "///": appears once the header has scrolled away, plain like the header; its words open as a vertical stack -->
 <div class="fab {{fabCls}}" style="position: absolute; top: calc(max(5.5vh, 36px) - 24px); right: 9px; z-index: 8">
@@ -544,7 +544,8 @@ class Component extends DCLogic {
         const r0 = e.currentTarget.getBoundingClientRect();
         const sc = Math.max(r0.width / 390, r0.height / 844) * 0.7, ox = (r0.width - 390 * sc / 0.7) / 2 + -78.0 * sc / 0.7, oy = (r0.height - 844 * sc / 0.7) / 2 + -36.0 * sc / 0.7; // mobile: the drawing is scaled 0.7 into the phone frame
         const nx = (tp.clientX - r0.left - ox) / sc, ny = (tp.clientY - r0.top - oy) / sc;
-        const d = this.lastP ? Math.min(90, Math.hypot(nx - this.lastP[0], ny - this.lastP[1])) : 0; this.lastP = [nx, ny];
+        // a finger drag morphs Bloblurb at 0.4x its travel (Nov 24, Ben: slower on this page; it still follows the finger at full speed)
+        const d = this.lastP ? Math.min(90, Math.hypot(nx - this.lastP[0], ny - this.lastP[1])) * 0.4 : 0; this.lastP = [nx, ny];
         this.pend = { mx: nx, my: ny, travel: (this.pend && this.pend.travel !== undefined ? this.pend.travel : (this.state.travel || 0)) + d };
         if (this.raf) return;
         this.raf = requestAnimationFrame(() => { this.raf = null; if (this.pend) { const q = this.pend; this.pend = null; this.setState(q); } });

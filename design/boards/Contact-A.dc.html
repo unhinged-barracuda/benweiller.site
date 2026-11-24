@@ -95,8 +95,6 @@ a{color:#1E1E1C}a:hover{color:#000000}
 </style>
 </helmet>
 <div onMouseMove="{{h_onMove}}" onMouseLeave="{{h_onLeave}}" style="position: relative; height: 100vh; min-height: 560px; overflow: hidden; background: #F1F1EE; color: #1E1E1C; font-family: 'Inter', system-ui, sans-serif">
-<!-- footer (Nov 24): the copyright line, bottom-left corner, in the site type (Inter 13px / 1.5, ink, like the ask ahead copy) -->
-<p class="copyr" style="position: absolute; left: 4vw; bottom: 20px; margin: 0; z-index: 4; font-size: 13px; line-height: 1.5; color: #1E1E1C; pointer-events: none">© Ben Weiller 2026</p>
 <svg aria-hidden="true" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" style="position: absolute; inset: 0; pointer-events: none">
 <defs>
 <filter id="iXL" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="46" result="b"></feGaussianBlur><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="n"></feTurbulence><feDisplacementMap in="b" in2="n" scale="28" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap></filter>
@@ -158,7 +156,7 @@ a{color:#1E1E1C}a:hover{color:#000000}
 <rect width="1440" height="900" filter="url(#pGrain)"></rect>
 </svg>
 
-<div data-pscroll="1" style="position: absolute; inset: 0; z-index: auto; overflow-y: auto">
+<div data-pscroll="1" style="position: absolute; inset: 0; z-index: auto; overflow-y: auto; display: grid; grid-template-rows: auto auto 1fr">
 <!-- scroll paging (desktop, Nov 24, Ben): contact is the end of the chain going down; scrolling / swiping up (or ↑ / page up) goes back to about. hidden hand-off link: -->
 <a data-next="prev" href="About-A.dc.html" tabindex="-1" aria-hidden="true" style="display: none">previous</a>
 <header style="height: 11vh; min-height: 72px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; padding: 0 4vw">
@@ -187,6 +185,8 @@ a{color:#1E1E1C}a:hover{color:#000000}
 </span></span> for it.</p>
 </section>
 </main>
+<!-- footer (Nov 24): the copyright line, the last thing on the page: at the very bottom of the screen when everything fits, below the copy when it doesn’t (it never sits over the text). Site type (Inter 13px / 1.5) in washed-out ink (the ink at half strength) -->
+<p class="copyr" style="align-self: end; margin: 0; padding: 0 4vw 20px; font-size: 13px; line-height: 1.5; color: rgba(30, 30, 28, 0.5)">© Ben Weiller 2026</p>
 </div>
 </div>
 </x-dc>
