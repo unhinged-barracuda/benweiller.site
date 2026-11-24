@@ -14,118 +14,58 @@
 body{margin:0}
 a{color:#1E1E1C}a:hover{color:#000000}
 .page{scrollbar-width:none}.page::-webkit-scrollbar{display:none}
-.lnk:focus-visible,.card:focus-visible,.ctl:focus-visible,.ico:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:4px}
 .breathe{transform-box:fill-box;transform-origin:50% 50%;animation:breathe 10s ease-in-out infinite}
 @keyframes breathe{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.03) rotate(1deg)}}
 .cardIn{animation:cardIn 1000ms cubic-bezier(.2,.75,.15,1) both}
 @keyframes cardIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 .glowIn{animation:glowIn 1400ms ease both}
 @keyframes glowIn{from{opacity:0}to{opacity:1}}
-.play{transition:transform 300ms ease}
-.card:hover .play{transform:scale(1.08)}
-.lift{transition:transform 400ms cubic-bezier(.2,.7,.2,1)}
-.lift:hover{transform:none}
-.band:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:3px}
-
-@media (prefers-reduced-motion: reduce){.breathe,.cardIn,.glowIn{animation:none}.play,.lift{transition:none}}
-.ico{transition:transform 350ms cubic-bezier(.3,.7,.2,1)}
-.ico[aria-expanded="true"] .plus{transform:rotate(45deg)}
-.drawer a{opacity:0;transform:translateX(10px);transition:opacity 300ms ease,transform 400ms cubic-bezier(.3,.7,.2,1)}
-.drawer.open a{opacity:1;transform:none}
-.drawer.open a:nth-child(2){transition-delay:50ms}.drawer.open a:nth-child(3){transition-delay:100ms}
-.tl{position:relative;display:inline-flex;align-items:flex-end;height:20px;color:#55554F;text-decoration:none;transition:color 200ms ease}
-.tl .sl{display:inline-block;line-height:1}
-.tl .w{position:relative;display:inline-block;width:24px;height:20px}
-.tl .w span{position:absolute;left:14px;bottom:0;white-space:nowrap;transform:rotate(-71deg) translateX(-100%);transform-origin:0 100%;line-height:1}
-.tl:hover,.tl:focus-visible,.tl.on{color:#1E1E1C}
-.tl:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:6px}
-@media (prefers-reduced-motion: reduce){.tl{transition:none}}
-.burger line{transition:transform 350ms cubic-bezier(.3,.7,.2,1),opacity 200ms ease;transform-box:fill-box;transform-origin:50% 50%}
-.ico[aria-expanded="true"] .burger .l1{transform:translateX(7px) rotate(24deg)}
-.ico[aria-expanded="true"] .burger .l2{opacity:0}
-.ico[aria-expanded="true"] .burger .l3{transform:translateX(-7px) rotate(-66deg)}
-@media (prefers-reduced-motion: reduce){.burger line{transition:none}}
-@media (prefers-reduced-motion: reduce){.drawer a{transition:none}}
-.nb{color:#55554F;text-decoration:none;white-space:nowrap;transition:color 200ms ease}
-.nb:hover,.nb:focus-visible,.nb.on{color:#1E1E1C}
-.nb:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:4px}
-/* glass buttons (chosen: lean icons · etched · thin ring). the playbar's glass, seamless edge; a fine glass ring with the icon etched in frosted glass inside */
-.gbw{position:relative;display:block;flex:none}
-.gbs{position:absolute;left:-30%;top:-10%;width:160%;height:160%;pointer-events:none;overflow:visible;transition:transform 400ms cubic-bezier(.3,.7,.2,1),opacity 400ms ease}
-.gbb{position:absolute;inset:0;display:block;transition:transform 600ms cubic-bezier(.3,.7,.2,1)}
-.gb{position:absolute;inset:0;display:block;box-sizing:border-box;padding:0;border:0;border-radius:50%;cursor:pointer;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,0.42),rgba(255,255,255,0.16));backdrop-filter:blur(24px) saturate(1.1);-webkit-backdrop-filter:blur(24px) saturate(1.1);box-shadow:inset 0 1px 3px rgba(255,255,255,0.32),inset 0 -2px 6px rgba(255,255,255,0.12);-webkit-mask-size:100% 100%;mask-size:100% 100%}
-.gb .fog{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0.5}
-.win{position:absolute;inset:0;display:block;border-radius:50%;pointer-events:none;background:rgba(255,255,255,0.05);backdrop-filter:blur(3px) saturate(1.35);-webkit-backdrop-filter:blur(3px) saturate(1.35);-webkit-mask-size:100% 100%;mask-size:100% 100%}
-.gbb .ico{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
-.gbw{cursor:pointer;perspective:160px}
-.gb{border-radius:0}
-.gic{position:absolute;inset:0;display:block;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,0.5),rgba(255,255,255,0.2));backdrop-filter:blur(24px) saturate(1.1);-webkit-backdrop-filter:blur(24px) saturate(1.1);-webkit-mask-size:100% 100%;mask-size:100% 100%}
-.gbw:has(.gb:focus-visible){outline:1px solid #1E1E1C;outline-offset:5px;border-radius:50%}
-.gb:focus-visible{outline:none}
-/* watch on vimeo: a small external link under the bottom-left corner of every film */
-.watch{margin:12px 0 0;font-size:13px;line-height:20px}
-.tlk{color:#1E1E1C;text-decoration:underline;text-decoration-color:rgba(30,30,28,0.35);text-decoration-thickness:1px;text-underline-offset:4px;transition:text-decoration-color 200ms ease}
-.tlk:hover{color:#1E1E1C;text-decoration-color:#1E1E1C}
-.tlk:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:4px}
-.gbw:hover .gbb,.card:hover .gbb{transform:translateY(-1px)}
-.gbw:hover .gbs,.card:hover .gbs{transform:translateY(2px) scale(1.04);opacity:0.8}
-.gb:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:6px}
+/* FOCUS (approved, site-wide): keyboard only, no outlines anywhere. words and small controls get a soft glass rectangle
+   leaning at the lean angle behind them; media and glass buttons get a soft shadow that lifts them off the page */
+:focus-visible{outline:none}
+a:not(.card,.fabX):focus-visible,button:not(.gb):focus-visible{position:relative;z-index:0}
+a:not(.card):focus-visible::before,button:not(.gb):focus-visible::before{content:"";position:absolute;left:-9px;right:-9px;top:-5px;bottom:-5px;z-index:-1;transform:skewX(-16.7deg);background:linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.36));backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 1px rgba(255,255,255,0.85),0 1px 10px rgba(30,30,28,0.12)}
+.card:focus-visible,[tabindex]:not(a):not(button):focus-visible{box-shadow:0 14px 34px -8px rgba(30,30,28,0.38),0 2px 8px rgba(30,30,28,0.12)}
 .card{container-type:inline-size}
 .card .gbw{position:absolute;left:50%;top:50%;width:max(44px,8cqw);height:max(44px,8cqw);transform:translate(-50%,-50%)}
-@media (prefers-reduced-motion: reduce){.gbb,.gbs{transition:none}}
-/* keyboard focus on text (links, menu words, wordmark): no box. a soft glass rectangle leaning at the lean angle sits behind the word */
-.nb:focus-visible,.tlk:focus-visible,.lnk:focus-visible{outline:none;position:relative;z-index:0}
-.nb:focus-visible::before,.tlk:focus-visible::before,.lnk:focus-visible::before{content:"";position:absolute;left:-9px;right:-9px;top:-5px;bottom:-5px;z-index:-1;transform:skewX(-16.7deg);background:linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.36));backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 1px rgba(255,255,255,0.85),0 1px 10px rgba(30,30,28,0.12)}
+/* glass buttons (lean · etched · thin ring, approved site-wide). The clear glass is the default; dark glass (.gv-dark, the carousel-arrow
+   material, approved Nov 7) only changes the glass colours below, so its hover keeps the dark glass */
+:root{--gb-bg:linear-gradient(180deg,rgba(255,255,255,0.42),rgba(255,255,255,0.16));--gb-bg-hover:linear-gradient(180deg,rgba(255,255,255,0.26),rgba(255,255,255,0.06));--gb-shadow:inset 0 1px 3px rgba(255,255,255,0.32),inset 0 -2px 6px rgba(255,255,255,0.12);--gic-bg:linear-gradient(180deg,rgba(255,255,255,0.5),rgba(255,255,255,0.2))}
+.gbw{position:relative;display:block;flex:none;cursor:pointer;perspective:160px}
+.gbs{position:absolute;left:-30%;top:-10%;width:160%;height:160%;pointer-events:none;overflow:visible;transition:transform 400ms cubic-bezier(.3,.7,.2,1),opacity 400ms ease}
+.gbb{position:absolute;inset:0;display:block;transition:transform 600ms cubic-bezier(.3,.7,.2,1)}
+.gb{position:absolute;inset:0;display:block;box-sizing:border-box;padding:0;border:0;cursor:pointer;overflow:hidden;background:var(--gb-bg);backdrop-filter:blur(24px) saturate(1.1);-webkit-backdrop-filter:blur(24px) saturate(1.1);box-shadow:var(--gb-shadow);-webkit-mask-size:100% 100%;mask-size:100% 100%;transition:filter 160ms ease,background 260ms ease}
+.gb .fog{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0.5}
+.gbb .ico{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.gic{position:absolute;inset:0;display:block;pointer-events:none;background:var(--gic-bg);backdrop-filter:blur(24px) saturate(1.1);-webkit-backdrop-filter:blur(24px) saturate(1.1);-webkit-mask-size:100% 100%;mask-size:100% 100%;transition:filter 160ms ease,background 260ms ease}
+.gbw:hover .gb,.card:hover .gb{filter:saturate(1.35) brightness(1.06);background:var(--gb-bg-hover)}
+.gbw:hover .gic,.card:hover .gic{filter:saturate(1.3) brightness(1.08)}
+.gbw:hover .gbs,.card:hover .gbs{opacity:0.8}
+.gbw:has(.gb:focus-visible){border-radius:50%;box-shadow:0 14px 34px -8px rgba(30,30,28,0.38),0 2px 8px rgba(30,30,28,0.12)}
+.watch{margin:12px 0 0;font-size:13px;line-height:20px}
 /* text links match the homepage words: grey, no underline, ink on hover */
 .tlk{color:#55554F;text-decoration:none;transition:color 200ms ease}
-.tlk:hover,.tlk-hover{color:#1E1E1C}
-/* keyboard focus on assets and glass buttons: a thin glass frame instead of a black outline */
-.card:focus-visible,.xp:focus-visible,.gbw:has(.gb:focus-visible){outline:none}
-.card:focus-visible::after,.xp:focus-visible::after,.gbw:has(.gb:focus-visible)::after,.gfocus::after{content:"";position:absolute;inset:-7px;pointer-events:none;z-index:4;border:1.5px solid rgba(255,255,255,0.85);box-shadow:0 0 0 0.5px rgba(30,30,28,0.22),inset 0 0 0 0.5px rgba(30,30,28,0.12),0 1px 8px rgba(30,30,28,0.1)}
-.gfocus{position:relative}
-/* FOCUS (approved, site-wide): keyboard only, no outlines anywhere.
-   text, words and small controls: a soft glass rectangle leaning at the lean angle behind them.
-   media and glass buttons: no frame, a soft shadow that lifts them off the page */
-*:focus-visible{outline:none!important}
-.nb:focus-visible:not([style*="position: absolute"]),.tlk:focus-visible:not([style*="position: absolute"]),.lnk:focus-visible:not([style*="position: absolute"]),.ctl:focus-visible:not([style*="position: absolute"]),.tl:focus-visible:not([style*="position: absolute"]),.ic:focus-visible:not([style*="position: absolute"]),.hereBtn:focus-visible:not([style*="position: absolute"]),.ico:focus-visible:not([style*="position: absolute"]),.item:focus-visible:not([style*="position: absolute"]),a:not(.card):not(.xp):not(.band):focus-visible:not([style*="position: absolute"]),button:not(.gb):not(.xp):not(.pp):focus-visible:not([style*="position: absolute"]){position:relative;z-index:0}
-.nb:focus-visible::before,.tlk:focus-visible::before,.lnk:focus-visible::before,.ctl:focus-visible::before,.tl:focus-visible::before,.ic:focus-visible::before,.hereBtn:focus-visible::before,.ico:focus-visible::before,.item:focus-visible::before,a:not(.card):not(.xp):not(.band):focus-visible::before,button:not(.gb):not(.xp):not(.pp):focus-visible::before{content:"";position:absolute;left:-9px;right:-9px;top:-5px;bottom:-5px;z-index:-1;transform:skewX(-16.7deg);background:linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.36));backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 1px rgba(255,255,255,0.85),0 1px 10px rgba(30,30,28,0.12)}
-.card:focus-visible::after,.xp:focus-visible::after,.band:focus-visible::after,.gbw:has(.gb:focus-visible)::after{content:none!important}
-.card:focus-visible,.xp:focus-visible,.band:focus-visible,[tabindex]:not(a):not(button):focus-visible,.gbw:has(.gb:focus-visible),.gfocus{box-shadow:0 14px 34px -8px rgba(30,30,28,0.38),0 2px 8px rgba(30,30,28,0.12)}
-.gbw:has(.gb:focus-visible),.gfocus.round{border-radius:50%}
-/* HOVER · CLICK (approved): hover /clear — the frost thins and the colour behind comes through; press /sink — down half a pixel and in a touch */
-.gbw:hover .gbb,.card:hover .gbb,.gbw:hover .gbs,.card:hover .gbs{transform:none}
-.gb,.gic,.win{transition:filter 160ms ease,background 260ms ease}
-.gbw:hover .gb,.card:hover .gb{filter:saturate(1.35) brightness(1.06);background:linear-gradient(180deg,rgba(255,255,255,0.26),rgba(255,255,255,0.06))}
-.gbw:hover .gic,.card:hover .gic{filter:saturate(1.3) brightness(1.08)}
-/* STICKY "///" : once the header scrolls away, the plain "///" stays in the top-right corner, exactly as in the header (ink slashes, no button, no glass). tapped, it folds into an × and its four words open beneath it as a vertical stack, plain text like the header words */
-.fab{opacity:0;visibility:hidden;transition:opacity 220ms ease,visibility 0s linear 220ms}
-.fab.on{opacity:1;visibility:visible;transition:opacity 220ms ease,visibility 0s}
+.tlk:hover{color:#1E1E1C}
+/* the fixed "///" (top right, never moves) with the back arrow beside it. At the top of the page its words open in a row to its
+   left; once scrolled they open as a stack beneath it. Drawn light with difference blending: ink / grey over the page, light over dark images */
+.fab{mix-blend-mode:difference}
 .fabBtn{width:48px;height:48px;margin-right:-7px;border:0;padding:0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .fabX{position:absolute;top:0;right:42px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;transition:opacity 200ms ease}
 .fabX:hover{opacity:0.6}
+.fabX line{stroke:#FFFFFF}
 .fabNav{position:absolute;top:52px;right:0;display:flex;flex-direction:column;align-items:flex-end;gap:16px}
-.fabNav a{color:#55554F;font-size:13px;line-height:1;text-decoration:none;white-space:nowrap;opacity:0;transform:translateY(-6px);transition:opacity 300ms ease,transform 400ms cubic-bezier(.3,.7,.2,1),color 200ms ease}
-.fabNav a:hover{color:#1E1E1C}
+.fabNav a{color:#A9A9B0;font-size:13px;line-height:1;text-decoration:none;white-space:nowrap;opacity:0;transform:translateY(-6px);transition:opacity 300ms ease,transform 400ms cubic-bezier(.3,.7,.2,1),color 200ms ease}
+.fabNav a:hover,.fabNav a:focus-visible{color:#FFFFFF}
 .fabNav.open a{opacity:1;transform:none}
 .fabNav.open a:nth-child(2){transition-delay:50ms}.fabNav.open a:nth-child(3){transition-delay:100ms}.fabNav.open a:nth-child(4){transition-delay:150ms}
-/* no jump: the header's own "///" is replaced by this fixed one from the very top, so the symbol never moves while the wordmark scrolls away. at the top its words open in a row to its left (as before); once you've scrolled down they open as a vertical stack beneath it */
-header .ico,header #hdrMenuG{visibility:hidden!important}
-.fab,.fab.on{opacity:1!important;visibility:visible!important}
 .fabNav.row{top:0;right:54px;height:48px;flex-direction:row;align-items:center;gap:28px}
 .fabNav.row a{transform:translateX(10px)}
 .fabNav.row.open a{transform:none}
-.fabBtn .burger line{stroke:#1E1E1C}
-/* the flip: the symbol and its words are drawn in light tones with "difference" blending, so over the light page they read as ink / grey (as before), and over dark images or films they turn light — no box behind them */
-.fab{mix-blend-mode:difference}
-.fabBtn .burger line{stroke:#FFFFFF!important}
-.fabX line{stroke:#FFFFFF!important}
-.fabNav a{color:#A9A9B0!important}
-.fabNav a:hover,.fabNav a:focus-visible{color:#FFFFFF!important}
-
+.burger line{stroke:#FFFFFF;transition:transform 350ms cubic-bezier(.3,.7,.2,1),opacity 200ms ease;transform-box:fill-box;transform-origin:50% 50%}
 .fabBtn[aria-expanded="true"] .burger .l1{transform:translateX(7px) rotate(24deg)}
 .fabBtn[aria-expanded="true"] .burger .l2{opacity:0}
 .fabBtn[aria-expanded="true"] .burger .l3{transform:translateX(-7px) rotate(-66deg)}
-@media (prefers-reduced-motion: reduce){.fab,.fab.on,.fabNav a{transition:none}}
+@media (prefers-reduced-motion: reduce){.breathe,.cardIn,.glowIn{animation:none}.gbb,.gbs,.fabNav a,.burger line{transition:none}}
 </style>
 </helmet>
 <div onMouseMove="{{onMove}}" onMouseLeave="{{onLeave}}" style="position: relative; height: 100vh; min-height: 560px; overflow: hidden; background: #F1F1EE; color: #1E1E1C; font-family: 'Inter', system-ui, sans-serif">
@@ -181,17 +121,6 @@ header .ico,header #hdrMenuG{visibility:hidden!important}
 <div class="page" onScroll="{{onScroll}}" style="position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; z-index: 1">
 <header style="height: 11vh; min-height: 72px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; padding: 0 4vw">
 <a class="lnk" href="Bloburblur.dc.html" aria-label="Ben Weiller — home" style="display: inline-block; font-family: 'Dirtbag TM', 'Inter', sans-serif; font-size: 44px; line-height: 1; letter-spacing: 0.03em; position: relative; top: 9px; text-decoration: none; color: #1E1E1C">BEN WEILLER</a>
-<div style="display: flex; align-items: center; gap: 26px">
-<nav id="hdrMenuG" aria-label="Main" class="drawer {{openClsG}}" style="display: flex; gap: 28px; align-items: center; font-size: 13px; line-height: 1; visibility: {{drawerVisG}}">
-<a class="nb on" href="Menu-Blob-Bold.dc.html" aria-current="page" tabindex="{{tabG}}">/work</a>
-<a class="nb" href="https://www.instagram.com/un_finished_lines/" target="_blank" rel="noopener" tabindex="{{tabG}}">/@un_finished_lines</a>
-<a class="nb" href="About-A.dc.html" tabindex="{{tabG}}">/who, me?</a>
-<a class="nb" href="Contact-A.dc.html" tabindex="{{tabG}}">/contact</a>
-</nav>
-<button class="ico" type="button" onClick="{{toggleG}}" aria-expanded="{{openStrG}}" aria-controls="hdrMenuG" aria-label="{{icoLabelG}}" style="width: 48px; height: 48px; margin-right: -7px; padding: 0; border: 0; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center">
-<svg class="burger" width="33" height="27" viewBox="0 0 22 18" overflow="visible" aria-hidden="true"><line class="l1" x1="1" y1="17" x2="7.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l2" x1="8" y1="17" x2="14.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l3" x1="15" y1="17" x2="21.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line></svg>
-</button>
-</div>
 </header>
 
 <main style="width: min(900px, 88vw); margin: 0 auto; padding: 0 0 14vh">
@@ -241,11 +170,11 @@ header .ico,header #hdrMenuG{visibility:hidden!important}
 </main>
 </div>
 <!-- sticky "///" : appears once the header has scrolled away, plain like the header; its words open as a vertical stack -->
-<div class="fab {{fabCls}}" style="position: absolute; top: calc(max(5.5vh, 36px) - 24px); right: calc(4vw - 7px); z-index: 8">
+<div class="fab" style="position: absolute; top: calc(max(5.5vh, 36px) - 24px); right: calc(4vw - 7px); z-index: 8">
 <!-- back arrow (Nov 20; replaced a close ×; on every project page): sits just left of the "///", same thin ink line, takes you back to the menu; hidden while the menu words are open -->
-<a class="fabX" href="Menu-Blob-Bold.dc.html" aria-label="Back to the menu" style="visibility: {{xVis}}"><svg width="26" height="22" viewBox="0 0 21 18" overflow="visible" aria-hidden="true"><line x1="1" y1="9" x2="20" y2="9" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line><line x1="1" y1="9" x2="8" y2="2" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line><line x1="1" y1="9" x2="8" y2="16" stroke="#1E1E1C" stroke-width="0.95" stroke-linecap="round"></line></svg></a>
-<button class="fabBtn" type="button" onClick="{{toggleF}}" aria-expanded="{{openStrF}}" aria-controls="fabMenu" aria-label="{{labelF}}" tabindex="{{fabTab}}">
-<svg class="burger" width="33" height="27" viewBox="0 0 22 18" overflow="visible" aria-hidden="true"><line class="l1" x1="1" y1="17" x2="7.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l2" x1="8" y1="17" x2="14.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l3" x1="15" y1="17" x2="21.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line></svg>
+<a class="fabX" href="Menu-Blob-Bold.dc.html" aria-label="Back to the menu" style="visibility: {{xVis}}"><svg width="26" height="22" viewBox="0 0 21 18" overflow="visible" aria-hidden="true"><line x1="1" y1="9" x2="20" y2="9" stroke-width="0.95" stroke-linecap="round"></line><line x1="1" y1="9" x2="8" y2="2" stroke-width="0.95" stroke-linecap="round"></line><line x1="1" y1="9" x2="8" y2="16" stroke-width="0.95" stroke-linecap="round"></line></svg></a>
+<button class="fabBtn" type="button" onClick="{{toggleF}}" aria-expanded="{{openStrF}}" aria-controls="fabMenu" aria-label="{{labelF}}">
+<svg class="burger" width="33" height="27" viewBox="0 0 22 18" overflow="visible" aria-hidden="true"><line class="l1" x1="1" y1="17" x2="7.5" y2="1" stroke-width="0.85"></line><line class="l2" x1="8" y1="17" x2="14.5" y2="1" stroke-width="0.85"></line><line class="l3" x1="15" y1="17" x2="21.5" y2="1" stroke-width="0.85"></line></svg>
 </button>
 <nav id="fabMenu" aria-label="Main" class="fabNav {{openClsF}}" style="visibility: {{visF}}">
 <a href="Menu-Blob-Bold.dc.html" tabindex="{{tabF}}">/work</a>
@@ -292,7 +221,7 @@ class Component extends DCLogic {
   constructor(props) {
     super(props);
     // every page load (and every project switch in the mockup) gets a fresh random blob
-    this.state = { proj: 0, sy: 0, sp: 0, mx: 0, my: 0, seed: Math.floor(Math.random() * 1e9), openG: false };
+    this.state = { proj: 0, sy: 0, sp: 0, mx: 0, my: 0, seed: Math.floor(Math.random() * 1e9) };
     this.reduce = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     this.pending = false;
     this.onScroll = (e) => {
@@ -409,7 +338,7 @@ class Component extends DCLogic {
     const P = [
       { id: 'speak-your-vote', brand: 'SPEAK YOUR VOTE', campaign: 'anthem', color: '#3C4250' }
     ];
-    const pi = this.state.proj || 0, gOpen = !!this.state.openG;
+    const pi = this.state.proj || 0;
     const pr = P[pi];
     const sp = this.state.sp || 0, t = (this.state.sy || 0) / 900;
     const mx = this.state.mx || 0, my = this.state.my || 0;
@@ -419,14 +348,11 @@ class Component extends DCLogic {
       filmColor: pr.color,
       b: this.theBlob(this.state.seed, sp, t),
       lean: 'translate(' + (mx * 10).toFixed(1) + 'px,' + (my * 7).toFixed(1) + 'px)',
-      fabCls: this.state.fab ? 'on' : '', fabTab: '0', xVis: this.state.openF ? 'hidden' : 'visible',
+      xVis: this.state.openF ? 'hidden' : 'visible',
       openStrF: this.state.openF ? 'true' : 'false', openClsF: (this.state.openF ? 'open' : '') + (this.state.fab ? '' : ' row'), visF: this.state.openF ? 'visible' : 'hidden', tabF: this.state.openF ? '0' : '-1',
       labelF: this.state.openF ? 'Close menu' : 'Open menu',
       toggleF: () => this.setState({ openF: !this.state.openF }),
       onScroll: this.onScroll, onMove: this.onMove, onLeave: this.onLeave,
-      openClsG: gOpen ? 'open' : '', openStrG: gOpen ? 'true' : 'false', drawerVisG: gOpen ? 'visible' : 'hidden', tabG: gOpen ? '0' : '-1',
-      icoLabelG: gOpen ? 'Close menu' : 'Open menu',
-      toggleG: () => this.setState({ openG: !this.state.openG }),
     };
   }
 }

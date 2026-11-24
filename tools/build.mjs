@@ -7,11 +7,18 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { build } from 'esbuild';
 import { ROUTES, SITE, ALIASES } from './routes.mjs';
+import { auditAll, worse, table } from './audit-boards.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const BOARDS = path.join(ROOT, 'design/boards');
 const ASSETS = path.join(ROOT, 'design/assets');
 const OUT = path.join(ROOT, 'dist');
+
+// clean-code audit (tools/audit-boards.mjs): stop if any board got worse than tools/audit-baseline.json
+{
+  const res = auditAll(), bad = worse(res, JSON.parse(fs.readFileSync(path.join(ROOT, 'tools/audit-baseline.json'), 'utf8')));
+  if (bad.length) { console.error(table(res) + '\n\nboard audit: WORSE than the baseline (fix the board, don\'t raise the baseline):\n  ' + bad.join('\n  ')); process.exit(1); }
+}
 
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
