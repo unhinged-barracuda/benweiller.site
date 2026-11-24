@@ -347,7 +347,7 @@ function start(sync) {
   document.documentElement.dataset.board = tpl.id.replace('dc-', '');
   currentTpl = tpl.id;
   mount(tpl, script, root, sync);
-  setPaging(window.__DC_PAGE__);
+  setPaging(tpl);
   // pages whose images appear on hover (the menu's thumbnail card) warm them up once the page has settled
   if ((window.__DC_PAGE__ || {}).preload) {
     if (document.readyState === 'complete') setTimeout(() => warmImages(script), 600); else window.addEventListener('load', () => setTimeout(() => warmImages(script), 600), { once: true });
@@ -355,15 +355,18 @@ function start(sync) {
 }
 
 // ---------- scroll paging: home ⇄ menu ⇄ about ⇄ contact ----------
-// The homepage opens the menu on its own (its board). Every other page in the chain says in its settings which page is
-// "up" and which is "down": wheel / trackpad (~120px), a swipe (60px; swipe down = up, swipe up = down) or the keys
-// (↑ / page up, ↓ / page down / space) open it with the usual dissolve. A page that scrolls only hands off from its
+// The homepage opens the menu on its own (its board). The rest of the chain comes from the boards themselves: each board
+// marks the page above and below it with hidden links (a[data-next="prev"] / a[data-next="next"], from the canvas), so
+// desktop and phone can differ (desktop contact pages back up to about; phone contact is the end both ways).
+// Wheel / trackpad (~120px), a swipe (60px; swipe down = up, swipe up = down) or the keys (↑ / page up,
+// ↓ / page down / space) open it with the usual dissolve. A page that scrolls only hands off from its
 // top / bottom edge, after a brief blink there (see the wheel handler). Phone boards built for the phone scroll the page
 // itself; older boards scroll an inner box marked data-pscroll (until they are rebuilt).
 let paging = null;
-function setPaging(cfg) {
+function setPaging(tpl) {
   if (paging) { paging.off(); paging = null; }
-  const up = cfg && cfg.up, down = cfg && cfg.down;
+  const link = (k) => { const a = (tpl.content || tpl).querySelector('a[data-next="' + k + '"]'); return a && a.getAttribute('href'); };
+  const up = link('prev'), down = link('next');
   if (!up && !down) return;
   const t0 = Date.now();
   const sc = () => document.querySelector('#dc-root [data-pscroll]') || document.scrollingElement;
