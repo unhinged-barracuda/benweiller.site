@@ -99,6 +99,9 @@ a{color:#1E1E1C}a:hover{color:#000000}
 .gv-dark .gic{background:linear-gradient(180deg,rgba(30,30,28,0.97),rgba(30,30,28,0.82))!important}
 .gv-dark .ico{opacity:0.35}
 .callBtn{text-decoration:none;color:inherit}
+/* about fits the window (Nov 23): no empty band under the content; on short windows the space above it eases in a little */
+.aboutMain{padding-top:16vh}
+@media (max-height: 760px){.aboutMain{padding-top:11vh}}
 </style>
 </helmet>
 <div onMouseMove="{{onMove}}" onMouseLeave="{{onLeave}}" style="position: relative; height: 100vh; min-height: 560px; overflow: hidden; background: #F1F1EE; color: #1E1E1C; font-family: 'Inter', system-ui, sans-serif">
@@ -174,7 +177,7 @@ a{color:#1E1E1C}a:hover{color:#000000}
 </button>
 </div>
 </header>
-<main style="width: min(1120px, 90vw); margin: 0 auto; padding: 16vh 0 12vh; display: flex; gap: 9vw; align-items: flex-start">
+<main class="aboutMain" style="width: min(1120px, 90vw); margin: 0 auto; display: flex; gap: 9vw; align-items: flex-start">
 <!-- portrait: a card on the page with the same hovering shadow as the menu card; the blob peeks out from behind it -->
 <figure style="margin: 0; flex: none; width: min(22vw, 300px)">
 <img src="/_blob/0843f9d7ff57f2bd39f4b271f856d46c" alt="Ben Weiller sitting under the trees in a slouchy knit hat" style="display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; filter: saturate(0.92) contrast(1.02)">
