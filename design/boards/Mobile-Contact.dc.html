@@ -544,8 +544,8 @@ class Component extends DCLogic {
         const r0 = e.currentTarget.getBoundingClientRect();
         const sc = Math.max(r0.width / 390, r0.height / 844) * 0.7, ox = (r0.width - 390 * sc / 0.7) / 2 + -78.0 * sc / 0.7, oy = (r0.height - 844 * sc / 0.7) / 2 + -36.0 * sc / 0.7; // mobile: the drawing is scaled 0.7 into the phone frame
         const nx = (tp.clientX - r0.left - ox) / sc, ny = (tp.clientY - r0.top - oy) / sc;
-        // a finger drag morphs Bloblurb at 0.4x its travel (Nov 24, Ben: slower on this page; it still follows the finger at full speed)
-        const d = this.lastP ? Math.min(90, Math.hypot(nx - this.lastP[0], ny - this.lastP[1])) * 0.4 : 0; this.lastP = [nx, ny];
+        // a finger drag morphs Bloblurb at 0.5x its travel (half speed) (Nov 24, Ben: slower on this page; it still follows the finger at full speed)
+        const d = this.lastP ? Math.min(90, Math.hypot(nx - this.lastP[0], ny - this.lastP[1])) * 0.5 : 0; this.lastP = [nx, ny];
         this.pend = { mx: nx, my: ny, travel: (this.pend && this.pend.travel !== undefined ? this.pend.travel : (this.state.travel || 0)) + d };
         if (this.raf) return;
         this.raf = requestAnimationFrame(() => { this.raf = null; if (this.pend) { const q = this.pend; this.pend = null; this.setState(q); } });
