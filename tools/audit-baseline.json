@@ -35,11 +35,11 @@
   "unusedClass": 0
  },
  "Mobile-Kia-v2": {
-  "important": 48,
-  "styleMatch": 22,
-  "dupSelector": 5,
+  "important": 0,
+  "styleMatch": 0,
+  "dupSelector": 0,
   "dupKeyframe": 0,
-  "unusedClass": 13
+  "unusedClass": 0
  },
  "Project-Kia-XLine": {
   "important": 0,
@@ -49,11 +49,11 @@
   "unusedClass": 0
  },
  "Mobile-Kia-XLine": {
-  "important": 50,
-  "styleMatch": 23,
-  "dupSelector": 5,
+  "important": 0,
+  "styleMatch": 0,
+  "dupSelector": 0,
   "dupKeyframe": 0,
-  "unusedClass": 12
+  "unusedClass": 0
  },
  "Project-Kia-EV": {
   "important": 0,
@@ -63,11 +63,11 @@
   "unusedClass": 0
  },
  "Mobile-Kia-EV": {
-  "important": 48,
-  "styleMatch": 22,
-  "dupSelector": 5,
+  "important": 0,
+  "styleMatch": 0,
+  "dupSelector": 0,
   "dupKeyframe": 0,
-  "unusedClass": 14
+  "unusedClass": 0
  },
  "Project-San-Diego-Zoo": {
   "important": 0,
@@ -77,11 +77,11 @@
   "unusedClass": 0
  },
  "Mobile-San-Diego-Zoo": {
-  "important": 48,
-  "styleMatch": 22,
-  "dupSelector": 5,
+  "important": 0,
+  "styleMatch": 0,
+  "dupSelector": 0,
   "dupKeyframe": 0,
-  "unusedClass": 14
+  "unusedClass": 0
  },
  "Project-Heelys": {
   "important": 0,
@@ -91,11 +91,11 @@
   "unusedClass": 0
  },
  "Mobile-Heelys": {
-  "important": 28,
-  "styleMatch": 22,
-  "dupSelector": 5,
+  "important": 0,
+  "styleMatch": 0,
+  "dupSelector": 0,
   "dupKeyframe": 0,
-  "unusedClass": 14
+  "unusedClass": 0
  },
  "Project-Vizio": {
   "important": 0,
@@ -105,11 +105,11 @@
   "unusedClass": 0
  },
  "Mobile-Vizio": {
-  "important": 48,
-  "styleMatch": 22,
-  "dupSelector": 5,
+  "important": 0,
+  "styleMatch": 0,
+  "dupSelector": 0,
   "dupKeyframe": 0,
-  "unusedClass": 15
+  "unusedClass": 0
  },
  "Project-Dropbox": {
   "important": 0,
@@ -119,11 +119,11 @@
   "unusedClass": 0
  },
  "Mobile-Dropbox": {
-  "important": 28,
-  "styleMatch": 22,
-  "dupSelector": 4,
+  "important": 0,
+  "styleMatch": 0,
+  "dupSelector": 0,
   "dupKeyframe": 0,
-  "unusedClass": 12
+  "unusedClass": 0
  },
  "Project-Jollibee": {
   "important": 0,
@@ -133,11 +133,11 @@
   "unusedClass": 0
  },
  "Mobile-Jollibee": {
-  "important": 48,
-  "styleMatch": 22,
-  "dupSelector": 5,
+  "important": 0,
+  "styleMatch": 0,
+  "dupSelector": 0,
   "dupKeyframe": 0,
-  "unusedClass": 14
+  "unusedClass": 0
  },
  "Project-Speak-Your-Vote": {
   "important": 0,
@@ -147,11 +147,11 @@
   "unusedClass": 0
  },
  "Mobile-Speak-Your-Vote": {
-  "important": 48,
-  "styleMatch": 22,
-  "dupSelector": 5,
+  "important": 0,
+  "styleMatch": 0,
+  "dupSelector": 0,
   "dupKeyframe": 0,
-  "unusedClass": 14
+  "unusedClass": 0
  },
  "Project-Motel-6": {
   "important": 0,
@@ -161,11 +161,11 @@
   "unusedClass": 0
  },
  "Mobile-Motel-6": {
-  "important": 28,
-  "styleMatch": 22,
-  "dupSelector": 5,
+  "important": 0,
+  "styleMatch": 0,
+  "dupSelector": 0,
   "dupKeyframe": 0,
-  "unusedClass": 14
+  "unusedClass": 0
  },
  "Project-BMW": {
   "important": 0,
@@ -175,11 +175,11 @@
   "unusedClass": 0
  },
  "Mobile-BMW": {
-  "important": 25,
-  "styleMatch": 22,
-  "dupSelector": 5,
+  "important": 0,
+  "styleMatch": 0,
+  "dupSelector": 0,
   "dupKeyframe": 0,
-  "unusedClass": 14
+  "unusedClass": 0
  },
  "Project-Vicks": {
   "important": 0,
@@ -189,11 +189,11 @@
   "unusedClass": 0
  },
  "Mobile-Vicks": {
-  "important": 28,
-  "styleMatch": 22,
-  "dupSelector": 5,
+  "important": 0,
+  "styleMatch": 0,
+  "dupSelector": 0,
   "dupKeyframe": 0,
-  "unusedClass": 13
+  "unusedClass": 0
  },
  "About-A": {
   "important": 8,
