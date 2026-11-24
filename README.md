@@ -35,6 +35,19 @@ Cloudflare Pages builds and deploys `dist/` on every push to `main` (build comma
 4. `npm run build` — it lists any asset or board link it couldn't resolve. Commit and push; the site redeploys in a minute or two.
 5. Update `claude/design-spec.md` in the Project.
 
+## Keeping it clean (checked by the build)
+
+Ben's rule: change the original value, don't patch on top. `npm run build` first runs `tools/audit-boards.mjs`, which counts
+for every board the site uses: `!important`, rules that find elements by text in their inline style (`[style*="…"]`),
+selectors written twice, duplicate `@keyframes`, and CSS for classes the board doesn't use. If any board is worse than
+`tools/audit-baseline.json` the build stops: fix the board (on the canvas), don't raise the baseline. After a cleanup,
+`node tools/audit-boards.mjs --lower` lowers the baseline (`--verbose` lists the unused classes).
+
+To show a cleanup changes nothing, serve the previous build on a second port and run
+`node tools/compare-pages.mjs http://localhost:8789 http://localhost:8788 /heelys/ …` (`--only=desktop` / `--only=iphone`):
+it compares every visible element's position, size and computed look, with the menu open, the expanded view open and
+stepped, and the first keyboard focus stops. It needs Playwright (`PLAYWRIGHT=…/playwright/index.mjs` if not installed here).
+
 ## Pages
 
 | URL | desktop board | mobile board |
