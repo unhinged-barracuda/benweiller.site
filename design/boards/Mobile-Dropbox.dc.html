@@ -238,7 +238,6 @@ header .ico,header #hdrMenuG{visibility:hidden!important}
 <div style="position: relative; width: 440px; max-width: 70vw; aspect-ratio: 2 / 3; margin: 24px 0 8px">
 <button class="xp dk" data-k="0" type="button" onClick="{{d0.click}}" aria-label="{{d0.label}}" data-expand="true" style="position: absolute; inset: 0; z-index: {{d0.z}}; transform: {{d0.t}}"><img class="asset" src="/_blob/e30c2900a7290e6a32314cc73bbc5831" alt="Dropbox poster on lime: you look like you could use an infinite attic for your spare bits and bytes." style="display: block; width: 100%; height: 100%; object-fit: cover"></button>
 <button class="xp dk" data-k="1" type="button" onClick="{{d1.click}}" aria-label="{{d1.label}}" data-expand="true" style="position: absolute; inset: 0; z-index: {{d1.z}}; transform: {{d1.t}}"><img class="asset" src="/_blob/78a368476929eea5e14b5595af236c72" alt="Dropbox poster on periwinkle: remember when your parents told you to pick up the clutter covering your floor? the same applies to your desktop." style="display: block; width: 100%; height: 100%; object-fit: cover"></button>
-<button class="xp dk" data-k="2" type="button" onClick="{{d2.click}}" aria-label="{{d2.label}}" data-expand="true" style="position: absolute; inset: 0; z-index: {{d2.z}}; transform: {{d2.t}}"><img class="asset" src="/_blob/657b226f1b94466c4088b2ee34d1a2bf" alt="Dropbox poster on charcoal: your digital baggage deserves a better resting spot than the bottom of the “recent” downloads folder." style="display: block; width: 100%; height: 100%; object-fit: cover"></button>
 </div>
 <div class="gv-dark" style="display: flex; gap: 10px; margin: 18px -2px 0 0; padding: 6px 0 6px 12px">
 <span class="gbw" style="width: 48px; height: 48px" onClick="{{dPrev}}">
@@ -445,9 +444,13 @@ class Component extends DCLogic {
     document.addEventListener('click', this.flipH, true);
   }
   // dropbox stack only: in time with the arrows' flip (0.55s), → turns the top poster a few degrees clockwise and fades it out, then it fades back in at the back of the pile; ← fades the back poster up on top, turning in from the other side. each poster keeps its own tilt, so nothing else moves
+  // the poster pile: which cards are in it (Nov 24, Ben: the charcoal "downloads" poster is hidden for now; put its key back to show it)
+  pile() { return [0, 1]; }
+  // the expanded poster set: which posters (by S index) it steps through; the charcoal downloads poster (2) is left out with it
+  shown() { return [0, 1, 3]; }
   peelSwap(dir) {
     if (this.peeling) return;
-    const n = 3, top = this.state.dTop, to = (top + (dir > 0 ? 1 : n - 1)) % n;
+    const P = this.pile(), n = P.length, top = this.state.dTop, to = P[(P.indexOf(top) + (dir > 0 ? 1 : n - 1)) % n];
     const reduce = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const card = (k) => document.querySelector('.dk[data-k="' + k + '"]');
     if (reduce || !card(top) || !card(top).animate) { this.setState({ dTop: to }); return; }
@@ -623,10 +626,10 @@ class Component extends DCLogic {
           ['/_blob/29eef17580a9380a4b78d827baec6dba', 'The Dropbox YouTube channel on a desktop screen, featuring the Dropbox and The Home Edit miniseries.'],
           ['/_blob/72bf2c77be85f165bc7418516586b874', 'Behind the Baggage podcast playing on a phone: 01, lost in the mail.']
         ];
-        const X = this.state.xs === 'ooh' ? O : this.state.xs === 'acts' ? A : S, n = X.length, xi = this.state.xi, o = {};
+        const SV = this.shown().map((i) => S[i]), X = this.state.xs === 'ooh' ? O : this.state.xs === 'acts' ? A : SV, n = X.length, xi = this.state.xi, o = {};
         A.forEach((x, j) => { o['aa' + j] = () => this.setState({ xs: 'acts', xi: j }); });
         O.forEach((x, j) => { o['oo' + j] = () => this.setState({ xs: 'ooh', xi: j }); });
-        S.forEach((x, j) => { o['so' + j] = () => this.setState({ xs: 'verts', xi: j }); });
+        SV.forEach((x, j) => { o['so' + j] = () => this.setState({ xs: 'verts', xi: j }); });
         const cur = X[Math.max(0, Math.min(n - 1, xi))];
         o.xOpen = xi >= 0;
         o.xMany = n > 1;
@@ -639,9 +642,10 @@ class Component extends DCLogic {
         // each poster keeps its own tilt wherever it sits in the pile, so nothing shifts when the order changes (lime, periwinkle, dark)
         const POSE = ['translate(-20px, 10px) rotate(-5.5deg)', 'rotate(-2deg)', 'translate(18px, 6px) rotate(3.5deg)'];
         const LAB = ['the attic poster', 'the clutter poster', 'the downloads poster'];
-        [0, 1, 2].forEach((k) => {
-          const d = (k - this.state.dTop + 3) % 3;
-          o['d' + k] = { z: 3 - d, t: POSE[k], label: d === 0 ? 'Expand: ' + LAB[k] : 'Bring ' + LAB[k] + ' to the top', click: () => (d === 0 ? this.setState({ xs: 'verts', xi: [3, 1, 2][k] }) : this.setState({ dTop: k })) };
+        const PL = this.pile(), m = PL.length;
+        PL.forEach((k) => {
+          const d = (PL.indexOf(k) - PL.indexOf(this.state.dTop) + m) % m;
+          o['d' + k] = { z: m - d, t: POSE[k], label: d === 0 ? 'Expand: ' + LAB[k] : 'Bring ' + LAB[k] + ' to the top', click: () => (d === 0 ? this.setState({ xs: 'verts', xi: this.shown().indexOf([3, 1, 2][k]) }) : this.setState({ dTop: k })) };
         });
         o.dPrev = () => this.peelSwap(-1);
         o.dNext = () => this.peelSwap(1);

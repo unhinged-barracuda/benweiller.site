@@ -122,7 +122,7 @@ a{color:#1E1E1C}a:hover{color:#000000}
 <div style="display: inline-block">
 <div style="text-align: right"><button class="lead" type="button" onClick="{{toggleBlurb}}" aria-expanded="{{blurbStr}}" aria-controls="blurb">a blurb about the blob.<span class="arw" aria-hidden="true" style="transform: rotate({{arwRot}}deg)">↑</span></button></div>
 <div class="bfold {{blurbCls}}" style="grid-template-rows: {{blurbRows}}"><div>
-<p id="blurb" style="margin: 0; padding-top: 8px; white-space: nowrap">feel free to name the colorful shapeshifting<br>entity on this page whatever you like. it<br>enjoys gentle belly rubs and will be your best<br>friend if you scroll with an open mind. but if<br>you don’t.. well, let’s just say it bites.</p>
+<p id="blurb" style="margin: 0; padding-top: 8px; white-space: nowrap">feel free to name the colorful shapeshifting<br>entity on this page whatever you like. it<br>enjoys gentle belly rubs and will be your best<br>friend if you scroll with an open mind.<br>click to continue.</p>
 </div></div>
 </div>
 </div>
@@ -145,8 +145,17 @@ class Component extends DCLogic {
   // Safari's strips (behind the clock and around the toolbar): iOS 26 fills them with the page's background colour, which no
   // page drawing can reach. This page's ground shifts with the blob's colours, so the page's background follows it and the
   // strips stay the same colour as the page beside them (checked on Ben's iPhone, Nov 22). Reset when the page goes.
+  // The strip colour is the page as it reads on the phone: the ground with its grain over it, which darkens it a touch (~4%
+  // toward the grain's grey). A flat ground left the strips visibly lighter than the page (measured on Ben's iPhone, Nov 24).
+  stripCol(c) {
+    const m = c.match(/[\d.]+/g).map(Number), h = m[0], sa = m[1] / 100, l = m[2] / 100, a = sa * Math.min(l, 1 - l);
+    const f = (n) => { const k = (n + h / 30) % 12; return l - a * Math.max(-1, Math.min(k - 3, 9 - k, 1)); };
+    const g = (v) => Math.round(v * 255 * 0.957 + 77 * 0.043);
+    return 'rgb(' + g(f(0)) + ',' + g(f(8)) + ',' + g(f(4)) + ')';
+  }
   paintStrips() {
-    const c = this.ground;
+    if (!this.ground) return;
+    const c = this.stripCol(this.ground);
     if (c === this.strip) return; this.strip = c;
     document.documentElement.style.backgroundColor = c; document.body.style.backgroundColor = c;
   }
@@ -167,27 +176,49 @@ class Component extends DCLogic {
     const k = Math.min(1, (ny - vTop - 6) / Math.max(1, ay - top), (vTop + H / sc - 6 - ny) / Math.max(1, bot - ay));
     return 'translate(' + nx.toFixed(1) + 'px,' + ny.toFixed(1) + 'px) scale(' + k.toFixed(3) + ') translate(' + (-ax).toFixed(1) + 'px,' + (-ay).toFixed(1) + 'px)';
   }
-  componentWillUnmount() { document.documentElement.style.backgroundColor = ''; document.body.style.backgroundColor = ''; if (this.raf) cancelAnimationFrame(this.raf); if (this.onKey) window.removeEventListener('keydown', this.onKey); if (this.onTilt) window.removeEventListener('deviceorientation', this.onTilt); }
+  componentWillUnmount() { document.documentElement.style.backgroundColor = ''; document.body.style.backgroundColor = ''; if (this.raf) cancelAnimationFrame(this.raf); if (this.onKey) window.removeEventListener('keydown', this.onKey); if (this.onTilt) window.removeEventListener('deviceorientation', this.onTilt); if (this.onShake) window.removeEventListener('devicemotion', this.onShake); }
   componentDidMount() {
     this.paintStrips();
     this.onKey = (e) => { if (e.target && e.target.closest && e.target.closest('button, a')) return; if (['ArrowDown', 'PageDown', ' ', 'Spacebar'].indexOf(e.key) >= 0) { e.preventDefault(); this.go(); } };
     window.addEventListener('keydown', this.onKey);
-    // tilt: leaning the phone left/right and toward/away plays the part of the cursor
+    // tilt (Nov 24, Ben): leaning the phone left/right and toward/away plays the part of the cursor, and every bit of tilting
+    // also reshapes and recolours Bloblurb (about a full colour shift for a firm tilt from one side to the other)
     this.onTilt = (e) => {
       if (e.gamma == null || e.beta == null) return;
       const tx = Math.max(-1, Math.min(1, e.gamma / 28)), ty = Math.max(-1, Math.min(1, (e.beta - 40) / 28));
-      const d = this.lastTilt ? Math.hypot(tx - this.lastTilt[0], ty - this.lastTilt[1]) * 260 : 0;
+      const d = this.lastTilt ? Math.hypot(tx - this.lastTilt[0], ty - this.lastTilt[1]) * 600 : 0;
       this.lastTilt = [tx, ty];
-      this.pending = { mx: tx, my: ty, add: Math.min(d, 80) + (this.pending ? this.pending.add : 0) };
-      if (!this.raf) this.raf = requestAnimationFrame(() => { this.raf = null; const p = this.pending; this.pending = null; if (p) this.setState({ mx: p.mx, my: p.my, travel: this.state.travel + p.add }); });
+      this.pending = { mx: tx, my: ty, add: Math.min(d, 120) + (this.pending ? this.pending.add : 0) };
+      this.flush();
     };
-    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission !== 'function') window.addEventListener('deviceorientation', this.onTilt);
+    // moving the phone (a sway, a lift, a little shake) reshapes and recolours it too, more the harder it moves
+    this.onShake = (e) => {
+      const a = e.acceleration; if (!a || a.x == null) return;
+      const g = Math.hypot(a.x, a.y, a.z); if (g < 0.6) return;
+      const p = this.pending;
+      this.pending = { mx: p ? p.mx : this.state.mx, my: p ? p.my : this.state.my, add: Math.min((g - 0.6) * 30, 120) + (p ? p.add : 0) };
+      this.flush();
+    };
+    // motion access: phones that don't ask get it straight away; an iPhone that already said yes this visit gets it back
+    // without asking again (the yes is remembered for the session)
+    const asks = typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function';
+    let ok = false; try { ok = sessionStorage.getItem('bwMotion') === '1'; } catch (err) {}
+    if (!asks || ok) this.listenMotion();
   }
-  // iPhone asks once for motion access, and can only ask from a touch, so the first touch asks
+  flush() {
+    if (!this.raf) this.raf = requestAnimationFrame(() => { this.raf = null; const p = this.pending; this.pending = null; if (p) this.setState({ mx: p.mx, my: p.my, travel: this.state.travel + p.add }); });
+  }
+  listenMotion() {
+    if (this.motionOn) return; this.motionOn = true;
+    window.addEventListener('deviceorientation', this.onTilt);
+    window.addEventListener('devicemotion', this.onShake);
+  }
+  // an iPhone asks once for motion access, and only from the end of a touch (a touch that starts doesn't count), so the
+  // first touch to end asks: a drag across Bloblurb, a tap on the blurb or the "///", or the tap that continues to the menu
   askTilt() {
-    if (this.tiltAsked) return; this.tiltAsked = true;
+    if (this.tiltAsked || this.motionOn) return; this.tiltAsked = true;
     if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-      DeviceOrientationEvent.requestPermission().then((r) => { if (r === 'granted') window.addEventListener('deviceorientation', this.onTilt); }).catch(() => {});
+      DeviceOrientationEvent.requestPermission().then((r) => { if (r === 'granted') { try { sessionStorage.setItem('bwMotion', '1'); } catch (err) {} this.listenMotion(); } }).catch(() => {});
     }
   }
   // scroll down into the menu: the homepage lifts and fades, then the menu page opens and plays its entrance
@@ -261,7 +292,7 @@ class Component extends DCLogic {
     const b = e.currentTarget.getBoundingClientRect();
     const x = (pt || e).clientX, y = (pt || e).clientY;
     let d = 0;
-    if (this.last) d = Math.hypot(x - this.last[0], y - this.last[1]);
+    if (this.last) d = Math.hypot(x - this.last[0], y - this.last[1]) * (pt ? 1.8 : 1); // a finger drag counts 1.8× (a phone screen is small), so a drag across Bloblurb clearly reshapes and recolours it
     this.last = [x, y];
     const cxp = b.left + b.width * (cx / 390), cyp = b.top + b.height * (cy / 844);
     this.pending = {
@@ -329,9 +360,9 @@ class Component extends DCLogic {
       openClsG: this.state.openG ? 'open' : '', openStrG: this.state.openG ? 'true' : 'false', drawerVisG: this.state.openG ? 'visible' : 'hidden', tabG: this.state.openG ? '0' : '-1',
       icoLabelG: this.state.openG ? 'Close menu' : 'Open menu',
       toggleG: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.setState({ openG: !this.state.openG }); },
-      onTouchStart: (e) => { const t = e.touches && e.touches[0]; this.ty = t ? t.clientY : null; this.t0 = t ? [t.clientX, t.clientY] : null; this.dragged = false; this.last = null; this.askTilt(); },
+      onTouchStart: (e) => { const t = e.touches && e.touches[0]; this.ty = t ? t.clientY : null; this.t0 = t ? [t.clientX, t.clientY] : null; this.dragged = false; this.last = null; },
       // a swipe up (scrolling down) or a tap continues to the menu; sideways or downward drags only play with the blob
-      onTouchEnd: (e) => { const t = e.changedTouches && e.changedTouches[0]; if (e.target && e.target.closest && e.target.closest('a, button, nav')) { this.ty = null; return; } if (this.ty !== null && t && this.ty - t.clientY > 50) this.go(e.currentTarget); else if (!this.dragged) this.go(e.currentTarget); this.ty = null; },
+      onTouchEnd: (e) => { this.askTilt(); const t = e.changedTouches && e.changedTouches[0]; if (e.target && e.target.closest && e.target.closest('a, button, nav')) { this.ty = null; return; } if (this.ty !== null && t && this.ty - t.clientY > 50) this.go(e.currentTarget); else if (!this.dragged) this.go(e.currentTarget); this.ty = null; },
       onLeave: () => { this.last = null; this.setState({ mx: 0, my: 0 }); },
       // the blurb's title opens and closes the paragraph (it never counts as a click-to-continue)
       blurbStr: this.state.blurb ? 'true' : 'false', blurbCls: this.state.blurb ? '' : 'shut', blurbRows: this.state.blurb ? '1fr' : '0fr', arwRot: this.state.blurb ? 180 : 0,

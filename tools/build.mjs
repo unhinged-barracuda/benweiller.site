@@ -134,7 +134,7 @@ function page(r) {
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#F1F1EE">
+<meta name="theme-color" content="#EBEBE8">
 <link rel="canonical" href="${url}">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -142,7 +142,7 @@ function page(r) {
 <link rel="manifest" href="/site.webmanifest">
 <link rel="preload" href="${FONTS['inter-400']}" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="${FONTS['dirtbag']}" as="font" type="font/woff2" crossorigin>
-<style>${FONT_CSS}html,body{margin:0;background:#F1F1EE;overscroll-behavior:none}#dc-root>[style*="100svh"]{min-height:0!important}html:has(#dc-root>[style*="100svh"]),html:has(#dc-root>[style*="100svh"]) body{overflow:hidden;height:100%}.page{overscroll-behavior:none}#dc-root{min-height:100vh}</style><style>
+<style>${FONT_CSS}html,body{margin:0;background:#EBEBE8;overscroll-behavior:none}#dc-root>[style*="100svh"]{min-height:0!important}html:has(#dc-root>[style*="100svh"]),html:has(#dc-root>[style*="100svh"]) body{overflow:hidden;height:100%}.page{overscroll-behavior:none}#dc-root{min-height:100vh}</style><style>
 ::view-transition-old(root),::view-transition-new(root){animation-duration:.65s;animation-timing-function:cubic-bezier(.3,.7,.2,1)}
 @media (prefers-reduced-motion: reduce){::view-transition-old(root),::view-transition-new(root){animation:none}}</style>
 <script>window.__DC_PAGE__=${JSON.stringify({ tabletMobile: !!r.tabletMobile, preload: !!r.preload, up: r.up || null, down: r.down || null})};window.__IMG__=${JSON.stringify(used)}</script>
