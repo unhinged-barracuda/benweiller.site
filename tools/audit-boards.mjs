@@ -1,6 +1,6 @@
-// Clean-code audit for the boards the site uses. The intention behind it (Ben, Nov 24): the most efficient, cleanest code
-// possible. Every change replaces the original instead of being layered on top of it, so a board always reads as if it had
-// been written that way from the start. It checks the families of ways code piles up, not one spelling of each:
+// Clean-code audit for the boards the site uses. The intention behind it (Ben, Nov 24): the most efficient, cleanest, most
+// effective code possible. Every change replaces the original instead of fixing or updating on top of it, so a board always
+// reads as if it had been written that way from the start. It checks the families of ways code piles up, not one spelling of each:
 //
 //   force    a value forced over another: !important anywhere (CSS, inline styles, script)
 //   outside  an element changed from outside by matching its inline style ([style*=…], [style^=…], [style~=…] …)

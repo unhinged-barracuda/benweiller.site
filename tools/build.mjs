@@ -17,9 +17,9 @@ const OUT = path.join(ROOT, 'dist');
 // clean-code audit (tools/audit-boards.mjs): stop if any board got worse than tools/audit-baseline.json, or the site's own code forces values
 {
   const res = auditAll(), bad = worse(res, JSON.parse(fs.readFileSync(path.join(ROOT, 'tools/audit-baseline.json'), 'utf8')));
-  if (bad.length) { console.error(table(res) + '\n\nboard audit: WORSE than the baseline (fix the board, don\'t raise the baseline):\n  ' + bad.join('\n  ')); process.exit(1); }
+  if (bad.length) { console.error(table(res) + '\n\nboard audit: code piled up. The intention: the most efficient, cleanest, most effective code; replace the original, don\'t layer on it. Fix the board on the canvas (never raise the baseline):\n  ' + bad.join('\n  ')); process.exit(1); }
   const site = auditSite();
-  if (site.length) { console.error('site code audit:\n  ' + site.join('\n  ')); process.exit(1); }
+  if (site.length) { console.error('site code audit: code piled up. The intention: the most efficient, cleanest, most effective code; replace the original, don\'t layer on it:\n  ' + site.join('\n  ')); process.exit(1); }
 }
 
 fs.rmSync(OUT, { recursive: true, force: true });
