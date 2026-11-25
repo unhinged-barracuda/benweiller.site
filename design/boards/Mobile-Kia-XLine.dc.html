@@ -420,7 +420,6 @@ class Component extends DCLogic {
     const pr = P[pi];
     const sp = this.state.sp || 0, t = (this.state.sy || 0) / 900;
     const mx = this.state.mx || 0, my = this.state.my || 0;
-    const chip = (on) => ({ bg: on ? '#1E1E1C' : 'rgba(255,255,255,0.6)', ink: on ? '#F1F1EE' : '#1E1E1C', pressed: on ? 'true' : 'false' });
     // radio playbar: the real 1:02 spot; the bars are its actual loudness, 96 slices
     const DUR = this.DUR = 62.1, pos = this.state.pos || 0, playing = !!this.state.playing;
     const W = [0.13,0.0,0.0,0.43,0.47,0.55,0.4,0.54,0.05,0.05,0.64,0.47,0.49,0.62,0.59,0.63,0.45,0.32,0.13,0.47,0.88,0.12,0.83,0.25,0.58,0.55,0.5,0.61,0.55,0.09,0.13,0.58,0.45,0.52,0.6,0.55,0.49,0.38,0.3,0.9,0.76,0.6,0.64,0.54,0.43,0.6,0.51,0.5,0.26,0.69,0.51,0.66,0.52,0.58,0.38,0.6,0.63,0.45,0.7,0.43,0.62,0.74,0.54,0.42,0.4,1.0,0.72,0.48,0.85,0.93,0.82,0.54,0.26,0.4,0.46,0.44,0.47,0.31,0.68,0.46,0.6,0.41,0.48,0.73,0.64,0.76,0.26,0.34,0.54,0.5,0.51,0.53,0.43,0.45,0.53,0.38], N = W.length;
@@ -434,7 +433,6 @@ class Component extends DCLogic {
       togglePlay: () => this.togglePlay(),
       seek: (e) => { const r = e.currentTarget.getBoundingClientRect(); const f = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)); const a = this.aud(); if (a) a.currentTime = f * DUR; this.setState({ pos: f * DUR }); },
       brand: pr.brand, campaign: pr.campaign, sep: ' /',
-      filmColor: pr.color,
       b: this.theBlob(this.state.seed, sp, t),
       lean: 'translate(' + (mx * 10).toFixed(1) + 'px,' + (my * 7).toFixed(1) + 'px)',
       xVis: this.state.openF ? 'hidden' : 'visible',

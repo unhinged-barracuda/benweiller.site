@@ -30,7 +30,8 @@ function seed() {
 
 async function snap(page, PROPS) {
   return page.evaluate((PROPS) => {
-    document.getAnimations().forEach((a) => { try { a.pause(); a.currentTime = 0; } catch (e) {} });
+    // transitions (menu words, fades) run to their end; endless animations (breathing, drift) are held at their start
+    document.getAnimations().forEach((a) => { try { if (a instanceof CSSTransition) a.finish(); else { a.pause(); a.currentTime = 0; } } catch (e) {} });
     const root = document.getElementById('dc-root'); const out = {}; const n = {};
     const own = (el) => [...el.childNodes].filter((c) => c.nodeType === 3).map((c) => c.textContent).join('').replace(/\s+/g, ' ').trim();
     for (const el of root.querySelectorAll('img,video,a,button,h1,h2,h3,p,span,li,figure,section,nav,svg,canvas,picture')) {
@@ -44,7 +45,7 @@ async function snap(page, PROPS) {
       n[key] = (n[key] || 0) + 1;
       const r = el.getBoundingClientRect(), cs = getComputedStyle(el);
       const sc = document.scrollingElement.scrollTop + ([...document.querySelectorAll('[data-pscroll],.page')].reduce((m, s) => m + s.scrollTop, 0));
-      const look = {}; for (const p of PROPS) look[p] = cs[p];
+      const look = {}; for (const p of PROPS) look[p] = String(cs[p]).replace(/https?:\/\/[^/"]+/g, ''); // same asset from either server
       out[key + '#' + n[key]] = { box: [r.x, r.y + sc, r.width, r.height].map((v) => Math.round(v * 2) / 2), look };
     }
     return out;
@@ -81,9 +82,12 @@ async function states(ctx, base, path) {
     foc.push(await page.evaluate(() => { const e = document.activeElement; if (!e || e === document.body) return 'body'; const b = getComputedStyle(e, '::before'), c = getComputedStyle(e); const r = e.getBoundingClientRect(); return [e.tagName, e.getAttribute('aria-label') || e.textContent.trim().slice(0, 20), Math.round(r.x), Math.round(r.width), c.outlineStyle, c.boxShadow, b.content, b.background.slice(0, 60), b.transform].join(' | '); }));
   }
   res.focus = foc;
-  await page.keyboard.press('Escape'); await page.evaluate(() => document.activeElement && document.activeElement.blur());
+  await page.keyboard.press('Escape');
+  // each state starts from the same place: nothing focused, every scroller back at the top (the Tab stops scroll the page)
+  await page.evaluate(() => { document.activeElement && document.activeElement.blur(); for (const e of [document.scrollingElement, ...document.querySelectorAll('[data-pscroll],.page')]) e.scrollTop = 0; });
+  await page.waitForTimeout(300);
   // the "///" menu
-  const menu = page.locator('.fabBtn').first();
+  const menu = page.locator('.fabBtn, button.ico[aria-controls="hdrMenuG"]').first(); // the fixed "///" on project pages, the header "///" elsewhere
   if (await menu.count()) { await menu.click({ force: true }).catch(() => {}); await page.waitForTimeout(700); res.menu = await snap(page, PROPS); await menu.click({ force: true }).catch(() => {}); await page.waitForTimeout(500); }
   // the first expandable image, and one step in it
   const xp = page.locator('#dc-root .xp').first();

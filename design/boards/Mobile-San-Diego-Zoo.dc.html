@@ -408,20 +408,16 @@ class Component extends DCLogic {
     const pr = P[pi];
     const sp = this.state.sp || 0, t = (this.state.sy || 0) / 900;
     const mx = this.state.mx || 0, my = this.state.my || 0;
-    const chip = (on) => ({ bg: on ? '#1E1E1C' : 'rgba(255,255,255,0.6)', ink: on ? '#F1F1EE' : '#1E1E1C', pressed: on ? 'true' : 'false' });
     const SRC = [
       ['/_blob/ab6191f0fddcf911fae1f25b9ab434d5', 'tiger eye, close up'], ['/_blob/01ca698a1db7b52c768c6fe78324d9bd', 'owl eye, close up'],
       ['/_blob/395bef1e38cdd00c5ce2c72628a492f4', 'zebra eye, close up'], ['/_blob/20a47a79cfbc8f2a18608c3411bb8e7e', 'rhino eye, close up'],
       ['/_blob/d0d623939dbb6dd43890630e7629a05b', 'a visitor watching giraffes on safari'], ['/_blob/a71f6d8d252bc9966155890920521d17', 'a boy and a man on safari']
     ];
-    const cur = this.state.still === undefined ? null : this.state.still;
     return {
       // mobile still carousel (6): clean cut, wraps around
       mcA: String((this.state.mcA || 0) % 6), mcANext: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.setState({ mcA: ((this.state.mcA || 0) + 1) % 6 }); }, mcAPrev: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.setState({ mcA: ((this.state.mcA || 0) + 6 - 1) % 6 }); },
       // bands: each still shows as a thin slice through the eye (5:1); click one to open it to its full frame (4:3), click again to close — clean cut, no animation
-      stills: SRC.map((x, i) => { const on = cur === i; return { src: x[0], alt: x[1], label: (on ? 'Close: ' : 'Open: ') + x[1], pressed: on ? 'true' : 'false', ar: on ? '4 / 3' : '5 / 1', pos: i < 4 ? '50% 52%' : '50% 40%', cursor: on ? 'zoom-out' : 'zoom-in', pick: () => this.setState({ still: on ? undefined : i }) }; }),
       brand: pr.brand, campaign: pr.campaign, sep: ' /',
-      filmColor: pr.color,
       b: this.theBlob(this.state.seed, sp, t),
       lean: 'translate(' + (mx * 10).toFixed(1) + 'px,' + (my * 7).toFixed(1) + 'px)',
       xVis: this.state.openF ? 'hidden' : 'visible',

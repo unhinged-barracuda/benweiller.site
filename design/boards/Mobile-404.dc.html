@@ -13,50 +13,44 @@
 <style>
 @font-face{font-family:'Dirtbag TM';src:url('/_blob/a15098c6e2313273da5b37f609489781') format('opentype');font-weight:400;font-style:normal;font-display:swap}
 body{margin:0}
-a{color:#1E1E1C}a:hover{color:#000000}
+/* the page is the screen: fixed to the visible area between Safari's bars, no page scroll */
+html,body{overflow:hidden;height:100%}
+a{color:#1E1E1C}
+a:hover{color:#000000}
 .breathe{transform-box:fill-box;transform-origin:50% 50%;animation:breathe 9s ease-in-out infinite}
 .drift{transform-box:fill-box;transform-origin:50% 50%;animation:drift 13s ease-in-out infinite}
 @keyframes breathe{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.035) rotate(1.5deg)}}
 @keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(18px,-12px)}}
-@media (prefers-reduced-motion: reduce){.breathe,.drift{animation:none}}
 .drawer a{opacity:0;transform:translateX(10px);transition:opacity 300ms ease,transform 400ms cubic-bezier(.3,.7,.2,1)}
 .drawer.open a{opacity:1;transform:none}
-.drawer.open a:nth-child(2){transition-delay:50ms}.drawer.open a:nth-child(3){transition-delay:100ms}
-.burger line{transition:transform 350ms cubic-bezier(.3,.7,.2,1),opacity 200ms ease;transform-box:fill-box;transform-origin:50% 50%}
+.drawer.open a:nth-child(2){transition-delay:50ms}
+.drawer.open a:nth-child(3){transition-delay:100ms}
+.burger line{stroke:#FFFFFF;transition:transform 350ms cubic-bezier(.3,.7,.2,1),opacity 200ms ease;transform-box:fill-box;transform-origin:50% 50%}
 .ico[aria-expanded="true"] .burger .l1{transform:translateX(7px) rotate(24deg)}
 .ico[aria-expanded="true"] .burger .l2{opacity:0}
 .ico[aria-expanded="true"] .burger .l3{transform:translateX(-7px) rotate(-66deg)}
-@media (prefers-reduced-motion: reduce){.burger line,.drawer a{transition:none}}
-.nb{color:#55554F;text-decoration:none;white-space:nowrap;transition:color 200ms ease}
-.nb:hover,.nb:focus-visible{color:#1E1E1C}
-.nb:focus-visible,.ico:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:4px}
-/* keyboard focus on text (links, menu words, wordmark): no box. a soft glass rectangle leaning at the lean angle sits behind the word */
-.nb:focus-visible,.tlk:focus-visible,.lnk:focus-visible{outline:none;position:relative;z-index:0}
-.nb:focus-visible::before,.tlk:focus-visible::before,.lnk:focus-visible::before{content:"";position:absolute;left:-9px;right:-9px;top:-5px;bottom:-5px;z-index:-1;transform:skewX(-16.7deg);background:linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.36));backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 1px rgba(255,255,255,0.85),0 1px 10px rgba(30,30,28,0.12)}
-/* FOCUS (approved, site-wide): keyboard only, no outlines anywhere.
-   text, words and small controls: a soft glass rectangle leaning at the lean angle behind them.
-   media and glass buttons: no frame, a soft shadow that lifts them off the page */
-*:focus-visible{outline:none!important}
-.nb:focus-visible:not([style*="position: absolute"]),.tlk:focus-visible:not([style*="position: absolute"]),.lnk:focus-visible:not([style*="position: absolute"]),.ctl:focus-visible:not([style*="position: absolute"]),.tl:focus-visible:not([style*="position: absolute"]),.ic:focus-visible:not([style*="position: absolute"]),.hereBtn:focus-visible:not([style*="position: absolute"]),.ico:focus-visible:not([style*="position: absolute"]),.item:focus-visible:not([style*="position: absolute"]),a:not(.card):not(.xp):not(.band):focus-visible:not([style*="position: absolute"]),button:not(.gb):not(.xp):not(.pp):focus-visible:not([style*="position: absolute"]){position:relative;z-index:0}
-.nb:focus-visible::before,.tlk:focus-visible::before,.lnk:focus-visible::before,.ctl:focus-visible::before,.tl:focus-visible::before,.ic:focus-visible::before,.hereBtn:focus-visible::before,.ico:focus-visible::before,.item:focus-visible::before,a:not(.card):not(.xp):not(.band):focus-visible::before,button:not(.gb):not(.xp):not(.pp):focus-visible::before{content:"";position:absolute;left:-9px;right:-9px;top:-5px;bottom:-5px;z-index:-1;transform:skewX(-16.7deg);background:linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.36));backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 1px rgba(255,255,255,0.85),0 1px 10px rgba(30,30,28,0.12)}
-.card:focus-visible::after,.xp:focus-visible::after,.band:focus-visible::after,.gbw:has(.gb:focus-visible)::after{content:none!important}
-.card:focus-visible,.xp:focus-visible,.band:focus-visible,[tabindex]:not(a):not(button):focus-visible,.gbw:has(.gb:focus-visible),.gfocus{box-shadow:0 14px 34px -8px rgba(30,30,28,0.38),0 2px 8px rgba(30,30,28,0.12)}
-.gbw:has(.gb:focus-visible),.gfocus.round{border-radius:50%}
+.nb{color:#A9A9B0;text-decoration:none;white-space:nowrap;transition:color 200ms ease}
+.nb:hover,.nb:focus-visible,.nb.on{color:#FFFFFF}
+/* FOCUS (approved, site-wide): keyboard only, no outlines anywhere. words and small controls get a soft glass rectangle leaning at the
+   lean angle behind them (links and buttons are positioned so it can sit there; one that is placed absolutely keeps its place);
+   media and glass buttons get a soft shadow that lifts them off the page */
+a,button{position:relative}
+:focus-visible{outline:none}
+a:focus-visible,button:focus-visible{z-index:0}
+a:focus-visible::before,button:focus-visible::before{content:"";position:absolute;left:-9px;right:-9px;top:-5px;bottom:-5px;z-index:-1;transform:skewX(-16.7deg);background:linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.36));backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 1px rgba(255,255,255,0.85),0 1px 10px rgba(30,30,28,0.12)}
+.nb:focus-visible{position:relative;z-index:0}
 /* the blurb: closed under its title; a tap on the title folds it open and the arrow turns to point down */
 .lead{display:inline-flex;align-items:baseline;margin:0;padding:0;border:0;background:none;font:inherit;font-weight:500;color:inherit;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .lead .arw{display:inline-block;margin-left:6px;font-weight:400;transition:transform 280ms cubic-bezier(.3,.7,.2,1)}
 .bfold{display:grid;transition:grid-template-rows 450ms cubic-bezier(.3,.7,.2,1)}
 .bfold>div{min-height:0;overflow:hidden;transition:opacity 300ms ease,visibility 0s linear 0s}
 .bfold.shut>div{opacity:0;visibility:hidden;transition:opacity 220ms ease,visibility 0s linear 450ms}
-@media (prefers-reduced-motion: reduce){.lead .arw,.bfold,.bfold>div{transition:none}}
 /* header "///" + its words flip light / dark with what is behind them (difference blend), so they stay visible over the blob (Nov 20) */
 .hflip{mix-blend-mode:difference}
-.hflip .burger line,.hflip .hdrBack line{stroke:#FFFFFF!important}
-.hflip .nb{color:#A9A9B0!important}
-.hflip .nb:hover,.hflip .nb:focus-visible,.hflip .nb.on{color:#FFFFFF!important}
+@media (prefers-reduced-motion: reduce){.breathe,.drift{animation:none}.burger line,.drawer a,.lead .arw,.bfold,.bfold>div{transition:none}}
 </style>
 </helmet>
-<div onMouseMove="{{onMove}}" onMouseLeave="{{onLeave}}" onTouchStart="{{onTouchStart}}" onTouchMove="{{onTouchMove}}" onTouchEnd="{{onTouchEnd}}" style="position: relative; height: 100vh; height: 100svh; min-height: 600px; touch-action: none; overflow: hidden; cursor: pointer; background: {{ground}}; font-family: 'Inter', system-ui, sans-serif; color: #1E1E1C">
+<div onMouseMove="{{onMove}}" onMouseLeave="{{onLeave}}" onTouchStart="{{onTouchStart}}" onTouchMove="{{onTouchMove}}" onTouchEnd="{{onTouchEnd}}" style="position: relative; height: 100vh; height: 100svh; touch-action: none; overflow: hidden; cursor: pointer; background: {{ground}}; font-family: 'Inter', system-ui, sans-serif; color: #1E1E1C">
 
 <!-- a click anywhere, scrolling down (wheel, swipe up, or ↓ / page down / space) opens the menu page immediately -->
 <!-- header: wordmark top left, "///" top right -->
@@ -69,7 +63,7 @@ a{color:#1E1E1C}a:hover{color:#000000}
 <a class="nb" href="Mobile-Contact.dc.html" tabindex="{{tabG}}">/contact</a>
 </nav>
 <button class="ico" type="button" onClick="{{toggleG}}" aria-expanded="{{openStrG}}" aria-controls="hdrMenuG" aria-label="{{icoLabelG}}" style="width: 48px; height: 48px; margin-right: -7px; padding: 0; border: 0; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center">
-<svg class="burger" width="33" height="27" viewBox="0 0 22 18" overflow="visible" aria-hidden="true"><line class="l1" x1="1" y1="17" x2="7.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l2" x1="8" y1="17" x2="14.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l3" x1="15" y1="17" x2="21.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line></svg>
+<svg class="burger" width="33" height="27" viewBox="0 0 22 18" overflow="visible" aria-hidden="true"><line class="l1" x1="1" y1="17" x2="7.5" y2="1" stroke-width="0.85"></line><line class="l2" x1="8" y1="17" x2="14.5" y2="1" stroke-width="0.85"></line><line class="l3" x1="15" y1="17" x2="21.5" y2="1" stroke-width="0.85"></line></svg>
 </button>
 </div>
 <div style="position: absolute; inset: 0">
@@ -303,7 +297,6 @@ class Component extends DCLogic {
     const rot = (r() - 0.5) * 1.4 + 0.7 * this.n(22, ts * 0.6);
     const rx = (230 + r() * 70) * (1 + 0.2 * this.n(23, ts * 0.7)), ry = (200 + r() * 70) * 1.07 * (1 + 0.2 * this.n(24, ts * 0.7));
     const ax = cx + (r() - 0.5) * 260 + 230 * this.n(25, ts * 0.6), ay = cy + (r() - 0.5) * 200 + 50 + 170 * this.n(26, ts * 0.6);
-    const leftSide = r() > 0.5;
     const mx = this.state.mx, my = this.state.my;
     const near = Math.max(0, 1 - Math.hypot(mx, my));
     const bodyT = 'translate(' + (mx * 46).toFixed(1) + 'px,' + (my * 34).toFixed(1) + 'px) scale(' + (1 + 0.06 * near).toFixed(3) + ')';
@@ -327,9 +320,7 @@ class Component extends DCLogic {
       onMove: (e) => this.move(e, pbx, pby),
       // a finger dragged across the screen plays with the blob too (a drag never counts as a tap)
       onTouchMove: (e) => { const t = e.touches && e.touches[0]; if (t) { if (this.t0 && Math.hypot(t.clientX - this.t0[0], t.clientY - this.t0[1]) > 10) this.dragged = true; this.move(e, pbx, pby, t); } },
-      onWheel: (e) => { if (e.deltaY > 0) { this.acc += e.deltaY; if (this.acc > 120) this.go(e.currentTarget); } else this.acc = 0; },
       // a click anywhere (except the wordmark link) continues to the menu, same as scrolling down
-      onClick: (e) => { if (e.target && e.target.closest && e.target.closest('a, button, nav')) return; this.go(e.currentTarget); },
       // header menu ("///" → /work /@un_finished_lines /who, me? /contact); opening it doesn't trigger the click-to-continue
       openClsG: this.state.openG ? 'open' : '', openStrG: this.state.openG ? 'true' : 'false', drawerVisG: this.state.openG ? 'visible' : 'hidden', tabG: this.state.openG ? '0' : '-1',
       icoLabelG: this.state.openG ? 'Close menu' : 'Open menu',
@@ -361,8 +352,7 @@ class Component extends DCLogic {
       })(),
       haloPath: haloPath, accentPath: accentPath, midPath: midPath, corePath: corePath,
       nameX: Math.round(fit.x - 92), nameY: Math.round(fit.y - 10),
-      paraX: leftSide ? 14 : 66, paraY: leftSide ? 62 : 70
-    };
+      };
   }
 }
 </script>

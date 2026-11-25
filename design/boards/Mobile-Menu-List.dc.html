@@ -13,7 +13,10 @@
 <style>
 @font-face{font-family:'Dirtbag TM';src:url('/_blob/a15098c6e2313273da5b37f609489781') format('opentype');font-weight:400;font-style:normal;font-display:swap}
 body{margin:0}
-a{color:#1E1E1C}a:hover{color:#000000}
+/* the page is the screen: fixed to the visible area between Safari's bars, no page scroll */
+html,body{overflow:hidden;height:100%}
+a{color:#1E1E1C}
+a:hover{color:#000000}
 .settle,.settleB{transform-box:fill-box;transform-origin:50% 50%;animation:settle 1500ms cubic-bezier(.3,1.35,.45,1) both}
 .settleB{animation-name:settleB}
 @keyframes settle{from{transform:translate(-18px,22px) scale(.97)}to{transform:none}}
@@ -21,66 +24,43 @@ a{color:#1E1E1C}a:hover{color:#000000}
 .breathe{transform-box:fill-box;transform-origin:50% 50%;animation:breathe 9s ease-in-out infinite}
 @keyframes breathe{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.035) rotate(1.5deg)}}
 .morph{transition:d 1000ms cubic-bezier(.3,.6,.2,1),fill 1000ms ease}
-.flipper{transition:transform 820ms cubic-bezier(.45,.05,.25,1)}
-.face{}
-.item{transition:opacity 250ms ease}
-.chev{transition:transform 280ms cubic-bezier(.3,.6,.2,1)}
-.fold{transition:grid-template-rows 500ms cubic-bezier(.3,.7,.2,1)}
-.fold ul{transition:opacity 350ms ease,visibility 0s linear 0s}
-.fold.shut ul{transition:opacity 300ms ease,visibility 0s linear 450ms}
+.item{transition:opacity 250ms ease;-webkit-tap-highlight-color:transparent}
 .flyIn{animation:flyIn 380ms cubic-bezier(.2,.75,.15,1) both}
 @keyframes flyIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
-.item:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:3px}
-.ctl:focus-visible{outline:1.5px dashed #1E1E1C;outline-offset:3px;border-radius:4px}
-@media (prefers-reduced-motion: reduce){.settle,.settleB,.breathe,.flyIn{animation:none}.morph,.flipper,.item,.fold,.fold ul{transition:none}}
 .ico{transition:transform 350ms cubic-bezier(.3,.7,.2,1)}
-.ico[aria-expanded="true"] .plus{transform:rotate(45deg)}
 .drawer a{opacity:0;transform:translateX(10px);transition:opacity 300ms ease,transform 400ms cubic-bezier(.3,.7,.2,1)}
 .drawer.open a{opacity:1;transform:none}
-.drawer.open a:nth-child(2){transition-delay:50ms}.drawer.open a:nth-child(3){transition-delay:100ms}
-.burger line{transition:transform 350ms cubic-bezier(.3,.7,.2,1),opacity 200ms ease;transform-box:fill-box;transform-origin:50% 50%}
+.drawer.open a:nth-child(2){transition-delay:50ms}
+.drawer.open a:nth-child(3){transition-delay:100ms}
+.burger line{stroke:#FFFFFF;transition:transform 350ms cubic-bezier(.3,.7,.2,1),opacity 200ms ease;transform-box:fill-box;transform-origin:50% 50%}
 .ico[aria-expanded="true"] .burger .l1{transform:translateX(7px) rotate(24deg)}
 .ico[aria-expanded="true"] .burger .l2{opacity:0}
 .ico[aria-expanded="true"] .burger .l3{transform:translateX(-7px) rotate(-66deg)}
-@media (prefers-reduced-motion: reduce){.burger line{transition:none}}
-@media (prefers-reduced-motion: reduce){.drawer a{transition:none}}
-.nb{color:#55554F;text-decoration:none;white-space:nowrap;transition:color 200ms ease}
-.nb:hover,.nb:focus-visible,.nb.on{color:#1E1E1C}
-.nb:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:4px}
-.ico:focus-visible{outline:1.5px solid #1E1E1C;outline-offset:4px}
-/* keyboard focus on text (links, menu words, wordmark): no box. a soft glass rectangle leaning at the lean angle sits behind the word */
-.nb:focus-visible,.tlk:focus-visible,.lnk:focus-visible{outline:none;position:relative;z-index:0}
-.nb:focus-visible::before,.tlk:focus-visible::before,.lnk:focus-visible::before{content:"";position:absolute;left:-9px;right:-9px;top:-5px;bottom:-5px;z-index:-1;transform:skewX(-16.7deg);background:linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.36));backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 1px rgba(255,255,255,0.85),0 1px 10px rgba(30,30,28,0.12)}
-/* FOCUS (approved, site-wide): keyboard only, no outlines anywhere.
-   text, words and small controls: a soft glass rectangle leaning at the lean angle behind them.
-   media and glass buttons: no frame, a soft shadow that lifts them off the page */
-*:focus-visible{outline:none!important}
-.nb:focus-visible:not([style*="position: absolute"]),.tlk:focus-visible:not([style*="position: absolute"]),.lnk:focus-visible:not([style*="position: absolute"]),.ctl:focus-visible:not([style*="position: absolute"]),.tl:focus-visible:not([style*="position: absolute"]),.ic:focus-visible:not([style*="position: absolute"]),.hereBtn:focus-visible:not([style*="position: absolute"]),.ico:focus-visible:not([style*="position: absolute"]),.item:focus-visible:not([style*="position: absolute"]),a:not(.card):not(.xp):not(.band):focus-visible:not([style*="position: absolute"]),button:not(.gb):not(.xp):not(.pp):focus-visible:not([style*="position: absolute"]){position:relative;z-index:0}
-.nb:focus-visible::before,.tlk:focus-visible::before,.lnk:focus-visible::before,.ctl:focus-visible::before,.tl:focus-visible::before,.ic:focus-visible::before,.hereBtn:focus-visible::before,.ico:focus-visible::before,.item:focus-visible::before,a:not(.card):not(.xp):not(.band):focus-visible::before,button:not(.gb):not(.xp):not(.pp):focus-visible::before{content:"";position:absolute;left:-9px;right:-9px;top:-5px;bottom:-5px;z-index:-1;transform:skewX(-16.7deg);background:linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.36));backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 1px rgba(255,255,255,0.85),0 1px 10px rgba(30,30,28,0.12)}
-.card:focus-visible::after,.xp:focus-visible::after,.band:focus-visible::after,.gbw:has(.gb:focus-visible)::after{content:none!important}
-.card:focus-visible,.xp:focus-visible,.band:focus-visible,[tabindex]:not(a):not(button):focus-visible,.gbw:has(.gb:focus-visible),.gfocus{box-shadow:0 14px 34px -8px rgba(30,30,28,0.38),0 2px 8px rgba(30,30,28,0.12)}
-.gbw:has(.gb:focus-visible),.gfocus.round{border-radius:50%}
+.nb{color:#A9A9B0;text-decoration:none;white-space:nowrap;transition:color 200ms ease}
+.nb:hover,.nb:focus-visible,.nb.on{color:#FFFFFF}
+/* FOCUS (approved, site-wide): keyboard only, no outlines anywhere. words and small controls get a soft glass rectangle leaning at the
+   lean angle behind them (links and buttons are positioned so it can sit there; one that is placed absolutely keeps its place);
+   media and glass buttons get a soft shadow that lifts them off the page */
+a,button{position:relative}
+:focus-visible{outline:none}
+a:focus-visible,button:focus-visible{z-index:0}
+a:focus-visible::before,button:focus-visible::before{content:"";position:absolute;left:-9px;right:-9px;top:-5px;bottom:-5px;z-index:-1;transform:skewX(-16.7deg);background:linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.36));backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 1px rgba(255,255,255,0.85),0 1px 10px rgba(30,30,28,0.12)}
+.nb:focus-visible{position:relative;z-index:0}
 /* mobile: the picked campaign gets a small arrow; everything else dims */
-.item{-webkit-tap-highlight-color:transparent}
-.arw{display:inline-block;margin-left:6px;transition:opacity 200ms ease,transform 260ms cubic-bezier(.3,.7,.2,1)}
+.arw{display:inline-block;margin-left:6px;transform-origin:50% 55%;transition:opacity 200ms ease,transform 260ms cubic-bezier(.3,.7,.2,1)}
 .drawer.vert a{transform:translateY(-6px)}
 .drawer.vert.open a{transform:none}
-.scroller{scrollbar-width:none}.scroller::-webkit-scrollbar{display:none}
-.arw{transform-origin:50% 55%}
 /* a tap spins the arrow one full turn (fast and clean), then the page opens */
 .arw.spin{animation:spin360 520ms cubic-bezier(.3,.7,.2,1)}
 .arw.spin2{animation:spin360b 520ms cubic-bezier(.3,.7,.2,1)}
 @keyframes spin360{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 @keyframes spin360b{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-@media (prefers-reduced-motion: reduce){.arw.spin,.arw.spin2{animation:none}}
 /* header "///" + its words flip light / dark with what is behind them (difference blend), so they stay visible over the blob (Nov 20) */
 .hflip{mix-blend-mode:difference}
-.hflip .burger line,.hflip .hdrBack line{stroke:#FFFFFF!important}
-.hflip .nb{color:#A9A9B0!important}
-.hflip .nb:hover,.hflip .nb:focus-visible,.hflip .nb.on{color:#FFFFFF!important}
+@media (prefers-reduced-motion: reduce){.settle,.settleB,.breathe,.flyIn,.arw.spin,.arw.spin2{animation:none}.morph,.item,.burger line,.drawer a{transition:none}}
 </style>
 </helmet>
-<div style="position: relative; height: 100vh; height: 100svh; min-height: 760px; overflow: hidden; background: #F1F1EE; font-family: 'Inter', system-ui, sans-serif; color: #1E1E1C">
+<div style="position: relative; height: 100vh; height: 100svh; overflow: hidden; background: #F1F1EE; font-family: 'Inter', system-ui, sans-serif; color: #1E1E1C">
 <svg aria-hidden="true" viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" style="position: absolute; inset: 0; pointer-events: none">
 <defs>
 <filter id="gXL" x="-50%" y="-50%" width="200%" height="200%">
@@ -130,7 +110,7 @@ a{color:#1E1E1C}a:hover{color:#000000}
 <header style="position: absolute; top: 16px; left: 16px; right: 16px; height: 48px; display: flex; justify-content: space-between; align-items: center; z-index: auto">
 <a href="Mobile-Home.dc.html" aria-label="Ben Weiller — home" style="font-family: 'Dirtbag TM', 'Inter', sans-serif; font-size: 44px; line-height: 1; letter-spacing: 0.03em; position: relative; top: 6px; text-decoration: none; color: #1E1E1C">BEN WEILLER</a>
 <button class="ico hflip" type="button" onClick="{{toggleG}}" aria-expanded="{{openStrG}}" aria-controls="hdrMenuG" aria-label="{{icoLabelG}}" style="width: 48px; height: 48px; margin-right: -7px; padding: 0; border: 0; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center">
-<svg class="burger" width="33" height="27" viewBox="0 0 22 18" overflow="visible" aria-hidden="true"><line class="l1" x1="1" y1="17" x2="7.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l2" x1="8" y1="17" x2="14.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line><line class="l3" x1="15" y1="17" x2="21.5" y2="1" stroke="#1E1E1C" stroke-width="0.85"></line></svg>
+<svg class="burger" width="33" height="27" viewBox="0 0 22 18" overflow="visible" aria-hidden="true"><line class="l1" x1="1" y1="17" x2="7.5" y2="1" stroke-width="0.85"></line><line class="l2" x1="8" y1="17" x2="14.5" y2="1" stroke-width="0.85"></line><line class="l3" x1="15" y1="17" x2="21.5" y2="1" stroke-width="0.85"></line></svg>
 </button>
 <!-- the four words drop down as a right-aligned stack under the icon (no room for a row on a phone) -->
 <nav id="hdrMenuG" aria-label="Main" class="drawer vert hflip {{openClsG}}" style="position: absolute; top: 56px; right: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 18px; font-size: 14px; line-height: 1; visibility: {{drawerVisG}}">

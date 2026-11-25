@@ -26,7 +26,7 @@ a{color:#1E1E1C}a:hover{color:#000000}
 a:not(.card,.xp,.fabX):focus-visible,button:not(.gb,.xp):focus-visible{position:relative;z-index:0}
 a:not(.card,.xp):focus-visible::before,button:not(.gb,.xp):focus-visible::before{content:"";position:absolute;left:-9px;right:-9px;top:-5px;bottom:-5px;z-index:-1;transform:skewX(-16.7deg);background:linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.36));backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 1px rgba(255,255,255,0.85),0 1px 10px rgba(30,30,28,0.12)}
 .card:focus-visible,.xp:focus-visible,[tabindex]:not(a):not(button):focus-visible{box-shadow:0 14px 34px -8px rgba(30,30,28,0.38),0 2px 8px rgba(30,30,28,0.12)}
-.xp{position:relative;display:block;padding:0;border:0;background:none;cursor:zoom-in}
+.xp{display:block;padding:0;border:0;background:none;cursor:zoom-in}
 .card{container-type:inline-size}
 .card .gbw{position:absolute;left:50%;top:50%;width:max(44px,8cqw);height:max(44px,8cqw);transform:translate(-50%,-50%)}
 /* glass buttons (lean · etched · thin ring, approved site-wide). The clear glass is the default; dark glass (.gv-dark, the carousel-arrow
@@ -482,7 +482,6 @@ class Component extends DCLogic {
     const pr = P[pi];
     const sp = this.state.sp || 0, t = (this.state.sy || 0) / 900;
     const mx = this.state.mx || 0, my = this.state.my || 0;
-    const chip = (on) => ({ bg: on ? '#1E1E1C' : 'rgba(255,255,255,0.6)', ink: on ? '#F1F1EE' : '#1E1E1C', pressed: on ? 'true' : 'false' });
     return {
       // mobile still carousel (6): clean cut, wraps around
       mcB: String((this.state.mcB || 0) % 6), mcBNext: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.setState({ mcB: ((this.state.mcB || 0) + 1) % 6 }); }, mcBPrev: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.setState({ mcB: ((this.state.mcB || 0) + 6 - 1) % 6 }); },
@@ -522,7 +521,6 @@ class Component extends DCLogic {
       })(),
       bpPrev: () => this.setState({ bp: ((this.state.bp || 0) + 3) % 4 }),
       brand: pr.brand, campaign: pr.campaign, sep: ' /',
-      filmColor: pr.color,
       b: this.theBlob(this.state.seed, sp, t),
       lean: 'translate(' + (mx * 10).toFixed(1) + 'px,' + (my * 7).toFixed(1) + 'px)',
       xVis: this.state.openF ? 'hidden' : 'visible',

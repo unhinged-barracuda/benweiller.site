@@ -352,10 +352,8 @@ class Component extends DCLogic {
     const pr = P[pi];
     const sp = this.state.sp || 0, t = (this.state.sy || 0) / 900;
     const mx = this.state.mx || 0, my = this.state.my || 0;
-    const chip = (on) => ({ bg: on ? '#1E1E1C' : 'rgba(255,255,255,0.6)', ink: on ? '#F1F1EE' : '#1E1E1C', pressed: on ? 'true' : 'false' });
     return {
       brand: pr.brand, campaign: pr.campaign, sep: ' /',
-      filmColor: pr.color,
       b: this.theBlob(this.state.seed, sp, t),
       lean: 'translate(' + (mx * 10).toFixed(1) + 'px,' + (my * 7).toFixed(1) + 'px)',
       xVis: this.state.openF ? 'hidden' : 'visible',

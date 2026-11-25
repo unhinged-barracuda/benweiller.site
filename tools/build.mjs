@@ -7,17 +7,19 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { build } from 'esbuild';
 import { ROUTES, SITE, ALIASES } from './routes.mjs';
-import { auditAll, worse, table } from './audit-boards.mjs';
+import { auditAll, auditSite, worse, table } from './audit-boards.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const BOARDS = path.join(ROOT, 'design/boards');
 const ASSETS = path.join(ROOT, 'design/assets');
 const OUT = path.join(ROOT, 'dist');
 
-// clean-code audit (tools/audit-boards.mjs): stop if any board got worse than tools/audit-baseline.json
+// clean-code audit (tools/audit-boards.mjs): stop if any board got worse than tools/audit-baseline.json, or the site's own code forces values
 {
   const res = auditAll(), bad = worse(res, JSON.parse(fs.readFileSync(path.join(ROOT, 'tools/audit-baseline.json'), 'utf8')));
   if (bad.length) { console.error(table(res) + '\n\nboard audit: WORSE than the baseline (fix the board, don\'t raise the baseline):\n  ' + bad.join('\n  ')); process.exit(1); }
+  const site = auditSite();
+  if (site.length) { console.error('site code audit:\n  ' + site.join('\n  ')); process.exit(1); }
 }
 
 fs.rmSync(OUT, { recursive: true, force: true });
@@ -149,7 +151,7 @@ function page(r) {
 <link rel="manifest" href="/site.webmanifest">
 <link rel="preload" href="${FONTS['inter-400']}" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="${FONTS['dirtbag']}" as="font" type="font/woff2" crossorigin>
-<style>${FONT_CSS}html,body{margin:0;background:#ECECE9;overscroll-behavior:none}#dc-root>[style*="100svh"]{min-height:0!important}html:has(#dc-root>[style*="100svh"]),html:has(#dc-root>[style*="100svh"]) body{overflow:hidden;height:100%}.page{overscroll-behavior:none}#dc-root{min-height:100vh}</style><style>
+<style>${FONT_CSS}html,body{margin:0;background:#ECECE9;overscroll-behavior:none}.page{overscroll-behavior:none}#dc-root{min-height:100vh}</style><style>
 ::view-transition-old(root),::view-transition-new(root){animation-duration:.65s;animation-timing-function:cubic-bezier(.3,.7,.2,1)}
 @media (prefers-reduced-motion: reduce){::view-transition-old(root),::view-transition-new(root){animation:none}}</style>
 <script>window.__DC_PAGE__=${JSON.stringify({ tabletMobile: !!r.tabletMobile, preload: !!r.preload})};window.__IMG__=${JSON.stringify(used)}</script>

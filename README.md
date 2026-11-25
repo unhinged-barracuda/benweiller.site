@@ -37,11 +37,31 @@ Cloudflare Pages builds and deploys `dist/` on every push to `main` (build comma
 
 ## Keeping it clean (checked by the build)
 
-Ben's rule: change the original value, don't patch on top. `npm run build` first runs `tools/audit-boards.mjs`, which counts
-for every board the site uses: `!important`, rules that find elements by text in their inline style (`[style*="…"]`),
-selectors written twice, duplicate `@keyframes`, and CSS for classes the board doesn't use. If any board is worse than
-`tools/audit-baseline.json` the build stops: fix the board (on the canvas), don't raise the baseline. After a cleanup,
-`node tools/audit-boards.mjs --lower` lowers the baseline (`--verbose` lists the unused classes).
+**The intention (Ben, Nov 24): the most efficient, cleanest, most effective code possible.** Every change *replaces* the
+original instead of fixing or updating on top of it, so a board always reads as if it had been written that way from the
+start. That holds for the forms of piling-up the build can't see, too.
+
+In practice, for every change:
+- **Edit the value where it lives** and delete what it replaces in the same change: never a second rule, an override, a
+  compensating value (a negative margin to cancel a gap, an opacity to hide something) or a workaround next to the original.
+- **One source for each thing**: a value is written once, in the one place that owns it (the site shell for the page
+  background, a class for what its elements share, the element itself for what's only its own).
+- **No dead code**: when something stops being used, remove it and everything that only it used (rules, classes,
+  @keyframes, script values, state, helpers, hidden elements).
+- **If the cleanest version means rewriting a block, rewrite it**, then prove nothing on screen changed (below).
+
+The build checks the families of ways code piles up (`tools/audit-boards.mjs`, every board the site uses):
+- **force**: a value forced over another (`!important` anywhere);
+- **outside**: an element changed from outside by matching its inline style (`[style*=…]`, `[style^=…]`, any form);
+- **repeat**: the same thing written twice (a selector twice in one context, a property twice in one rule, `@keyframes`
+  twice, an inline style setting a property its own class sets);
+- **dead**: code that does nothing (CSS for unused classes, `@keyframes` nothing runs, empty rules, values the script
+  hands the markup that it never uses, state nothing reads).
+
+Every board is at zero, so `tools/audit-baseline.json` is the rule: the build stops if any board gets worse, and if the
+site's own code (`tools/build.mjs`, `src/*.js`) forces a value or matches inline styles. Fix the board (on the canvas),
+never raise the baseline. `node tools/audit-boards.mjs` lists every finding by name. If a new kind of piling-up turns up
+that these checks miss, add a check for its whole family to the audit, not a one-off note.
 
 To show a cleanup changes nothing, serve the previous build on a second port and run
 `node tools/compare-pages.mjs http://localhost:8789 http://localhost:8788 /heelys/ …` (`--only=desktop` / `--only=iphone`):
